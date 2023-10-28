@@ -4,9 +4,9 @@ import router from './router'
 import './assets/style.css'
 import { OhVueIcon, addIcons } from "oh-vue-icons";
 import { createI18n } from 'vue-i18n';
-// import { icons } from "oh-vue-icons/icons";
+import { FaGlobe, FaQuestionCircle, FaRegularUser, CoFr, CoGb, CoDe, CoIt } from "oh-vue-icons/icons";
 
-addIcons();
+addIcons(FaGlobe, FaQuestionCircle, FaRegularUser, CoFr, CoGb, CoDe, CoIt );
 
 const i18n = createI18n({
     locale: 'en',
@@ -22,5 +22,5 @@ const i18n = createI18n({
 createApp(App)
     .component("v-icon", OhVueIcon)
     .use(router)
-    .use(i18n  )
+    .use(i18n)
     .mount('#app')
