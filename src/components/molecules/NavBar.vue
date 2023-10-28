@@ -23,6 +23,20 @@ export default {
           link: "/it",
         },
       ],
+      accountOptions: [
+        {
+          label: this.$t("navbar.profile"),
+          link: "/profile",
+        },
+        {
+          label: this.$t("navbar.settings"),
+          link: "/settings",
+        },
+        {
+          label: this.$t("navbar.logout"),
+          link: "/logout",
+        },
+      ],
     };
   },
   components: {
@@ -45,7 +59,7 @@ export default {
         <v-icon name="fa-question-circle" scale="0.75" class="mr-1" />
         <span>{{ $t("navbar.help") }}</span>
       </router-link>
-      <NavLink>
+      <NavLink :dropdown-items="accountOptions">
         <v-icon name="fa-regular-user" scale="0.75" class="mr-1" />
         <span>{{ $t("navbar.account") }}</span>
       </NavLink>
