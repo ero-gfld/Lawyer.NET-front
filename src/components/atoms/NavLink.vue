@@ -52,14 +52,14 @@ export default {
         class="absolute top-full left-0 w-full"
       >
         <div class="h-2" />
-        <div class="bg-primary border py-2 border-white rounded-md z-10">
+        <div class="grid bg-primary border py-2 border-white rounded-md z-10">
           <router-link
             v-for="(item, index) in dropdownItems"
             :key="index"
             :to="item.link ?? ''"
-            class="block px-4 py-2 transition-all duration-300 ease-in-out hover:font-semibold hover:bg-primary-light"
+            class="flex justify-around py-2 transition-all duration-300 ease-in-out hover:font-semibold hover:bg-primary-light"
           >
-            <v-icon v-if="item.icon" :name="item.icon" />
+            <v-icon v-if="item.icon" :name="item.icon" :scale="item.scale" />
             <span v-if="item.label">{{ item.label }}</span>
           </router-link>
         </div>
