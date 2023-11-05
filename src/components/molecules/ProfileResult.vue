@@ -3,6 +3,7 @@ import Button from "@/components/atoms/Button.vue";
 import Label from "@/components/atoms/Label.vue";
 import LawyerResult from "../../models/lawyer-result.js";
 import ButtonTypes from "../../constants/button-types.js";
+import { parse, format } from "date-fns";
 export default {
   name: "ProfileResult",
   props: {
@@ -19,6 +20,14 @@ export default {
   components: {
     Button,
     Label,
+  },
+  methods: {
+    getFullDay(date) {
+      return format(parse(date, "yyyy-MM-dd", new Date()), "wo MMMM");
+    },
+    getDayOfWeek(date) {
+      return format(parse(date, "yyyy-MM-dd", new Date()), "EEEE");
+    },
   },
 };
 </script>
@@ -55,13 +64,24 @@ export default {
         >Show appointment availability</Button
       >
     </div>
-    <div class="mt-5 flex flex-row justify-between">
+    <div
+      class="mt-5 flex flex-row justify-between border rounded-lg px-10 py-3"
+    >
       <div v-for="schedule in profile.availabilities" :key="schedule.date">
-        <div class="flex flex-col">
-          <Label class="text-stone-500">{{ schedule.date }}</Label>
-          <Label v-for="time in schedule.availabilities" :key="time">{{
-            time
+        <div class="flex flex-col place-items-center">
+          <Label class="text-stone-500">{{
+            this.getDayOfWeek(schedule.date)
           }}</Label>
+          <Label>{{ this.getFullDay(schedule.date) }}</Label>
+          <div class="flex flex-col mt-4 gap-y-3">
+            <div
+              v-for="time in schedule.availabilities"
+              :key="time"
+              class="text-primary font-semibold bg-primary-lightest border-2 border-primary-lighter rounded-lg px-4"
+            >
+              {{ time }}
+            </div>
+          </div>
         </div>
       </div>
     </div>
