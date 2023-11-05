@@ -1,13 +1,13 @@
 <script>
 import Button from "@/components/atoms/Button.vue";
 import Label from "@/components/atoms/Label.vue";
-import Lawyer from "../../models/lawyer.js";
+import LawyerResult from "../../models/lawyer-result.js";
 import ButtonTypes from "../../constants/button-types.js";
 export default {
   name: "ProfileResult",
   props: {
     profile: {
-      type: Lawyer,
+      type: LawyerResult,
       required: true,
     },
   },
@@ -34,9 +34,11 @@ export default {
         />
       </div>
       <div class="flex flex-col">
-        <Label class="text-primary font-bold text-lg">{{ profile.name }}</Label>
+        <Label class="text-primary font-bold text-lg">{{
+          `${profile.firstName} ${profile.lastName}`
+        }}</Label>
         <Label class="text-md text-stone-700 font-medium">{{
-          profile.profession
+          profile.specialization
         }}</Label>
         <Label class="text-sm text-stone-500"
           >${{ profile.hourlyRate }} per hour</Label
@@ -52,6 +54,16 @@ export default {
       <Button class="w-full" :buttonType="ButtonTypes.SECONDARY"
         >Show appointment availability</Button
       >
+    </div>
+    <div class="mt-5 flex flex-row justify-between">
+      <div v-for="schedule in profile.availabilities" :key="schedule.date">
+        <div class="flex flex-col">
+          <Label class="text-stone-500">{{ schedule.date }}</Label>
+          <Label v-for="time in schedule.availabilities" :key="time">{{
+            time
+          }}</Label>
+        </div>
+      </div>
     </div>
   </div>
 </template>

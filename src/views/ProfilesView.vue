@@ -1,46 +1,13 @@
 <script>
+import { mockData } from "@/assets/mockup";
 import ProfileResult from "../components/molecules/ProfileResult.vue";
 import { OhVueIcon } from "oh-vue-icons";
-import { Lawyer } from "../models/lawyer.js";
 
 export default {
   name: "ProfilesView",
   data() {
     return {
-      profiles: [
-        new Lawyer(
-          "John Doe",
-          "Corporate Law",
-          300,
-          "New York",
-          "123 Main St",
-          "10001"
-        ),
-        new Lawyer(
-          "Jane Smith",
-          "Criminal Law",
-          250,
-          "Los Angeles",
-          "456 Elm St",
-          "90001"
-        ),
-        new Lawyer(
-          "Bob Johnson",
-          "Family Law",
-          185,
-          "Chicago",
-          "789 Oak St",
-          "60601"
-        ),
-        new Lawyer(
-          "Alice Lee",
-          "Immigration Law",
-          500,
-          "San Francisco",
-          "321 Pine St",
-          "94101"
-        ),
-      ],
+      profiles: mockData.lawyerResults,
     };
   },
   components: {

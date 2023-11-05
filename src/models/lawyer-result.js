@@ -1,32 +1,32 @@
-export default class Lawyer {
+export default class LawyerResult {
   id;
   firstName;
   lastName;
   specialization;
   hourlyRate;
-  email;
   address;
   postalCode;
   city;
+  availabilities;
   constructor(
     id,
     firstName,
     lastName,
     specialization,
     hourlyRate,
-    email,
     address,
     postalCode,
-    city
+    city,
+    availabilities
   ) {
     this.id = id;
     this.firstName = firstName;
     this.lastName = lastName;
     this.specialization = specialization;
     this.hourlyRate = hourlyRate;
-    this.email = email;
     this.address = address;
     this.postalCode = postalCode;
     this.city = city;
+    this.availabilities = availabilities;
   }
 }
