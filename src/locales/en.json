@@ -1,3 +1,7 @@
 {
-
+    "navbar.help": "Need help?",
+    "navbar.account": "My account",
+    "navbar.profile": "Profile",
+    "navbar.logout": "Logout",
+    "navbar.settings": "Settings"
 }

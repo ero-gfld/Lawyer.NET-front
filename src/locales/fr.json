@@ -1,3 +1,7 @@
 {
-
+    "navbar.help": "Besoin d'aide?",
+    "navbar.account": "Mon compte",
+    "navbar.profile": "Profil",
+    "navbar.logout": "Déconnexion",
+    "navbar.settings": "Réglages"
 }

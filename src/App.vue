@@ -1,7 +1,16 @@
+<script>
+import NavBar from "@/components/molecules/NavBar.vue";
+export default {
+  name: "App",
+  components: {
+    NavBar,
+  },
+};
+</script>
+
 <template>
-  <nav></nav>
-  <router-view/>
+  <NavBar />
+  <router-view />
 </template>
 
-<style>
-</style>
+<style></style>
