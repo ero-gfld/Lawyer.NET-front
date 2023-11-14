@@ -5,6 +5,11 @@ const routes = [
     path: '/profiles',
     name: 'Profiles',
     component: () => import('../views/ProfilesView.vue')
+  },
+  {
+    path: '/',
+    name: 'Homepage',
+    component: () => import('../views/HomeView.vue')
   }
 ]
 const router = createRouter({
