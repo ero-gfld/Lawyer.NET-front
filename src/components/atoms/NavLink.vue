@@ -49,7 +49,7 @@ export default {
     >
       <div
         v-show="showDropdown && dropdownItems && dropdownItems.length > 0"
-        class="absolute top-full left-0 w-full"
+        class="absolute top-full left-0 w-full z-30"
       >
         <div class="h-2" />
         <div class="grid bg-primary border py-2 border-white rounded-md z-10">

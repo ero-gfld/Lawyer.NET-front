@@ -10,6 +10,16 @@ const routes = [
     path: '/',
     name: 'Homepage',
     component: () => import('../views/HomeView.vue')
+  },
+  {
+    path: '/help',
+    name: 'Help',
+    component: () => import('../views/HelpView.vue')
+  },
+  {
+    path: '/imprint',
+    name: 'Imprint',
+    component: () => import('../views/ImprintView.vue')
   }
 ]
 const router = createRouter({
