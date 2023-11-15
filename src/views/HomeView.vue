@@ -4,7 +4,14 @@ import Button from "../components/atoms/Button.vue";
 
 export default {
   name: "HomeView",
-  methods: {},
+  methods: {
+    search() {
+      this.$router.push({
+        name: "Profiles",
+        params: { search: this.searchTerm ?? "all" },
+      });
+    },
+  },
   components: {
     Input,
     Button,
@@ -38,6 +45,7 @@ export default {
                     class="flex-1"
                     v-model="searchTerm"
                     placeholder="Search for a profile..."
+                    @keyup.enter="search"
                   />
                   <Button @click="search">Search</Button>
                 </div>

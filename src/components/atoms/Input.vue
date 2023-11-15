@@ -3,14 +3,15 @@
     class="py-1 px-2 border rounded-md"
     :id="id"
     :type="type"
-    :value="value"
+    :value="modelValue"
+    @input="$emit('update:modelValue', $event.target.value)"
     :placeholder="placeholder"
   />
 </template>
 
 <script>
 export default {
-  name: "Label",
+  name: "Input",
   props: {
     id: String,
     type: String,
