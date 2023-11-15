@@ -21,7 +21,7 @@ export default {
   <div class="mx-60">
     <div class="my-5">
       <v-icon name="hi-solid-search" />
-      There is <b>{{ profiles.length }} results</b> for your search.
+      {{ this.$t("profile.result.count", { count: profiles.length }) }}
     </div>
     <div class="grid gap-y-5 mb-5">
       <ProfileResult
