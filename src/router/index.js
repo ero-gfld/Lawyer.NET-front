@@ -6,7 +6,7 @@ const routes = [
     name: 'Profiles',
     component: () => import('../views/ProfilesView.vue')
   },
-  {
+  }
     path: '/login',
     name: 'Login',
     component: () => import('../views/LoginView.vue')
@@ -16,6 +16,21 @@ const routes = [
     name: 'Register',
     component: () => import('../views/RegisterView.vue')
   },
+  {
+    path: '/',
+    name: 'Homepage',
+    component: () => import('../views/HomeView.vue')
+  },
+  {
+    path: '/help',
+    name: 'Help',
+    component: () => import('../views/HelpView.vue')
+  },
+  {
+    path: '/imprint',
+    name: 'Imprint',
+    component: () => import('../views/ImprintView.vue')
+  }
 ]
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),

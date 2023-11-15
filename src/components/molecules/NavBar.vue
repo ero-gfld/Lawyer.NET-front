@@ -52,6 +52,15 @@ export default {
   >
     <router-link to="/" class="text-lg">Lawyer.NET</router-link>
     <div class="grid place-content-center gap-3 text-sm grid-flow-col">
+
+      <!-- temporary link for imprint in NavBar (for 1st Milestone) -->
+      <router-link 
+        to="/imprint"
+        class="flex px-2 py-1 rounded-md items-center"
+      >
+        <span>Imprint</span>
+      </router-link>
+
       <router-link
         to="/help"
         class="flex px-4 py-1 font-bold text-primary bg-white rounded-md items-center"
