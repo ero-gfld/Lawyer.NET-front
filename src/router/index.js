@@ -6,7 +6,7 @@ const routes = [
     name: 'Profiles',
     component: () => import('../views/ProfilesView.vue')
   },
-  }
+  {
     path: '/login',
     name: 'Login',
     component: () => import('../views/LoginView.vue')
