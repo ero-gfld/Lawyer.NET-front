@@ -5,5 +5,6 @@
   "navbar.logout": "Déconnexion",
   "navbar.settings": "Réglages",
   "profile.result.fees": "par heure",
-  "profile.result.check-profile": "Regarder le profil"
+  "profile.result.check-profile": "Regarder le profil",
+  "profile.result.count": "Il y a {count} résultats pour votre recherche"
 }

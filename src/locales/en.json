@@ -5,5 +5,6 @@
   "navbar.logout": "Logout",
   "navbar.settings": "Settings",
   "profile.result.fees": "per hour",
-  "profile.result.check-profile": "Check profile"
+  "profile.result.check-profile": "Check profile",
+  "profile.result.count": "There is {count} results for your search"
 }
