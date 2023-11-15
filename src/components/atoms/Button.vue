@@ -22,10 +22,9 @@ export default {
   },
   methods: {
     getClass(type) {
-      console.log("hello", type);
       switch (type) {
         case ButtonTypes.PRIMARY:
-          return "bg-primary text-white px-3 py-1 rounded-lg text-sm";
+          return "bg-primary text-white px-3 py-1 rounded-lg text-sm hover:bg-primary-light active:bg-primary-lighter";
         case ButtonTypes.SECONDARY:
           return "border text-stone-700 font-semibold px-3 py-1 rounded-lg text-sm";
       }
