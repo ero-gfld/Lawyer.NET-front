@@ -29,16 +29,12 @@ export default {
       ],
       accountOptions: [
         {
-          label: this.$t("navbar.profile"),
-          link: "/profile",
+          label: this.$t("register"),
+          link: "/register",
         },
         {
-          label: this.$t("navbar.settings"),
-          link: "/settings",
-        },
-        {
-          label: this.$t("navbar.logout"),
-          link: "/logout",
+          label: this.$t("login"),
+          link: "/login",
         },
       ],
     };
