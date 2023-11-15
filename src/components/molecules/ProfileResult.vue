@@ -23,7 +23,7 @@ export default {
   },
   methods: {
     getFullDay(date) {
-      return format(parse(date, "yyyy-MM-dd", new Date()), "wo MMMM");
+      return format(parse(date, "yyyy-MM-dd", new Date()), "do MMMM");
     },
     getDayOfWeek(date) {
       return format(parse(date, "yyyy-MM-dd", new Date()), "EEEE");
@@ -42,27 +42,28 @@ export default {
           alt="profile image"
         />
       </div>
-      <div class="flex flex-col">
-        <Label class="text-primary font-bold text-lg">{{
-          `${profile.firstName} ${profile.lastName}`
-        }}</Label>
-        <Label class="text-md text-stone-700 font-medium">{{
-          profile.specialization
-        }}</Label>
-        <Label class="text-sm text-stone-500"
-          >${{ profile.hourlyRate }} per hour</Label
-        >
-        <Button class="mt-auto">Check profile</Button>
-        <Label class="text-sm text-stone-500">{{ profile.address }}</Label>
-        <Label class="text-sm text-stone-500"
-          >{{ profile.postalCode }} {{ profile.city }}</Label
-        >
+      <div class="flex flex-col justify-between">
+        <div class="flex flex-col">
+          <Label class="text-primary font-bold text-lg -mb-1">{{
+            `${profile.firstName} ${profile.lastName}`
+          }}</Label>
+          <Label class="text-md text-stone-700 font-medium">{{
+            profile.specialization
+          }}</Label>
+          <Label class="text-sm text-stone-500"
+            >${{ `${profile.hourlyRate} ${$t("profile.result.fees")}` }}</Label
+          >
+        </div>
+        <div class="flex flex-col">
+          <Button>{{ $t("profile.result.check-profile") }}</Button>
+        </div>
+        <div class="flex flex-col">
+          <Label class="text-sm text-stone-500">{{ profile.address }}</Label>
+          <Label class="text-sm text-stone-500"
+            >{{ profile.postalCode }} {{ profile.city }}</Label
+          >
+        </div>
       </div>
-    </div>
-    <div class="mt-5">
-      <Button class="w-full" :buttonType="ButtonTypes.SECONDARY"
-        >Show appointment availability</Button
-      >
     </div>
     <div
       class="mt-5 flex flex-row justify-between border rounded-lg px-10 py-3"

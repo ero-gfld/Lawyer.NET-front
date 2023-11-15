@@ -1,7 +1,9 @@
 {
-    "navbar.help": "Besoin d'aide?",
-    "navbar.account": "Mon compte",
-    "navbar.profile": "Profil",
-    "navbar.logout": "Déconnexion",
-    "navbar.settings": "Réglages"
+  "navbar.help": "Besoin d'aide?",
+  "navbar.account": "Mon compte",
+  "navbar.profile": "Profil",
+  "navbar.logout": "Déconnexion",
+  "navbar.settings": "Réglages",
+  "profile.result.fees": "par heure",
+  "profile.result.check-profile": "Regarder le profil"
 }
