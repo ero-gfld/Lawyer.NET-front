@@ -14,6 +14,7 @@ import {
   CoIt,
   HiSolidSearch,
 } from "oh-vue-icons/icons";
+import {createPinia } from 'pinia';
 
 addIcons(
   FaGlobe,
@@ -39,6 +40,7 @@ const i18n = createI18n({
 
 createApp(App)
   .component("v-icon", OhVueIcon)
+  .use(createPinia())
   .use(router)
   .use(i18n)
   .mount("#app");

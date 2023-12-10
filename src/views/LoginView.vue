@@ -4,8 +4,8 @@
       <h2 class="mb-6 text-2xl font-bold text-center text-gray-700">Sign In</h2>
       <form @submit.prevent="onSignIn" class="px-8 pt-6 pb-8 mb-4 bg-white rounded shadow-md">
         <div class="mb-4">
-          <label class="block mb-2 text-sm font-bold text-gray-700" for="email">Email:</label>
-          <input class="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline" type="email" id="email" v-model="email" placeholder="Enter email" required>
+          <label class="block mb-2 text-sm font-bold text-gray-700" for="username">Username:</label>
+          <input class="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline" type="text" id="username" v-model="username" placeholder="Enter username" required>
         </div>
         <div class="mb-6">
           <label class="block mb-2 text-sm font-bold text-gray-700" for="password">Password:</label>
@@ -62,16 +62,26 @@
 
   
   <script>
+  import { useLoginStore } from '@/stores/login'
   export default {
     data() {
       return {
         showModal: false,
-        email: '',
+        username: '',
         password: ''
       };
     },
+    /*setup (){
+      const loginStore = useLoginStore()
+      return { loginStore }
+    },*/
     methods: {
-      onSignIn() {
+      onSignIn(){
+        const loginStore = useLoginStore()
+        return loginStore.login(this.username, this.password)
+
+      }
+      /*onSignIn() {
         if(this.email == "admin@admin.com" && this.password == "admin"){
           alert("Login successful");
           console.log("Signed in with", this.email, this.password);
@@ -83,7 +93,7 @@
       },
       closeModal() {
       this.showModal = false;
-    },
+      },*/
     }
   };
   </script>
