@@ -1,6 +1,7 @@
 <script>
 import { OhVueIcon } from "oh-vue-icons";
 import NavLink from "../atoms/NavLink.vue";
+import { useLoginStore } from '@/stores/login'
 export default {
   name: "NavBar",
   data() {
@@ -26,18 +27,36 @@ export default {
           link: "/it",
           scale: 1.3,
         },
-      ],
-      accountOptions: [
-        {
-          label: this.$t("register"),
-          link: "/register",
-        },
-        {
-          label: this.$t("login"),
-          link: "/login",
-        },
-      ],
+      ]
     };
+  },
+  setup() {
+    const loginStore = useLoginStore()
+    return { loginStore }
+  },
+  methods: {
+    getDropdownItems(){
+      if (!this.loginStore.isLogin){
+          return [
+            {
+              label: this.$t("register"),
+              link: "/register"
+            },
+            {
+              label: this.$t("login"),
+              link: "/login"
+            }
+          ]
+      }else{
+          return [
+            {
+              label: this.$t("My profile"),
+              link: "/userprofile"
+            }
+          ]
+      }
+    }
+
   },
   components: {
     "v-icon": OhVueIcon,
@@ -52,6 +71,8 @@ export default {
   >
     <router-link to="/" class="text-lg">Lawyer.NET</router-link>
     <div class="grid place-content-center gap-3 text-sm grid-flow-col">
+
+      <a v-if="loginStore.isLogin" @click="loginStore.logout()" class="flex px-2 py-1 rounded-md items-center">Logout</a>
 
       <!-- temporary link for imprint in NavBar (for 1st Milestone) -->
       <router-link 
@@ -68,9 +89,10 @@ export default {
         <v-icon name="fa-question-circle" scale="0.75" class="mr-1" />
         <span>{{ $t("navbar.help") }}</span>
       </router-link>
-      <NavLink :dropdown-items="accountOptions">
+      <NavLink :dropdown-items="getDropdownItems()">
         <v-icon name="fa-regular-user" scale="0.75" class="mr-1" />
-        <span>{{ $t("navbar.account") }}</span>
+        <span v-if="loginStore.isLogin">{{ loginStore.userInfo }}</span>
+        <span v-else>{{ $t("navbar.account") }}</span>
       </NavLink>
       <NavLink :dropdown-items="languages">
         <v-icon name="fa-globe" scale="1" />
