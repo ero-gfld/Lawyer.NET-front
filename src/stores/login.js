@@ -43,7 +43,7 @@ export const useLoginStore = defineStore('loginStore', {
             }
           }
           if(token !== null) {
-            axios.get('http://localhost:8082' + '/api/users/' + userId, config)
+            axios.get('http://localhost:8083' + '/api/users/' + userId, config)
             .then(res => {
               console.log(res)
               this.userInfo = res.data.username
