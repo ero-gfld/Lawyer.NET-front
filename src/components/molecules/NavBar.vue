@@ -52,6 +52,10 @@ export default {
             {
               label: this.$t("My profile"),
               link: "/userprofile"
+            },
+            {
+              label: this.$t("edit profile"),
+              link: "/edit-profile"
             }
           ]
       }

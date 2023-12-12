@@ -14,7 +14,7 @@ export const useLoginStore = defineStore('loginStore', {
     actions:{
         login (username, password) {
             console.log(username)
-            axios.post('http://localhost:8082' + '/auth/login', {username, password})
+            axios.post('http://localhost:8083' + '/auth/login', {username, password})
             .then(res => {
                 console.log(res)
                 let token = res.data.token
@@ -39,7 +39,7 @@ export const useLoginStore = defineStore('loginStore', {
             }
           }
           if(token !== null) {
-            axios.get('http://localhost:8082' + '/api/users/' + userId, config)
+            axios.get('http://localhost:8083' + '/api/users/' + userId, config)
             .then(res => {
               console.log(res)
               this.userInfo = res.data.username
