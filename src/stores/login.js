@@ -14,7 +14,7 @@ export const useLoginStore = defineStore('loginStore', {
     actions:{
         login (username, password) {
             console.log(username)
-            return axios.post('http://localhost:8082' + '/auth/login', {username, password})
+            return axios.post('http://localhost:8083' + '/auth/login', {username, password})
             .then(res => {
                 console.log(res)
                 let token = res.data.token
