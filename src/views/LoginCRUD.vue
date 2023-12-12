@@ -26,7 +26,8 @@
         <input class="shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" v-model="userFormData.lastName" placeholder="Last Name" />
         <input class="shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" v-model="userFormData.email" type="email" placeholder="Email" />
         <input class="shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" v-model="userFormData.role" placeholder="Role" />
-        <input class="shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" v-model="userFormData.password" placeholder="Password" />
+        <input class="shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" v-model="userFormData.password" placeholder="New Password" />
+        <input class="shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" v-model="userFormData.passwordConfirmation" placeholder="Confirm Password" />
         <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">{{ isEditMode ? 'Update' : 'Create' }}</button>
       </form>
     </div>
@@ -49,6 +50,7 @@ export default {
       lastName: '',
       email: '',
       password: '',
+      passwordConfirmation: '',
       role: ''
     });
 
@@ -58,22 +60,32 @@ export default {
     }
 
     function editUser(user) {
-      isEditMode.value = true;
-      userFormData.value = { ...user };
-    }
+  isEditMode.value = true;
+  userFormData.value = { ...user };
+  userFormData.value.password = '';
+  userFormData.value.passwordConfirmation = '';
+}
 
-    function createNewUser() {
-      const newUser = {
-        ...userFormData.value,
-        appointments: userFormData.value.appointments || []
-      };
 
-      userStore.createUser(newUser);
-      resetForm();
-    }
+function createNewUser() {
+  if (userFormData.value.password !== userFormData.value.passwordConfirmation) {
+    alert("Passwords do not match.");
+    return;
+  }
+
+  const { passwordConfirmation, ...newUser } = userFormData.value;
+
+  newUser.appointments = userFormData.value.appointments || [];
+
+  userStore.createUser(newUser);
+  resetForm();
+}
+
 
 
     function updateExistingUser() {
+      if (userFormData.value.password !== userFormData.value.passwordConfirmation) {
+      alert("Passwords do not match.");}
       userStore.updateUser(userFormData.value.id, userFormData.value);
       resetForm();
       isEditMode.value = false;
@@ -104,6 +116,7 @@ export default {
         lastName: '',
         email: '',
         password: '',
+        passwordConfirmation: '',
         role: ''
       };
     }
