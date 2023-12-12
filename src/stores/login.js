@@ -7,14 +7,14 @@ export const useLoginStore = defineStore('loginStore', {
       return {
         userInfo: null,
         userRole: null,
-        isLogin: false,
-        returnUrl: null
+        isLogin: false
+        // isLogin: !!localStorage.getItem("access_token")
       }
     },
     actions:{
         login (username, password) {
             console.log(username)
-            axios.post('http://localhost:8082' + '/auth/login', {username, password})
+            return axios.post('http://localhost:8082' + '/auth/login', {username, password})
             .then(res => {
                 console.log(res)
                 let token = res.data.token
@@ -23,6 +23,10 @@ export const useLoginStore = defineStore('loginStore', {
                 localStorage.setItem("access_id", userId)
                 this.getUserInfo()
                 router.push({ name: 'Homepage' })
+            })
+            .catch(err =>{
+              console.log(err)
+              this.isLogin = false
             })
         },
         logout() {
@@ -45,7 +49,7 @@ export const useLoginStore = defineStore('loginStore', {
               this.userInfo = res.data.username
               this.userRole = res.data.role
               this.isLogin = true
-              router.push(this.returnUrl || '/')
+              router.push({ name: 'Homepage' })
             })
           }
         },

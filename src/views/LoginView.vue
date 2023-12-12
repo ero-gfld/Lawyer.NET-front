@@ -5,14 +5,28 @@
       <form @submit.prevent="onSignIn" class="px-8 pt-6 pb-8 mb-4 bg-white rounded shadow-md">
         <div class="mb-4">
           <label class="block mb-2 text-sm font-bold text-gray-700" for="username">Username:</label>
-          <input class="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline" type="text" id="username" v-model="username" placeholder="Enter username" required>
+          <input class="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+            type="text"
+            id="username"
+            v-model="formData.username"
+            placeholder="Enter username"
+            @blur="validate('username')">
+            <p class="errors text-xs text-red-500" v-if="!!errors.username">{{errors.username}}</p>
         </div>
         <div class="mb-6">
           <label class="block mb-2 text-sm font-bold text-gray-700" for="password">Password:</label>
-          <input class="w-full px-3 py-2 mb-3 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline" type="password" id="password" v-model="password" placeholder="Enter password" required>
+          <input class="w-full px-3 py-2 mb-3 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+            type="password"
+            id="password"
+            v-model="formData.password"
+            placeholder="Enter password"
+            @blur="validate('password')">
+            <p class="errors text-xs text-red-500" v-if="!!errors.password">{{errors.password}}</p>
         </div>
         <div class="flex items-center justify-between">
-          <button class="px-4 py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700 focus:outline-none focus:shadow-outline" type="submit">Sign In</button>
+          <button class="px-4 py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700 focus:outline-none focus:shadow-outline"
+            type="submit">Sign In
+          </button>
         </div>
       </form>
     </div>
@@ -63,37 +77,64 @@
   
   <script>
   import { useLoginStore } from '@/stores/login'
+  import * as Yup from 'yup';
+
+  const schema = Yup.object().shape({
+    username: Yup.string().required('Username is required'),
+    password: Yup.string().required('Password is required')
+  });
+
+  const loginStore = useLoginStore()
+
   export default {
     data() {
       return {
         showModal: false,
-        username: '',
-        password: ''
+        formData: {
+          username: "",
+          password: ""
+        },
+        errors: {
+          username: "",
+          password: ""
+        }
       };
     },
-    /*setup (){
-      const loginStore = useLoginStore()
-      return { loginStore }
-    },*/
     methods: {
+
       onSignIn(){
-        const loginStore = useLoginStore()
-        return loginStore.login(this.username, this.password)
-
-      }
-      /*onSignIn() {
-        if(this.email == "admin@admin.com" && this.password == "admin"){
-          alert("Login successful");
-          console.log("Signed in with", this.email, this.password);
-          return;
-        }
-
-        this.showModal = true;
+        schema.validate(this.formData, {abortEarly: false})
+          .then(() => {
         
+            loginStore.login(this.formData.username, this.formData.password)
+              .then(() => {
+                  if (loginStore.isLogin) {return}
+                  this.showModal = true;
+              })
+              .catch((error) => {
+                  console.error(error);
+                  this.showModal = true;
+              })
+          })
+          .catch((err) => {
+            err.inner.forEach((error) => {
+              this.errors = { ...this.errors, [error.path]: error.message };
+              console.log(error.message)
+            });
+          });
       },
+
+      validate(field) {
+        schema.validateAt(field, this.formData)
+          .then(() => (this.errors[field] = ""))
+          .catch((err) => {
+            this.errors[err.path] = err.message;
+          });
+      },
+
       closeModal() {
-      this.showModal = false;
-      },*/
+        this.showModal = false;
+      }
     }
   };
   </script>

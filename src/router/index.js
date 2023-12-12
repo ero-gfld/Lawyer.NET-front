@@ -44,9 +44,6 @@ router.beforeEach(async (to) => {
   const authRequired = !publicPages.includes(to.path)
   
   if( authRequired && !loginStore.isLogin ) {
-    console.log(loginStore.isLogin)
-    loginStore.returnUrl = to.fullPath
-    console.log(loginStore.returnUrl, 'index.js url');
     return '/login'
   }
 })

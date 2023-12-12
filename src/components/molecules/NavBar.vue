@@ -39,18 +39,18 @@ export default {
       if (!this.loginStore.isLogin){
           return [
             {
-              label: this.$t("register"),
+              label: this.$t("Register"),
               link: "/register"
             },
             {
-              label: this.$t("login"),
+              label: this.$t("Login"),
               link: "/login"
             }
           ]
       }else{
           return [
             {
-              label: this.$t("My profile"),
+              label: this.$t("My Profile"),
               link: "/userprofile"
             }
           ]
@@ -72,7 +72,7 @@ export default {
     <router-link to="/" class="text-lg">Lawyer.NET</router-link>
     <div class="grid place-content-center gap-3 text-sm grid-flow-col">
 
-      <a v-if="loginStore.isLogin" @click="loginStore.logout()" class="flex px-2 py-1 rounded-md items-center">Logout</a>
+      <a v-if="loginStore.isLogin" @click="loginStore.logout()" class="flex px-2 py-1 rounded-md items-center cursor-pointer">Logout</a>
 
       <!-- temporary link for imprint in NavBar (for 1st Milestone) -->
       <router-link 
