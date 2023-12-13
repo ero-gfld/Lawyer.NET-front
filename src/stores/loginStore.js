@@ -49,7 +49,6 @@ export const useLoginStore = defineStore("loginStore", {
             this.userInfo = res.data.username;
             this.userRole = res.data.role;
             this.isLogin = true;
-            router.push(this.returnUrl || "/");
           });
       }
     },
