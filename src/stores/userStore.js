@@ -39,6 +39,23 @@ export const useUserStore = defineStore("userStore", {
         });
     },
 
+    async registerUser(userData) {
+      await axios
+        .post(`${apiConfig.URL}/api/users/new`, userData)
+        .catch((error) => {
+          console.error("Error creating user:", error);
+          return {
+            status: error.response.status,
+            message: error.response.data.message,
+          };
+        });
+
+      return {
+        status: 200,
+        message: "User created successfully.",
+      };
+    },
+
     updateUser(userId, updatedData) {
       axios
         .put(
