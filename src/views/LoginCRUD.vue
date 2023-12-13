@@ -74,6 +74,7 @@ function createNewUser() {
   }
 
   const { passwordConfirmation, ...newUser } = userFormData.value;
+  console.log(passwordConfirmation)
 
   newUser.appointments = userFormData.value.appointments || [];
 

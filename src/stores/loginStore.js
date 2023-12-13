@@ -9,14 +9,13 @@ export const useLoginStore = defineStore("loginStore", {
     return {
       userInfo: null,
       userRole: null,
-      isLogin: false,
-      returnUrl: null,
+      isLogin: false
     };
   },
   actions: {
     login(username, password) {
       console.log(username);
-      axios
+      return axios
         .post(`${apiConfig.URL}/auth/login`, { username, password })
         .then((res) => {
           console.log(res);
