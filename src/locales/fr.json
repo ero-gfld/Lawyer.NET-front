@@ -1,9 +1,12 @@
 {
   "navbar.help": "Besoin d'aide?",
   "navbar.account": "Mon compte",
-  "navbar.profile": "Profil",
+  "navbar.profile": "Mon profil",
   "navbar.logout": "Déconnexion",
   "navbar.settings": "Réglages",
+  "navbar.register": "S'inscrire",
+  "navbar.login": "Se connecter",
+  "navbar.admin-users": "Gérer les utilisateurs",
   "profile.result.fees": "par heure",
   "profile.result.check-profile": "Regarder le profil",
   "profile.result.count": "Il y a {count} résultats pour votre recherche"
