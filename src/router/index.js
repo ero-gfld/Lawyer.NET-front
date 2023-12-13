@@ -21,6 +21,12 @@ const routes = [
     path: "/admin/users",
     name: "AdminUsers",
     component: () => import("../views/LoginCRUD.vue"),
+    beforeEnter: () => {
+      const loginStore = useLoginStore();
+      if (!loginStore.isAdmin()) {
+        return "/not-found";
+      }
+    },
   },
   {
     path: "/",
@@ -38,11 +44,20 @@ const routes = [
     component: () => import("../views/ImprintView.vue"),
   },
   {
+    path: "/:pathMatch(.*)*",
+    name: "Any",
+    component: () => import("../views/NotFoundView.vue"),
+    beforeEnter: () => {
+      return "/not-found";
+    },
+  },
+  {
     path: "/not-found",
     name: "NotFound",
     component: () => import("../views/NotFoundView.vue"),
   },
 ];
+
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes,
@@ -54,22 +69,11 @@ const router = createRouter({
 router.beforeEach((to) => {
   const loginStore = useLoginStore();
 
-  const adminPages = ["/admin/users"];
-  const adminRequired = adminPages.includes(to.path);
-
   const loggedInPages = ["/profile"];
   const loginRequired = loggedInPages.includes(to.path);
 
   if (loginRequired && !loginStore.isLogged()) {
     return "/login";
-  }
-
-  if (adminRequired && !loginStore.isAdmin()) {
-    return "/not-found";
-  }
-
-  if (!routes.some((route) => route.path === to.path)) {
-    return "/not-found";
   }
 });
 

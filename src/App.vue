@@ -1,10 +1,12 @@
 <script>
 import NavBar from "@/components/molecules/NavBar.vue";
 import { useLoginStore } from "@/stores/loginStore";
+import ErrorModal from "@/components/templates/ErrorModal.vue";
 export default {
   name: "App",
   components: {
     NavBar,
+    ErrorModal,
   },
   methods: {
     tryLogin() {
@@ -22,5 +24,6 @@ export default {
 
 <template>
   <NavBar />
+  <ErrorModal />
   <router-view />
 </template>
