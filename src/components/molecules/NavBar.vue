@@ -8,6 +8,7 @@ export default {
   data() {
     return {
       languages: languages,
+      dropdownItems: this.getDropdownItems(),
     };
   },
   setup() {
@@ -15,32 +16,56 @@ export default {
     return { loginStore };
   },
   methods: {
-    getDropdownItems() {
-      if (!this.loginStore.isLogin) {
-        return [
-          {
-            label: this.$t("navbar.register"),
-            link: "/register",
-          },
-          {
-            label: this.$t("navbar.login"),
-            link: "/login",
-          },
-        ];
-      }
-      return [
-        {
-          label: this.$t("navbar.profile"),
-          link: "/profile",
-        },
-        {
-          label: this.$t("navbar.logout"),
-          action: () => {
-            this.loginStore.logout();
-          },
-        },
-      ];
+    updateDropdownItems() {
+      this.dropdownItems = this.getDropdownItems();
     },
+    getDropdownItems() {
+      const dropdownItems = !this.loginStore.isLogin
+        ? [
+            {
+              label: this.$t("navbar.register"),
+              link: "/register",
+            },
+            {
+              label: this.$t("navbar.login"),
+              link: "/login",
+            },
+          ]
+        : [
+            {
+              label: this.$t("navbar.profile"),
+              link: "/profile",
+            },
+            {
+              label: this.$t("navbar.logout"),
+              action: () => {
+                this.loginStore.logout();
+              },
+            },
+          ];
+
+      if (this.loginStore.isAdmin() && this.loginStore.isLogin) {
+        return dropdownItems.concat([
+          {
+            separator: true,
+          },
+          {
+            label: this.$t("navbar.admin-users"),
+            link: "/admin/users",
+          },
+        ]);
+      }
+
+      return dropdownItems;
+    },
+  },
+  mounted() {
+    this.$watch(
+      () => this.loginStore.isLogin,
+      () => {
+        this.updateDropdownItems();
+      }
+    );
   },
   components: {
     "v-icon": OhVueIcon,
@@ -62,7 +87,10 @@ export default {
         <v-icon name="fa-question-circle" scale="0.75" class="mr-1" />
         <span>{{ $t("navbar.help") }}</span>
       </router-link>
-      <NavLink :dropdown-items="getDropdownItems()">
+      <NavLink
+        :dropdown-items="this.dropdownItems"
+        dropdown-class="min-w-[7rem]"
+      >
         <v-icon name="fa-regular-user" scale="0.75" class="mr-1" />
         <span>{{
           loginStore.isLogin ? loginStore.userInfo : $t("navbar.account")

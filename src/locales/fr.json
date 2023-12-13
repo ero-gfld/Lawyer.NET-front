@@ -6,6 +6,7 @@
   "navbar.settings": "Réglages",
   "navbar.register": "S'inscrire",
   "navbar.login": "Se connecter",
+  "navbar.admin-users": "Gérer les utilisateurs",
   "profile.result.fees": "par heure",
   "profile.result.check-profile": "Regarder le profil",
   "profile.result.count": "Il y a {count} résultats pour votre recherche"
