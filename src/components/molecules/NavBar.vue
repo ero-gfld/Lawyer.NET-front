@@ -64,8 +64,9 @@ export default {
       </router-link>
       <NavLink :dropdown-items="getDropdownItems()">
         <v-icon name="fa-regular-user" scale="0.75" class="mr-1" />
-        <span v-if="loginStore.isLogin">{{ loginStore.userInfo }}</span>
-        <span v-else>{{ $t("navbar.account") }}</span>
+        <span>{{
+          loginStore.isLogin ? loginStore.userInfo : $t("navbar.account")
+        }}</span>
       </NavLink>
       <NavLink :dropdown-items="languages">
         <v-icon name="fa-globe" scale="1" />
