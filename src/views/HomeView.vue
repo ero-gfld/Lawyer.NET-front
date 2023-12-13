@@ -1,6 +1,7 @@
 <script>
 import Input from "../components/atoms/Input.vue";
 import Button from "../components/atoms/Button.vue";
+import { OhVueIcon } from "oh-vue-icons";
 
 export default {
   name: "HomeView",
@@ -15,6 +16,7 @@ export default {
   components: {
     Input,
     Button,
+    "v-icon": OhVueIcon,
   },
 };
 </script>
@@ -84,7 +86,7 @@ export default {
                   <div
                     class="text-white p-3 text-center inline-flex items-center justify-center w-12 h-12 mb-5 shadow-lg rounded-full bg-primary"
                   >
-                    <i class="fas fa-award"></i>
+                    <v-icon name="fa-award" scale="1.25" />
                   </div>
                   <h6 class="text-xl font-semibold">
                     Innovative Legal Solutions
@@ -105,7 +107,7 @@ export default {
                   <div
                     class="text-white p-3 text-center inline-flex items-center justify-center w-12 h-12 mb-5 shadow-lg rounded-full bg-primary"
                   >
-                    <i class="fas fa-retweet"></i>
+                    <v-icon name="md-connectwithoutcontact" scale="1.25" />
                   </div>
                   <h6 class="text-xl font-semibold">
                     Connect with Top Lawyers
@@ -126,7 +128,7 @@ export default {
                   <div
                     class="text-white p-3 text-center inline-flex items-center justify-center w-12 h-12 mb-5 shadow-lg rounded-full bg-primary"
                   >
-                    <i class="fas fa-fingerprint"></i>
+                    <v-icon name="fa-fingerprint" scale="1.25" />
                   </div>
                   <h6 class="text-xl font-semibold">Tailored Legal Support</h6>
                   <p class="mt-2 mb-4 text-gray-600">
@@ -143,7 +145,11 @@ export default {
               <div
                 class="text-gray-600 p-3 text-center inline-flex items-center justify-center w-16 h-16 mb-6 shadow-lg rounded-full bg-primary"
               >
-                <i class="fas fa-user-friends text-xl"></i>
+                <v-icon
+                  name="fa-user-friends"
+                  class="text-white"
+                  scale="1.75"
+                />
               </div>
               <h3 class="text-3xl mb-2 font-semibold leading-normal">
                 Start now!
