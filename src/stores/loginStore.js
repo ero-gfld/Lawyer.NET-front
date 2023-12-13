@@ -42,7 +42,7 @@ export const useLoginStore = defineStore("loginStore", {
       };
       if (token !== null) {
         axios
-          .get(`${apiConfig.URL}/api/users/` + userId, config)
+          .get(`${apiConfig.URL}/api/users/${userId}`, config)
           .then((res) => {
             console.log(res);
             this.userInfo = res.data.username;
@@ -51,6 +51,9 @@ export const useLoginStore = defineStore("loginStore", {
             router.push(this.returnUrl || "/");
           });
       }
+    },
+    hasJwtToken() {
+      return localStorage.getItem("access_token") !== null;
     },
   },
 });
