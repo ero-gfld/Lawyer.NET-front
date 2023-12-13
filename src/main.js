@@ -17,7 +17,9 @@ import {
   FaUserFriends,
   FaFingerprint,
   MdConnectwithoutcontact,
-  IoNotificationsSharp,
+  FaInfoCircle,
+  IoCloseSharp,
+  FaCheckCircle,
 } from "oh-vue-icons/icons";
 import { createPinia } from "pinia";
 
@@ -34,7 +36,9 @@ addIcons(
   FaUserFriends,
   FaFingerprint,
   MdConnectwithoutcontact,
-  IoNotificationsSharp
+  FaInfoCircle,
+  IoCloseSharp,
+  FaCheckCircle
 );
 
 const i18n = createI18n({

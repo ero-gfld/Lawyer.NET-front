@@ -7,6 +7,7 @@ const BUTTON_TYPES = Object.freeze({
   INFO: "info",
   LIGHT: "light",
   DARK: "dark",
+  ICON: "icon",
 });
 
 export default BUTTON_TYPES;
