@@ -4,20 +4,7 @@ import NOTIFICATION_TYPES from "@/constants/notification-types";
 
 export const useNotificationStore = defineStore("notificationStore", {
   state: () => ({
-    notifications: [
-      {
-        id: uuidv4(),
-        title: "Welcome to the app",
-        message: "This is a welcome message.",
-        type: NOTIFICATION_TYPES.INFO,
-      },
-      {
-        id: uuidv4(),
-        title: "Login successful",
-        message: "You are now logged in.",
-        type: NOTIFICATION_TYPES.SUCCESS,
-      },
-    ],
+    notifications: [],
   }),
   actions: {
     closeNotification(id) {

@@ -14,7 +14,6 @@ import NotificationModal from "@/components/organisms/NotificationModal.vue";
 export default {
   name: "Notifications",
   data() {
-    console.log(useNotificationStore().notifications, "qsdkl,,ddqsl");
     return {
       notificationStore: useNotificationStore(),
     };
