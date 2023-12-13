@@ -9,7 +9,7 @@ export default {
   methods: {
     tryLogin() {
       const loginStore = useLoginStore();
-      if (loginStore.hasJwtToken) {
+      if (loginStore.hasJwtToken && !loginStore.isLogin) {
         loginStore.getUserInfo();
       }
     },
