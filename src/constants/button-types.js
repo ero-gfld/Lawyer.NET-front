@@ -1,12 +1,12 @@
-const ButtonTypes = Object.freeze({
-    PRIMARY: 'primary',
-    SECONDARY: 'secondary',
-    SUCCESS: 'success',
-    DANGER: 'danger',
-    WARNING: 'warning',
-    INFO: 'info',
-    LIGHT: 'light',
-    DARK: 'dark'
+const BUTTON_TYPES = Object.freeze({
+  PRIMARY: "primary",
+  SECONDARY: "secondary",
+  SUCCESS: "success",
+  DANGER: "danger",
+  WARNING: "warning",
+  INFO: "info",
+  LIGHT: "light",
+  DARK: "dark",
 });
 
-export default ButtonTypes;
+export default BUTTON_TYPES;

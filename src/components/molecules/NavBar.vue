@@ -2,12 +2,12 @@
 import { OhVueIcon } from "oh-vue-icons";
 import NavLink from "../atoms/NavLink.vue";
 import { useLoginStore } from "@/stores/loginStore";
-import { languages } from "@/constants/navbar-languages-dropdown.js";
+import { LANGUAGES_OPTIONS } from "@/constants/navbar-languages-dropdown.js";
 export default {
   name: "NavBar",
   data() {
     return {
-      languages: languages,
+      languages: LANGUAGES_OPTIONS,
       dropdownItems: this.getDropdownItems(),
     };
   },
