@@ -7,6 +7,10 @@ export default {
       type: String,
       required: false,
     },
+    action: {
+      type: Function,
+      required: false,
+    },
     dropdownItems: {
       type: Array,
       required: false,
@@ -55,8 +59,10 @@ export default {
         <div class="grid bg-primary border py-2 border-white rounded-md z-10">
           <router-link
             v-for="(item, index) in dropdownItems"
+            :v-if="item.link != null"
             :key="index"
             :to="item.link ?? ''"
+            @click="item.action"
             class="flex justify-around py-2 transition-all duration-300 ease-in-out hover:font-semibold hover:bg-primary-light"
           >
             <v-icon v-if="item.icon" :name="item.icon" :scale="item.scale" />
