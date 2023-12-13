@@ -13,8 +13,12 @@ import {
   CoDe,
   CoIt,
   HiSolidSearch,
+  FaAward,
+  FaUserFriends,
+  FaFingerprint,
+  MdConnectwithoutcontact,
 } from "oh-vue-icons/icons";
-import {createPinia } from 'pinia';
+import { createPinia } from "pinia";
 
 addIcons(
   FaGlobe,
@@ -24,7 +28,11 @@ addIcons(
   CoGb,
   CoDe,
   CoIt,
-  HiSolidSearch
+  HiSolidSearch,
+  FaAward,
+  FaUserFriends,
+  FaFingerprint,
+  MdConnectwithoutcontact
 );
 
 const i18n = createI18n({

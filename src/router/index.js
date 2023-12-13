@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
-import { useLoginStore } from '@/stores/login'
+import { useLoginStore } from "@/stores/loginStore";
 
 const routes = [
   {
@@ -18,8 +18,8 @@ const routes = [
     component: () => import("../views/RegisterView.vue"),
   },
   {
-    path: "/edit-profile",
-    name: "Edit-Profile",
+    path: "/admin/users",
+    name: "AdminUsers",
     component: () => import("../views/LoginCRUD.vue"),
   },
   {
@@ -37,23 +37,40 @@ const routes = [
     name: "Imprint",
     component: () => import("../views/ImprintView.vue"),
   },
+  {
+    path: "/not-found",
+    name: "NotFound",
+    component: () => import("../views/NotFoundView.vue"),
+  },
 ];
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes,
+  scrollBehavior() {
+    return { top: 0 };
+  },
 });
 
-router.beforeEach(async (to) => {
-  const loginStore = useLoginStore()
-  const publicPages = ['/', '/login', '/register', '/help', '/imprint'];
-  const authRequired = !publicPages.includes(to.path)
-  
-  if( authRequired && !loginStore.isLogin ) {
-    console.log(loginStore.isLogin)
-    loginStore.returnUrl = to.fullPath
-    console.log(loginStore.returnUrl, 'index.js url');
-    return '/login'
+router.beforeEach((to) => {
+  const loginStore = useLoginStore();
+
+  const adminPages = ["/admin/users"];
+  const adminRequired = adminPages.includes(to.path);
+
+  const loggedInPages = ["/profile"];
+  const loginRequired = loggedInPages.includes(to.path);
+
+  if (loginRequired && !loginStore.isLogged()) {
+    return "/login";
   }
-})
+
+  if (adminRequired && !loginStore.isAdmin()) {
+    return "/not-found";
+  }
+
+  if (!routes.some((route) => route.path === to.path)) {
+    return "/not-found";
+  }
+});
 
 export default router;
