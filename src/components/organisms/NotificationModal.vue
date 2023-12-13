@@ -17,7 +17,11 @@
           {{ notification.message }}
         </p>
       </div>
-      <Button :button-type="BUTTON_TYPES.ICON" class="ml-auto">
+      <Button
+        :button-type="BUTTON_TYPES.ICON"
+        @click="closeNotification"
+        class="ml-auto"
+      >
         <v-icon name="io-close-sharp" scale="1" />
       </Button>
     </div>
@@ -28,6 +32,8 @@
 import { OhVueIcon } from "oh-vue-icons";
 import Button from "@/components/atoms/Button.vue";
 import BUTTON_TYPES from "@/constants/button-types.js";
+import { useNotificationStore } from "@/stores/notificationStore";
+
 export default {
   name: "NotificationModal",
   props: {
@@ -46,7 +52,13 @@ export default {
   data() {
     return {
       BUTTON_TYPES,
+      notificationStore: useNotificationStore(),
     };
+  },
+  methods: {
+    closeNotification() {
+      this.notificationStore.closeNotification(this.notification.id);
+    },
   },
 };
 </script>

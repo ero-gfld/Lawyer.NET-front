@@ -10,39 +10,31 @@ export const useNotificationStore = defineStore("notificationStore", {
         title: "Welcome to the app",
         message: "This is a welcome message.",
         type: NOTIFICATION_TYPES.INFO,
-        isShown: true,
       },
       {
         id: uuidv4(),
         title: "Login successful",
         message: "You are now logged in.",
         type: NOTIFICATION_TYPES.SUCCESS,
-        isShown: true,
       },
     ],
   }),
   actions: {
     closeNotification(id) {
-      this.notifications[id].isShown = false;
+      const index = this.notifications.findIndex((n) => n.id === id);
+      if (index !== -1) {
+        this.notifications.splice(index, 1);
+      }
     },
-    generateNotification(
-      title,
-      message,
-      type = NOTIFICATION_TYPES.INFO,
-      isShown = true
-    ) {
+    generateNotification(title, message, type = NOTIFICATION_TYPES.INFO) {
       const id = uuidv4();
       this.notifications.push({
         id: id,
         type: type,
         title: title,
         message: message,
-        isShown: isShown,
       });
       return id;
-    },
-    eraseNotification(id) {
-      this.notifications.splice(id, 1);
     },
   },
 });
