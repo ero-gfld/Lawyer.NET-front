@@ -1,6 +1,6 @@
 <script>
-import Input from "../components/atoms/Input.vue";
-import ButtonItem from "../components/atoms/ButtonItem";
+import InputItem from "@/components/atoms/InputItem";
+import ButtonItem from "@/components/atoms/ButtonItem";
 import { OhVueIcon } from "oh-vue-icons";
 
 export default {
@@ -14,7 +14,7 @@ export default {
     },
   },
   components: {
-    Input,
+    InputItem,
     ButtonItem,
     "v-icon": OhVueIcon,
   },
@@ -43,7 +43,7 @@ export default {
                   Empower your legal decisions with personalized consultations
                 </p>
                 <div class="flex mt-7 w-full gap-x-3">
-                  <Input
+                  <InputItem
                     class="flex-1"
                     v-model="searchTerm"
                     placeholder="Search for a profile..."

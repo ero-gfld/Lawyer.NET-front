@@ -6,11 +6,9 @@ import LawyerResult from "@/models/LawyerResult";
 import ButtonItem from "@/components/atoms/ButtonItem.vue";
 import Label from "@/components/atoms/Label.vue";
 
-type ProfileResultProps = {
+const props = defineProps<{
   profile: LawyerResult;
-};
-
-const props = defineProps<ProfileResultProps>();
+}>();
 
 function getDayOfWeek(date: string) {
   const parsedDate = parse(date, "yyyy-MM-dd", new Date());
