@@ -1,15 +1,15 @@
 <script>
-import { OhVueIcon } from "oh-vue-icons";
+import LanguageOptions from "@/constants/navbar-languages-dropdown";
+import NotificationTypes from "@/constants/notification-types";
 import NavLink from "../atoms/NavLink.vue";
+import { OhVueIcon } from "oh-vue-icons";
 import { useLoginStore } from "@/stores/loginStore";
-import { LANGUAGES_OPTIONS } from "@/constants/navbar-languages-dropdown.js";
 import { useNotificationStore } from "@/stores/notificationStore";
-import NOTIFICATION_TYPES from "@/constants/notification-types.js";
 export default {
   name: "NavBar",
   data() {
     return {
-      languages: LANGUAGES_OPTIONS,
+      languages: LanguageOptions,
       dropdownItems: this.getDropdownItems(),
     };
   },
@@ -44,7 +44,7 @@ export default {
                 useNotificationStore().generateNotification(
                   "Logout successful",
                   "You have successfully logged out.",
-                  NOTIFICATION_TYPES.SUCCESS
+                  NotificationTypes.SUCCESS
                 );
                 this.loginStore.logout();
               },

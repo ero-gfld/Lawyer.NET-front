@@ -5,24 +5,24 @@
 </template>
 
 <script>
-import BUTTON_TYPES from "@/constants/button-types.js";
+import ButtonTypes from "@/constants/button-types";
 export default {
   name: "Button",
   props: {
     handleClick: Function,
     buttonType: {
       type: String,
-      default: BUTTON_TYPES.PRIMARY,
+      default: ButtonTypes.PRIMARY,
     },
   },
   methods: {
     getClass() {
       switch (this.buttonType) {
-        case BUTTON_TYPES.PRIMARY:
+        case ButtonTypes.PRIMARY:
           return "bg-primary text-white px-3 py-1 rounded-lg text-sm hover:bg-primary-light active:bg-primary-lighter";
-        case BUTTON_TYPES.SECONDARY:
+        case ButtonTypes.SECONDARY:
           return "border text-stone-700 font-semibold px-3 py-1 rounded-lg text-sm";
-        case BUTTON_TYPES.ICON:
+        case ButtonTypes.ICON:
           return "text-primary hover:text-primary-light active:text-primary-lighter";
       }
       return "";

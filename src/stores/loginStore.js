@@ -2,14 +2,14 @@ import { defineStore } from "pinia";
 import axios from "axios";
 import router from "@/router";
 import apiConfig from "@/config/api-config.json";
-import userRoles from "@/constants/user-roles.js";
+import UserRoles from "@/constants/user-roles";
 
 export const useLoginStore = defineStore("loginStore", {
   state() {
     return {
       userInfo: null,
       userRole: null,
-      isLogin: false
+      isLogin: false,
     };
   },
   actions: {
@@ -55,7 +55,7 @@ export const useLoginStore = defineStore("loginStore", {
       return localStorage.getItem("access_token") !== null;
     },
     isAdmin() {
-      return this.userRole === userRoles.ADMIN;
+      return this.userRole === UserRoles.ADMIN;
     },
   },
 });

@@ -3,11 +3,11 @@
     <div class="flex flex-row gap-x-4">
       <div>
         <v-icon
-          v-if="notification.type === BUTTON_TYPES.SUCCESS"
+          v-if="notification.type === ButtonTypes.SUCCESS"
           name="fa-check-circle"
         />
         <v-icon
-          v-else-if="notification.type === BUTTON_TYPES.INFO"
+          v-else-if="notification.type === ButtonTypes.INFO"
           name="fa-info-circle"
         />
       </div>
@@ -18,7 +18,7 @@
         </p>
       </div>
       <Button
-        :button-type="BUTTON_TYPES.ICON"
+        :button-type="ButtonTypes.ICON"
         @click="closeNotification"
         class="ml-auto"
       >
@@ -31,7 +31,7 @@
 <script>
 import { OhVueIcon } from "oh-vue-icons";
 import Button from "@/components/atoms/Button.vue";
-import BUTTON_TYPES from "@/constants/button-types.js";
+import ButtonTypes from "@/constants/button-types";
 import { useNotificationStore } from "@/stores/notificationStore";
 
 export default {
@@ -51,7 +51,7 @@ export default {
   },
   data() {
     return {
-      BUTTON_TYPES,
+      ButtonTypes,
       notificationStore: useNotificationStore(),
     };
   },

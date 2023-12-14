@@ -94,8 +94,8 @@
 <script>
 import { useUserStore } from "@/stores/userStore.js";
 import { useNotificationStore } from "@/stores/notificationStore.js";
-import NOTIFICATION_TYPES from "@/constants/notification-types.js";
-import userRoles from "@/constants/user-roles.js";
+import NotificationTypes from "@/constants/notification-types";
+import UserRoles from "@/constants/user-roles";
 export default {
   data() {
     return {
@@ -114,14 +114,14 @@ export default {
         lastName: this.lastName,
         email: this.email,
         password: this.password,
-        role: userRoles.USER,
+        role: UserRoles.USER,
       });
 
       if (response.status === 200) {
         useNotificationStore().generateNotification(
           "Registration successful",
           "You have successfully registered!",
-          NOTIFICATION_TYPES.SUCCESS
+          NotificationTypes.SUCCESS
         );
         this.$router.push({ name: "Homepage" });
       }

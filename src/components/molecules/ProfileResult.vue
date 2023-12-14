@@ -1,8 +1,7 @@
 <script>
 import Button from "@/components/atoms/Button.vue";
 import Label from "@/components/atoms/Label.vue";
-import LawyerResult from "../../models/lawyer-result.js";
-import ButtonTypes from "../../constants/button-types.js";
+import LawyerResult from "@/models/lawyer-result";
 import { parse, format } from "date-fns";
 export default {
   name: "ProfileResult",
@@ -11,11 +10,6 @@ export default {
       type: LawyerResult,
       required: true,
     },
-  },
-  data() {
-    return {
-      ButtonTypes,
-    };
   },
   components: {
     Button,
