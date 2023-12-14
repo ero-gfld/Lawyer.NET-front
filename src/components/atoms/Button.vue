@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import ButtonTypes from "@/constants/button-types";
+import ButtonTypes from "@/constants/ButtonTypes";
 export default {
   name: "Button",
   props: {
@@ -30,3 +30,4 @@ export default {
   },
 };
 </script>
+@/constants/ButtonTypes

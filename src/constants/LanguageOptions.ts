@@ -1,10 +1,10 @@
 export type LanguageOption = {
-  icon: string,
-  link: string,
-  scale: number,
+  icon: string;
+  link: string;
+  scale: number;
 };
 
-export const LANGUAGES_OPTIONS: ReadonlyArray<LanguageOption> = Object.freeze([
+export const LANGUAGE_OPTIONS: ReadonlyArray<LanguageOption> = Object.freeze([
   {
     icon: "co-gb",
     link: "/en",
@@ -27,4 +27,4 @@ export const LANGUAGES_OPTIONS: ReadonlyArray<LanguageOption> = Object.freeze([
   },
 ]);
 
-export default LANGUAGES_OPTIONS;
+export default LANGUAGE_OPTIONS;

@@ -2,7 +2,7 @@ import { defineStore } from "pinia";
 import axios from "axios";
 import router from "@/router";
 import apiConfig from "@/config/api-config.json";
-import UserRoles from "@/constants/user-roles";
+import UserRoles from "@/constants/UserRoles";
 
 export const useLoginStore = defineStore("loginStore", {
   state() {

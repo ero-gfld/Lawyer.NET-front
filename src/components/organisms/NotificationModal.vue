@@ -30,8 +30,8 @@
 
 <script>
 import { OhVueIcon } from "oh-vue-icons";
-import Button from "@/components/atoms/Button.vue";
-import ButtonTypes from "@/constants/button-types";
+import Button from "@/components/atoms/Button";
+import ButtonTypes from "@/constants/ButtonTypes";
 import { useNotificationStore } from "@/stores/notificationStore";
 
 export default {
@@ -62,3 +62,4 @@ export default {
   },
 };
 </script>
+@/constants/ButtonTypes

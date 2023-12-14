@@ -94,8 +94,8 @@
 <script>
 import { useUserStore } from "@/stores/userStore.js";
 import { useNotificationStore } from "@/stores/notificationStore.js";
-import NotificationTypes from "@/constants/notification-types";
-import UserRoles from "@/constants/user-roles";
+import NotificationTypes from "@/constants/NotificationTypes";
+import UserRoles from "@/constants/UserRoles";
 export default {
   data() {
     return {
@@ -129,3 +129,4 @@ export default {
   },
 };
 </script>
+@/constants/NotificationTypes @/constants/UserRoles

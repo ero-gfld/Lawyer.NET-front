@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import { v4 as uuidv4 } from "uuid";
-import NOTIFICATION_TYPES from "@/constants/notification-types";
+import NOTIFICATION_TYPES from "@/constants/NotificationTypes";
 
 export const useNotificationStore = defineStore("notificationStore", {
   state: () => ({

@@ -60,7 +60,7 @@ import { useLoginStore } from "@/stores/loginStore";
 import * as Yup from "yup";
 import { useErrorStore } from "@/stores/errorStore";
 import { useNotificationStore } from "@/stores/notificationStore";
-import NOTIFICATION_TYPES from "@/constants/notification-types";
+import NOTIFICATION_TYPES from "@/constants/NotificationTypes";
 
 const schema = Yup.object().shape({
   username: Yup.string().required("Username is required"),
@@ -121,3 +121,4 @@ export default {
   },
 };
 </script>
+@/constants/NotificationTypes

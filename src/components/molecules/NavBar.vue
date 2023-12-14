@@ -1,6 +1,6 @@
 <script>
-import LanguageOptions from "@/constants/navbar-languages-dropdown";
-import NotificationTypes from "@/constants/notification-types";
+import LanguageOptions from "@/constants/LanguageOptions";
+import NotificationTypes from "@/constants/NotificationTypes";
 import NavLink from "../atoms/NavLink.vue";
 import { OhVueIcon } from "oh-vue-icons";
 import { useLoginStore } from "@/stores/loginStore";
@@ -109,3 +109,4 @@ export default {
     </div>
   </div>
 </template>
+@/constants/NotificationTypes
