@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { MOCK_LAWYERS } from "@/assets/Mockup";
-import ProfileResult from "../components/molecules/ProfileResult.vue";
+import ProfileResult from "@/components/organisms/ProfileResult.vue";
 import { OhVueIcon } from "oh-vue-icons";
 
 const profiles = MOCK_LAWYERS;

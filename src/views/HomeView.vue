@@ -1,6 +1,6 @@
 <script>
 import Input from "../components/atoms/Input.vue";
-import Button from "../components/atoms/Button.vue";
+import ButtonItem from "../components/atoms/ButtonItem";
 import { OhVueIcon } from "oh-vue-icons";
 
 export default {
@@ -15,7 +15,7 @@ export default {
   },
   components: {
     Input,
-    Button,
+    ButtonItem,
     "v-icon": OhVueIcon,
   },
 };
@@ -49,7 +49,7 @@ export default {
                     placeholder="Search for a profile..."
                     @keyup.enter="search"
                   />
-                  <Button @click="search">Search</Button>
+                  <ButtonItem @click="search">Search</ButtonItem>
                 </div>
               </div>
             </div>

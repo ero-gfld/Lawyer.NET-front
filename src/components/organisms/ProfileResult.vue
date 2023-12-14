@@ -3,7 +3,7 @@ import { parse, format } from "date-fns";
 import { defineProps } from "vue";
 import LawyerResult from "@/models/LawyerResult";
 
-import Button from "@/components/atoms/Button.vue";
+import ButtonItem from "@/components/atoms/ButtonItem.vue";
 import Label from "@/components/atoms/Label.vue";
 
 type ProfileResultProps = {
@@ -48,7 +48,7 @@ function getFullDay(date: string) {
           >
         </div>
         <div class="flex flex-col">
-          <Button>{{ $t("profile.result.check-profile") }}</Button>
+          <ButtonItem>{{ $t("profile.result.check-profile") }}</ButtonItem>
         </div>
         <div class="flex flex-col">
           <Label class="text-sm text-stone-500">{{

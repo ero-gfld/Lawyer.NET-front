@@ -1,7 +1,7 @@
 <script>
 import LanguageOptions from "@/constants/LanguageOptions";
 import NotificationTypes from "@/constants/NotificationTypes";
-import NavLink from "../atoms/NavLink.vue";
+import NavItem from "@/components/molecules/NavItem";
 import { OhVueIcon } from "oh-vue-icons";
 import { useLoginStore } from "@/stores/loginStore";
 import { useNotificationStore } from "@/stores/notificationStore";
@@ -76,7 +76,7 @@ export default {
   },
   components: {
     "v-icon": OhVueIcon,
-    NavLink,
+    NavItem,
   },
 };
 </script>
@@ -94,7 +94,7 @@ export default {
         <v-icon name="fa-question-circle" scale="0.75" class="mr-1" />
         <span>{{ $t("navbar.help") }}</span>
       </router-link>
-      <NavLink
+      <NavItem
         :dropdown-items="this.dropdownItems"
         dropdown-class="min-w-[7rem]"
       >
@@ -102,10 +102,10 @@ export default {
         <span>{{
           loginStore.isLogin ? loginStore.userInfo : $t("navbar.account")
         }}</span>
-      </NavLink>
-      <NavLink :dropdown-items="languages">
+      </NavItem>
+      <NavItem :dropdown-items="languages">
         <v-icon name="fa-globe" scale="1" />
-      </NavLink>
+      </NavItem>
     </div>
   </div>
 </template>

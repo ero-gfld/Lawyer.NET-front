@@ -1,5 +1,5 @@
 <script>
-import NavBar from "@/components/molecules/NavBar.vue";
+import NavBar from "@/components/templates/NavBar.vue";
 import { useLoginStore } from "@/stores/loginStore";
 import ErrorModal from "@/components/templates/ErrorModal.vue";
 import Notifications from "@/components/templates/Notifications.vue";
