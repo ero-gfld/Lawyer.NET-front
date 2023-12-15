@@ -6,7 +6,7 @@ import { OhVueIcon } from "oh-vue-icons";
 import { useLoginStore } from "@/stores/loginStore";
 import { useNotificationStore } from "@/stores/notificationStore";
 export default {
-  name: "NavBar",
+  name: "TheNavBar",
   data() {
     return {
       languages: LanguageOptions,
