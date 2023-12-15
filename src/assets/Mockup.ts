@@ -1,6 +1,6 @@
-import LawyerResult from "../models/LawyerResult.js";
+import LawyerResultModel from "@/models/LawyerResultModel";
 
-export const MOCK_LAWYERS: ReadonlyArray<LawyerResult> = [
+export const MOCK_LAWYERS: ReadonlyArray<LawyerResultModel> = [
   {
     id: 1,
     firstName: "John",

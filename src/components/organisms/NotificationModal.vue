@@ -17,20 +17,20 @@
           {{ notification.message }}
         </p>
       </div>
-      <ButtonItem
+      <VButton
         :button-type="ButtonTypes.ICON"
         @click="closeNotification"
         class="ml-auto"
       >
         <v-icon name="io-close-sharp" scale="1" />
-      </ButtonItem>
+      </VButton>
     </div>
   </div>
 </template>
 
 <script>
 import { OhVueIcon } from "oh-vue-icons";
-import ButtonItem from "@/components/atoms/ButtonItem";
+import VButton from "@/components/atoms/VButton";
 import ButtonTypes from "@/constants/ButtonTypes";
 import { useNotificationStore } from "@/stores/notificationStore";
 
@@ -47,7 +47,7 @@ export default {
   },
   components: {
     "v-icon": OhVueIcon,
-    ButtonItem,
+    VButton,
   },
   data() {
     return {

@@ -5,11 +5,12 @@ import { defineProps } from "vue";
 const props = defineProps({
   handleClick: {
     type: Function,
-    required: true,
+    required: false,
   },
   buttonType: {
     type: String,
     default: ButtonTypes.PRIMARY,
+    required: false,
   },
 });
 

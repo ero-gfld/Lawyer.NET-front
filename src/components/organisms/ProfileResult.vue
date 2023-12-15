@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { parse, format } from "date-fns";
 import { defineProps } from "vue";
-import LawyerResult from "@/models/LawyerResult";
+import LawyerResultModel from "@/models/LawyerResultModel";
 
-import ButtonItem from "@/components/atoms/ButtonItem.vue";
-import Label from "@/components/atoms/Label.vue";
+import VButton from "@/components/atoms/VButton.vue";
+import VLabel from "@/components/atoms/VLabel.vue";
 
 const props = defineProps<{
-  profile: LawyerResult;
+  profile: LawyerResultModel;
 }>();
 
 function getDayOfWeek(date: string) {
@@ -33,27 +33,27 @@ function getFullDay(date: string) {
       </div>
       <div class="flex flex-col justify-between">
         <div class="flex flex-col">
-          <Label class="text-primary font-bold text-lg -mb-1">{{
+          <v-label class="text-primary font-bold text-lg -mb-1">{{
             `${props.profile.firstName} ${props.profile.lastName}`
-          }}</Label>
-          <Label class="text-md text-stone-700 font-medium">{{
+          }}</v-label>
+          <v-label class="text-md text-stone-700 font-medium">{{
             props.profile.specialization
-          }}</Label>
-          <Label class="text-sm text-stone-500"
+          }}</v-label>
+          <v-label class="text-sm text-stone-500"
             >${{
               `${props.profile.hourlyRate} ${$t("profile.result.fees")}`
-            }}</Label
+            }}</v-label
           >
         </div>
         <div class="flex flex-col">
-          <ButtonItem>{{ $t("profile.result.check-profile") }}</ButtonItem>
+          <v-button>{{ $t("profile.result.check-profile") }}</v-button>
         </div>
         <div class="flex flex-col">
-          <Label class="text-sm text-stone-500">{{
+          <v-label class="text-sm text-stone-500">{{
             props.profile.address
-          }}</Label>
-          <Label class="text-sm text-stone-500"
-            >{{ props.profile.postalCode }} {{ props.profile.city }}</Label
+          }}</v-label>
+          <v-label class="text-sm text-stone-500"
+            >{{ props.profile.postalCode }} {{ props.profile.city }}</v-label
           >
         </div>
       </div>
@@ -66,10 +66,10 @@ function getFullDay(date: string) {
         :key="schedule.date"
       >
         <div class="flex flex-col place-items-center">
-          <Label class="text-stone-500">{{
+          <v-label class="text-stone-500">{{
             getDayOfWeek(schedule.date)
-          }}</Label>
-          <Label>{{ getFullDay(schedule.date) }}</Label>
+          }}</v-label>
+          <v-label>{{ getFullDay(schedule.date) }}</v-label>
           <div class="flex flex-col mt-4 gap-y-3">
             <div
               v-for="time in schedule.availabilities"
@@ -84,3 +84,4 @@ function getFullDay(date: string) {
     </div>
   </div>
 </template>
+@/models/LawyerResultModel @/models/LawyerResultModel

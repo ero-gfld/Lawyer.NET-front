@@ -1,6 +1,6 @@
-import DaySchedule from "@/models/DaySchedule";
+import DayScheduleModel from "@/models/DayScheduleModel";
 
-export type LawyerResult = {
+export type LawyerResultModel = {
   id: number;
   firstName: string;
   lastName: string;
@@ -9,7 +9,7 @@ export type LawyerResult = {
   address: string;
   postalCode: string;
   city: string;
-  availabilities: DaySchedule[];
+  availabilities: DayScheduleModel[];
 };
 
-export default LawyerResult;
+export default LawyerResultModel;

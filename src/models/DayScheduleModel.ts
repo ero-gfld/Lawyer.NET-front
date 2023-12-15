@@ -1,7 +1,7 @@
-export type DaySchedule = {
+export type DayScheduleModel = {
   lawyerId: string;
   date: string;
   availabilities: string[];
 };
 
-export default DaySchedule;
+export default DayScheduleModel;
