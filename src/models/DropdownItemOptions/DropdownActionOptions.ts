@@ -1,5 +1,7 @@
+import DropdownItemType from "./DropdownItemType";
+
 export type DropdownActionOptions = {
-  type: "action";
+  type: DropdownItemType.Action;
   label?: string;
   icon?: string;
   action: () => void;

@@ -1,5 +1,7 @@
+import DropdownItemType from "./DropdownItemType";
+
 export type DropdownLinkOptions = {
-  type: "link";
+  type: DropdownItemType.Link;
   label?: string;
   icon?: string;
   link: string;

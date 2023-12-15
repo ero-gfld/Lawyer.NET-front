@@ -2,6 +2,7 @@
 import { OhVueIcon } from "oh-vue-icons";
 import { defineProps, ref } from "vue";
 import DropdownItemOptions from "@/models/DropdownItemOptions/DropdownItemOptions";
+import DropdownItemType from "@/models/DropdownItemOptions/DropdownItemType";
 
 const props = defineProps<{
   link?: string;
@@ -47,47 +48,31 @@ function hideDropdown() {
         <div class="h-2" />
         <div class="grid bg-primary border py-2 border-white rounded-md z-10">
           <div v-for="(item, index) in props.dropdownItems" :key="index">
-            <div v-if="item.type === 'link'">
+            <div v-if="item.type === DropdownItemType.Link">
               <router-link
                 :to="item.link"
                 class="flex justify-around py-2 transition-all duration-300 eas e-in-out hover:font-semibold hover:bg-primary-light"
               >
                 <OhVueIcon v-if="item.icon" :name="item.icon" />
-                <span v-if="item.label">{{ item.label }}</span>
+                <span v-if="item.label">{{ $t(item.label) }}</span>
               </router-link>
             </div>
-            <div v-else-if="item.type === 'action'">
+            <div v-else-if="item.type === DropdownItemType.Action">
               <div
                 @click="item.action"
                 class="flex justify-around py-2 transition-all duration-300 eas e-in-out hover:font-semibold hover:bg-primary-light"
               >
                 <OhVueIcon v-if="item.icon" :name="item.icon" />
-                <span v-if="item.label">{{ item.label }}</span>
+                <span v-if="item.label">{{ $t(item.label) }}</span>
               </div>
             </div>
             <div
-              v-else-if="item.type === 'separator'"
+              v-else-if="item.type === DropdownItemType.Separator"
               class="border-gray-300 border-b my-2"
             />
-
-            <!-- <hr class="border-gray-300 my-2" v-if="item.separator === true" /> -->
-            <!-- <router-link
-              :to="item.link ?? ''"
-              @click="item"
-              class="flex justify-around py-2 transition-all duration-300 eas e-in-out hover:font-semibold hover:bg-primary-light"
-              v-else
-            >
-              <OhVueIcon
-                v-if="item.icon"
-                :name="item.icon"
-                :scale="item.scale"
-              />
-              <span v-if="item.label">{{ item.label }}</span>
-            </router-link> -->
           </div>
         </div>
       </div>
     </transition>
   </div>
 </template>
-@/models/DropdownItemModel/DropdownItemModel

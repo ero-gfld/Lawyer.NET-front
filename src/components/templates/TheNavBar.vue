@@ -1,84 +1,38 @@
-<script>
-import LanguageOptions from "@/constants/LanguageOptions";
-import NotificationTypes from "@/constants/NotificationTypes";
-import NavItem from "@/components/molecules/NavItem";
-import { OhVueIcon } from "oh-vue-icons";
+<script setup lang="ts">
+import NavItem from "@/components/molecules/NavItem.vue";
 import { useLoginStore } from "@/stores/loginStore";
-import { useNotificationStore } from "@/stores/notificationStore";
-export default {
-  name: "TheNavBar",
-  data() {
-    return {
-      languages: LanguageOptions,
-      dropdownItems: this.getDropdownItems(),
-    };
-  },
-  setup() {
-    const loginStore = useLoginStore();
-    return { loginStore };
-  },
-  methods: {
-    updateDropdownItems() {
-      this.dropdownItems = this.getDropdownItems();
-    },
-    getDropdownItems() {
-      const dropdownItems = !this.loginStore.isLogin
-        ? [
-            {
-              label: this.$t("navbar.register"),
-              link: "/register",
-            },
-            {
-              label: this.$t("navbar.login"),
-              link: "/login",
-            },
-          ]
-        : [
-            {
-              label: this.$t("navbar.profile"),
-              link: "/profile",
-            },
-            {
-              label: this.$t("navbar.logout"),
-              action: () => {
-                useNotificationStore().generateNotification(
-                  "Logout successful",
-                  "You have successfully logged out.",
-                  NotificationTypes.SUCCESS
-                );
-                this.loginStore.logout();
-              },
-            },
-          ];
+import DropdownItemOptions from "@/models/DropdownItemOptions/DropdownItemOptions";
+import { ref, watch } from "vue";
+import LANGUAGE_OPTIONS, { LanguageOption } from "@/constants/LanguageOptions";
+import {
+  USER_LOGGED_DROPDOWN_ITEMS,
+  USER_NOT_LOGGED_DROPDOWN_ITEMS,
+  ADMIN_DROPDOWN_ITEMS,
+} from "@/constants/UserDropdownItems";
 
-      if (this.loginStore.isAdmin() && this.loginStore.isLogin) {
-        return dropdownItems.concat([
-          {
-            separator: true,
-          },
-          {
-            label: this.$t("navbar.admin-users"),
-            link: "/admin/users",
-          },
-        ]);
-      }
+const loginStore = useLoginStore();
+const dropdownItems = ref(getDropdownItems());
 
-      return dropdownItems;
-    },
-  },
-  mounted() {
-    this.$watch(
-      () => this.loginStore.isLogin,
-      () => {
-        this.updateDropdownItems();
-      }
-    );
-  },
-  components: {
-    "v-icon": OhVueIcon,
-    NavItem,
-  },
-};
+function getDropdownItems() {
+  const dropdownItems: DropdownItemOptions[] = [
+    ...(loginStore.isLogin
+      ? USER_LOGGED_DROPDOWN_ITEMS
+      : USER_NOT_LOGGED_DROPDOWN_ITEMS),
+  ];
+
+  if (loginStore.isAdmin() && loginStore.isLogin) {
+    const adminDropdownItems = dropdownItems.concat(ADMIN_DROPDOWN_ITEMS);
+    return adminDropdownItems;
+  }
+
+  return dropdownItems;
+}
+
+function updateDropdownItems() {
+  dropdownItems.value = getDropdownItems();
+}
+
+watch(() => loginStore.isLogin, updateDropdownItems);
 </script>
 
 <template>
@@ -94,19 +48,15 @@ export default {
         <v-icon name="fa-question-circle" scale="0.75" class="mr-1" />
         <span>{{ $t("navbar.help") }}</span>
       </router-link>
-      <NavItem
-        :dropdown-items="this.dropdownItems"
-        dropdown-class="min-w-[7rem]"
-      >
+      <NavItem :dropdown-items="dropdownItems" dropdown-class="min-w-[7rem]">
         <v-icon name="fa-regular-user" scale="0.75" class="mr-1" />
         <span>{{
           loginStore.isLogin ? loginStore.userInfo : $t("navbar.account")
         }}</span>
       </NavItem>
-      <NavItem :dropdown-items="languages">
+      <NavItem :dropdown-items="LANGUAGE_OPTIONS">
         <v-icon name="fa-globe" scale="1" />
       </NavItem>
     </div>
   </div>
 </template>
-@/constants/NotificationTypes

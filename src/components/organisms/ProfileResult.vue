@@ -84,4 +84,3 @@ function getFullDay(date: string) {
     </div>
   </div>
 </template>
-@/models/LawyerResultModel @/models/LawyerResultModel

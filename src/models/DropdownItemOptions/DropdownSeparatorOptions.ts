@@ -1,5 +1,7 @@
+import DropdownItemType from "./DropdownItemType";
+
 export type DropdownSeparatorOptions = {
-  type: "separator";
+  type: DropdownItemType.Separator;
   verticalSpacing: string;
   showSeparator: boolean;
 };
