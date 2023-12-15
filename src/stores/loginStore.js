@@ -37,17 +37,20 @@ export const useLoginStore = defineStore("loginStore", {
       const userId = localStorage.getItem("access_id");
       const config = {
         headers: {
-          Authorization: "Bearer " + token,
+          Authorization: `Bearer ${token}`,
         },
       };
       if (token !== null) {
         axios
           .get(`${apiConfig.URL}/api/users/${userId}`, config)
           .then((res) => {
-            console.log(res);
             this.userInfo = res.data.username;
             this.userRole = res.data.role;
             this.isLogin = true;
+          })
+          .catch(() => {
+            // TODO: jwt token is probably expired should do something here
+            this.logout();
           });
       }
     },
