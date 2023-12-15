@@ -14,6 +14,10 @@ const props = defineProps<{
 
 const showDropdown = ref(false);
 
+const navItemClass = ref(
+  "flex justify-around rounded-none py-2 w-full transition-all duration-300 eas e-in-out hover:font-semibold hover:bg-primary-light"
+);
+
 function toggleDropdown() {
   showDropdown.value = true;
 }
@@ -27,8 +31,8 @@ function hideDropdown() {
   <div class="relative" @click="toggleDropdown" @mouseleave="hideDropdown">
     <router-link
       :to="props.link ?? ''"
-      class="flex px-4 py-1 font-semibold border rounded-md border-white items-center"
       :class="$attrs.class"
+      class="flex px-3 py-1 font-semibold border rounded-md border-white items-center hover:bg-primary-light"
     >
       <slot></slot>
     </router-link>
@@ -51,10 +55,7 @@ function hideDropdown() {
         <div class="grid bg-primary border py-2 border-white rounded-md z-10">
           <div v-for="(item, index) in props.dropdownItems" :key="index">
             <div v-if="item.type === DropdownItemType.Link">
-              <router-link
-                :to="item.link"
-                class="flex justify-around py-2 transition-all duration-300 eas e-in-out hover:font-semibold hover:bg-primary-light"
-              >
+              <router-link :to="item.link" :class="navItemClass">
                 <OhVueIcon v-if="item.icon" :name="item.icon" />
                 <span v-if="item.label">{{ $t(item.label) }}</span>
               </router-link>
@@ -63,7 +64,7 @@ function hideDropdown() {
               <v-button
                 @click="item.action"
                 :type="ButtonTypes.NONE"
-                class="flex justify-around rounded-none py-2 w-full transition-all duration-300 eas e-in-out hover:font-semibold hover:bg-primary-light"
+                :class="navItemClass"
               >
                 <OhVueIcon v-if="item.icon" :name="item.icon" />
                 <span v-if="item.label">{{ $t(item.label) }}</span>

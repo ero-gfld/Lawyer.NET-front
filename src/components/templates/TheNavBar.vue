@@ -41,10 +41,10 @@ watch(() => loginStore.isLogin, updateDropdownItems);
     class="flex justify-between items-center h-16 px-6 bg-primary text-white"
   >
     <router-link to="/" class="text-lg">Lawyer.NET</router-link>
-    <div class="grid place-content-center gap-3 text-sm grid-flow-col">
+    <div class="grid place-items-center gap-3 text-sm grid-flow-col">
       <router-link
         to="/help"
-        class="flex px-4 py-1 font-bold text-primary bg-white rounded-md items-center"
+        class="flex px-4 py-1 font-bold text-primary bg-white rounded-md items-center hover:text-primary-lighter"
       >
         <v-icon name="fa-question-circle" scale="0.75" class="mr-1" />
         <span>{{ $t("navbar.help") }}</span>
@@ -55,8 +55,12 @@ watch(() => loginStore.isLogin, updateDropdownItems);
           loginStore.isLogin ? loginStore.userInfo : $t("navbar.account")
         }}</span>
       </NavItem>
-      <NavItem :dropdown-items="languageItems">
-        <v-icon name="fa-globe" scale="1" />
+      <NavItem
+        class="border-none px-1 -mx-1"
+        :dropdown-items="languageItems"
+        dropdown-class="min-w-[3rem]"
+      >
+        <v-icon name="fa-globe" scale="1.3" />
       </NavItem>
     </div>
   </div>
