@@ -1,30 +1,27 @@
-export type LanguageOption = {
-  icon: string;
-  link: string;
-  scale: number;
-};
+import DropdownItemOptions from "@/models/DropdownItemOptions/DropdownItemOptions";
+import DropdownItemType from "@/models/DropdownItemOptions/DropdownItemType";
 
-export const LANGUAGE_OPTIONS: ReadonlyArray<LanguageOption> = Object.freeze([
+export const LANGUAGE_OPTIONS: ReadonlyArray<DropdownItemOptions> = [
   {
+    type: DropdownItemType.Link,
     icon: "co-gb",
     link: "/en",
-    scale: 1.3,
   },
   {
+    type: DropdownItemType.Link,
     icon: "co-de",
     link: "/de",
-    scale: 1.3,
   },
   {
+    type: DropdownItemType.Link,
     icon: "co-fr",
     link: "/fr",
-    scale: 1.3,
   },
   {
+    type: DropdownItemType.Link,
     icon: "co-it",
     link: "/it",
-    scale: 1.3,
   },
-]);
+];
 
 export default LANGUAGE_OPTIONS;

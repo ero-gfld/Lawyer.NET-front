@@ -22,12 +22,14 @@ function getClass() {
       return "border text-stone-700 font-semibold px-3 py-1 rounded-lg text-sm";
     case ButtonTypes.ICON:
       return "text-primary hover:text-primary-light active:text-primary-lighter";
+    case ButtonTypes.NONE:
+      return "";
   }
 }
 </script>
 
 <template>
-  <button :class="getClass()" @click="props.handleClick">
+  <button :class="[$attrs.class, getClass()]" @click="props.handleClick">
     <slot></slot>
   </button>
 </template>

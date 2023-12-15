@@ -3,7 +3,7 @@ import NavItem from "@/components/molecules/NavItem.vue";
 import { useLoginStore } from "@/stores/loginStore";
 import DropdownItemOptions from "@/models/DropdownItemOptions/DropdownItemOptions";
 import { ref, watch } from "vue";
-import LANGUAGE_OPTIONS, { LanguageOption } from "@/constants/LanguageOptions";
+import LANGUAGE_OPTIONS from "@/constants/LanguageOptions";
 import {
   USER_LOGGED_DROPDOWN_ITEMS,
   USER_NOT_LOGGED_DROPDOWN_ITEMS,
@@ -12,6 +12,7 @@ import {
 
 const loginStore = useLoginStore();
 const dropdownItems = ref(getDropdownItems());
+const languageItems = ref([...LANGUAGE_OPTIONS]);
 
 function getDropdownItems() {
   const dropdownItems: DropdownItemOptions[] = [
@@ -54,7 +55,7 @@ watch(() => loginStore.isLogin, updateDropdownItems);
           loginStore.isLogin ? loginStore.userInfo : $t("navbar.account")
         }}</span>
       </NavItem>
-      <NavItem :dropdown-items="LANGUAGE_OPTIONS">
+      <NavItem :dropdown-items="languageItems">
         <v-icon name="fa-globe" scale="1" />
       </NavItem>
     </div>

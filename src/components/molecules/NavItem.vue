@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import { OhVueIcon } from "oh-vue-icons";
 import { defineProps, ref } from "vue";
+import VButton from "@/components/atoms/VButton.vue";
 import DropdownItemOptions from "@/models/DropdownItemOptions/DropdownItemOptions";
 import DropdownItemType from "@/models/DropdownItemOptions/DropdownItemType";
+import ButtonTypes from "@/constants/ButtonTypes";
 
 const props = defineProps<{
   link?: string;
@@ -58,13 +60,14 @@ function hideDropdown() {
               </router-link>
             </div>
             <div v-else-if="item.type === DropdownItemType.Action">
-              <div
+              <v-button
                 @click="item.action"
-                class="flex justify-around py-2 transition-all duration-300 eas e-in-out hover:font-semibold hover:bg-primary-light"
+                :type="ButtonTypes.NONE"
+                class="flex justify-around rounded-none py-2 w-full transition-all duration-300 eas e-in-out hover:font-semibold hover:bg-primary-light"
               >
                 <OhVueIcon v-if="item.icon" :name="item.icon" />
                 <span v-if="item.label">{{ $t(item.label) }}</span>
-              </div>
+              </v-button>
             </div>
             <div
               v-else-if="item.type === DropdownItemType.Separator"
