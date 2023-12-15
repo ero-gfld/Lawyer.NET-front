@@ -59,7 +59,7 @@
 import { useLoginStore } from "@/stores/loginStore";
 import * as Yup from "yup";
 import { useErrorStore } from "@/stores/errorStore";
-import { useNotificationStore } from "@/stores/notificationStore";
+import { useNotificationStore } from "@/stores/NotificationStore";
 import NOTIFICATION_TYPES from "@/constants/NotificationTypes";
 
 const schema = Yup.object().shape({
@@ -121,4 +121,4 @@ export default {
   },
 };
 </script>
-@/constants/NotificationTypes
+@/constants/NotificationTypes @/stores/NotificationStore

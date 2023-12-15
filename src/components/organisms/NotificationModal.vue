@@ -2,17 +2,12 @@
 import VButton from "@/components/atoms/VButton.vue";
 import ButtonTypes from "@/constants/ButtonTypes";
 import NotificationTypes from "@/constants/NotificationTypes";
-import { useNotificationStore } from "@/stores/notificationStore";
+import NotificationModel from "@/models/NotificationModel";
+import { useNotificationStore } from "@/stores/NotificationStore";
 import { defineProps } from "vue";
 
 const props = defineProps<{
-  notification: {
-    id: string;
-    title: string;
-    message: string;
-    type: string;
-    isShown: boolean;
-  };
+  notification: NotificationModel;
 }>();
 
 const notificationStore = useNotificationStore();
@@ -51,3 +46,4 @@ function closeNotification() {
     </div>
   </div>
 </template>
+@/stores/NotificationStore

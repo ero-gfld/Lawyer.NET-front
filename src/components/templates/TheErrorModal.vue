@@ -1,3 +1,8 @@
+<script setup lang="ts">
+import { useErrorStore } from "@/stores/errorStore.js";
+const errorStore = useErrorStore();
+</script>
+
 <template>
   <div v-if="errorStore.isShown" class="fixed z-10 inset-0 overflow-y-auto">
     <div class="fixed z-10 inset-0 overflow-y-auto" id="my-modal">
@@ -70,15 +75,3 @@
     </div>
   </div>
 </template>
-
-<script>
-import { useErrorStore } from "@/stores/errorStore.js";
-
-export default {
-  data() {
-    return {
-      errorStore: useErrorStore(),
-    };
-  },
-};
-</script>
