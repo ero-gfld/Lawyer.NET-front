@@ -5,22 +5,22 @@ const routes = [
   {
     path: "/profiles/:search",
     name: "Profiles",
-    component: () => import("../views/ProfilesView.vue"),
+    component: () => import("@/views/ProfilesView.vue"),
   },
   {
     path: "/login",
     name: "Login",
-    component: () => import("../views/LoginView.vue"),
+    component: () => import("@/views/LoginView.vue"),
   },
   {
     path: "/register",
     name: "Register",
-    component: () => import("../views/RegisterView.vue"),
+    component: () => import("@/views/RegisterView.vue"),
   },
   {
     path: "/admin/users",
     name: "AdminUsers",
-    component: () => import("../views/LoginCRUD.vue"),
+    component: () => import("@/views/LoginCRUD.vue"),
     beforeEnter: () => {
       const loginStore = useLoginStore();
       if (!loginStore.isAdmin()) {
@@ -31,22 +31,22 @@ const routes = [
   {
     path: "/",
     name: "Homepage",
-    component: () => import("../views/HomeView.vue"),
+    component: () => import("@/views/HomeView.vue"),
   },
   {
     path: "/help",
     name: "Help",
-    component: () => import("../views/HelpView.vue"),
+    component: () => import("@/views/HelpView.vue"),
   },
   {
     path: "/imprint",
     name: "Imprint",
-    component: () => import("../views/ImprintView.vue"),
+    component: () => import("@/views/ImprintView.vue"),
   },
   {
     path: "/:pathMatch(.*)*",
     name: "Any",
-    component: () => import("../views/NotFoundView.vue"),
+    component: () => import("@/views/NotFoundView.vue"),
     beforeEnter: () => {
       return "/not-found";
     },
@@ -54,7 +54,7 @@ const routes = [
   {
     path: "/not-found",
     name: "NotFound",
-    component: () => import("../views/NotFoundView.vue"),
+    component: () => import("@/views/NotFoundView.vue"),
   },
 ];
 
@@ -72,7 +72,7 @@ router.beforeEach((to) => {
   const loggedInPages = ["/profile"];
   const loginRequired = loggedInPages.includes(to.path);
 
-  if (loginRequired && !loginStore.isLogged()) {
+  if (loginRequired && !loginStore.isLogin) {
     return "/login";
   }
 });
