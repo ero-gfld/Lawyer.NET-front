@@ -1,3 +1,50 @@
+<script setup lang="ts">
+import { useLoginStore } from "@/stores/LoginStore";
+import { Ref, ref } from "vue";
+import * as Yup from "yup";
+
+const schema = Yup.object().shape({
+  username: Yup.string().required("Username is required"),
+  password: Yup.string().required("Password is required"),
+});
+
+const loginStore = useLoginStore();
+
+const formData = ref({
+  username: "",
+  password: "",
+});
+
+const errors: Ref<{ [id: string]: string }> = ref({
+  username: "",
+  password: "",
+});
+
+function onSignIn() {
+  console.log("onSignIn method called");
+  schema
+    .validate(formData.value, { abortEarly: false })
+    .then(() => {
+      loginStore.login(formData.value.password, formData.value.password);
+    })
+    .catch((err: Yup.ValidationError) => {
+      err.inner.forEach((e) => {
+        console.log(e.path, e.message);
+        if (e.path) errors.value[e.path] = e.message;
+      });
+    });
+}
+
+function validate(field: string) {
+  schema
+    .validateAt(field, formData.value)
+    .then(() => (errors.value[field] = ""))
+    .catch((err) => {
+      errors.value[err.path] = err.message;
+    });
+}
+</script>
+
 <template>
   <div class="flex justify-center items-center h-screen bg-gray-100">
     <div class="w-full max-w-xs">
@@ -20,9 +67,9 @@
             placeholder="Enter username"
             @blur="validate('username')"
           />
-          <p class="errors text-xs text-red-500" v-if="!!errors.username">
+          <span class="text-xs text-red-500" v-if="!!errors.username">
             {{ errors.username }}
-          </p>
+          </span>
         </div>
         <div class="mb-6">
           <label
@@ -31,16 +78,16 @@
             >Password:</label
           >
           <input
-            class="w-full px-3 py-2 mb-3 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+            class="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
             type="password"
             id="password"
             v-model="formData.password"
             placeholder="Enter password"
             @blur="validate('password')"
           />
-          <p class="errors text-xs text-red-500" v-if="!!errors.password">
+          <span class="text-xs text-red-500" v-if="!!errors.password">
             {{ errors.password }}
-          </p>
+          </span>
         </div>
         <div class="flex items-center justify-between">
           <button
@@ -54,66 +101,3 @@
     </div>
   </div>
 </template>
-
-<script>
-import { useLoginStore } from "@/stores/LoginStore";
-import * as Yup from "yup";
-import { useErrorStore } from "@/stores/ErrorStore";
-
-const schema = Yup.object().shape({
-  username: Yup.string().required("Username is required"),
-  password: Yup.string().required("Password is required"),
-});
-
-const loginStore = useLoginStore();
-
-export default {
-  data() {
-    return {
-      formData: {
-        username: "",
-        password: "",
-      },
-      errors: {
-        username: "",
-        password: "",
-      },
-    };
-  },
-  methods: {
-    onSignIn() {
-      schema
-        .validate(this.formData, { abortEarly: false })
-        .then(() => {
-          loginStore
-            .login(this.formData.username, this.formData.password)
-            .then(() => {
-              if (loginStore.isLoggedIn) {
-                return;
-              }
-            })
-            .catch((error) => {
-              useErrorStore().showError(
-                `Incorrect username or password. Please try again.`,
-                error.message
-              );
-            });
-        })
-        .catch((err) => {
-          err.inner.forEach((error) => {
-            this.errors = { ...this.errors, [error.path]: error.message };
-          });
-        });
-    },
-
-    validate(field) {
-      schema
-        .validateAt(field, this.formData)
-        .then(() => (this.errors[field] = ""))
-        .catch((err) => {
-          this.errors[err.path] = err.message;
-        });
-    },
-  },
-};
-</script>
