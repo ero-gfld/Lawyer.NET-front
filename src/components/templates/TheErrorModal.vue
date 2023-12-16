@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useErrorStore } from "@/stores/errorStore.js";
+import { useErrorStore } from "@/stores/ErrorStore";
 const errorStore = useErrorStore();
 </script>
 
@@ -75,3 +75,4 @@ const errorStore = useErrorStore();
     </div>
   </div>
 </template>
+@/stores/ErrorStore.js

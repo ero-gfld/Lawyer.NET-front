@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
-import { useLoginStore } from "@/stores/loginStore";
+import { useLoginStore } from "@/stores/LoginStore";
 
 const routes = [
   {
@@ -72,7 +72,7 @@ router.beforeEach((to) => {
   const loggedInPages = ["/profile"];
   const loginRequired = loggedInPages.includes(to.path);
 
-  if (loginRequired && !loginStore.isLogin) {
+  if (loginRequired && !loginStore.isLoggedIn) {
     return "/login";
   }
 });

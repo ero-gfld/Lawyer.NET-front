@@ -2,7 +2,7 @@ import DropdownItemOptions from "@/models/DropdownItemOptions/DropdownItemOption
 import DropdownItemType from "@/models/DropdownItemOptions/DropdownItemType";
 import NotificationTypes from "@/constants/NotificationTypes";
 import { useNotificationStore } from "@/stores/NotificationStore";
-import { useLoginStore } from "@/stores/loginStore";
+import { useLoginStore } from "@/stores/LoginStore";
 
 export const USER_LOGGED_DROPDOWN_ITEMS: ReadonlyArray<DropdownItemOptions> = [
   {

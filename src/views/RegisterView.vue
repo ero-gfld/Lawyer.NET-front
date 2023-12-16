@@ -92,7 +92,7 @@
 </template>
 
 <script>
-import { useUserStore } from "@/stores/userStore.js";
+import { useUserStore } from "@/stores/UserStore";
 import { useNotificationStore } from "@/stores/NotificationStore";
 import NotificationTypes from "@/constants/NotificationTypes";
 import UserRoles from "@/constants/UserRoles";

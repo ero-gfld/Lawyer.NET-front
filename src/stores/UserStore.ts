@@ -1,11 +1,12 @@
 import { defineStore } from "pinia";
 import axios from "axios";
 import apiConfig from "@/config/api-config.json";
+import { UserModel } from "@/models/UserModel";
 
 export const useUserStore = defineStore("userStore", {
   state: () => ({
     userInfo: null,
-    users: [],
+    users: [] as UserModel[],
   }),
   actions: {
     getAuthHeader() {
@@ -28,7 +29,7 @@ export const useUserStore = defineStore("userStore", {
         });
     },
 
-    createUser(userData) {
+    createUser(userData: UserModel) {
       axios
         .post(`${apiConfig.URL}/api/users/new`, userData, this.getAuthHeader())
         .then(() => {
@@ -39,7 +40,7 @@ export const useUserStore = defineStore("userStore", {
         });
     },
 
-    async registerUser(userData) {
+    async registerUser(userData: UserModel) {
       await axios
         .post(`${apiConfig.URL}/api/users/new`, userData)
         .catch((error) => {
@@ -56,7 +57,7 @@ export const useUserStore = defineStore("userStore", {
       };
     },
 
-    updateUser(userId, updatedData) {
+    updateUser(userId: string, updatedData: UserModel) {
       axios
         .put(
           `${apiConfig.URL}/api/users/${userId}`,
@@ -74,7 +75,7 @@ export const useUserStore = defineStore("userStore", {
         });
     },
 
-    deleteUser(userId) {
+    deleteUser(userId: string) {
       axios
         .delete(`${apiConfig.URL}/api/users/${userId}`, this.getAuthHeader())
         .then(() => {

@@ -56,11 +56,9 @@
 </template>
 
 <script>
-import { useLoginStore } from "@/stores/loginStore";
+import { useLoginStore } from "@/stores/LoginStore";
 import * as Yup from "yup";
-import { useErrorStore } from "@/stores/errorStore";
-import { useNotificationStore } from "@/stores/NotificationStore";
-import NOTIFICATION_TYPES from "@/constants/NotificationTypes";
+import { useErrorStore } from "@/stores/ErrorStore";
 
 const schema = Yup.object().shape({
   username: Yup.string().required("Username is required"),
@@ -90,11 +88,9 @@ export default {
           loginStore
             .login(this.formData.username, this.formData.password)
             .then(() => {
-              useNotificationStore().generateNotification(
-                "Login successful",
-                "You have successfully logged in.",
-                NOTIFICATION_TYPES.SUCCESS
-              );
+              if (loginStore.isLoggedIn) {
+                return;
+              }
             })
             .catch((error) => {
               useErrorStore().showError(
@@ -121,4 +117,3 @@ export default {
   },
 };
 </script>
-@/constants/NotificationTypes @/stores/NotificationStore

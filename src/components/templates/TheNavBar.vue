@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import NavItem from "@/components/molecules/NavItem.vue";
-import { useLoginStore } from "@/stores/loginStore";
+import { useLoginStore } from "@/stores/LoginStore";
 import DropdownItemOptions from "@/models/DropdownItemOptions/DropdownItemOptions";
 import { ref, watch } from "vue";
 import LANGUAGE_OPTIONS from "@/constants/LanguageOptions";
@@ -16,12 +16,12 @@ const languageItems = ref([...LANGUAGE_OPTIONS]);
 
 function getDropdownItems() {
   const dropdownItems: DropdownItemOptions[] = [
-    ...(loginStore.isLogin
+    ...(loginStore.isLoggedIn
       ? USER_LOGGED_DROPDOWN_ITEMS
       : USER_NOT_LOGGED_DROPDOWN_ITEMS),
   ];
 
-  if (loginStore.isAdmin() && loginStore.isLogin) {
+  if (loginStore.isAdmin() && loginStore.isLoggedIn) {
     const adminDropdownItems = dropdownItems.concat(ADMIN_DROPDOWN_ITEMS);
     return adminDropdownItems;
   }
@@ -33,7 +33,7 @@ function updateDropdownItems() {
   dropdownItems.value = getDropdownItems();
 }
 
-watch(() => loginStore.isLogin, updateDropdownItems);
+watch(() => loginStore.isLoggedIn, updateDropdownItems);
 </script>
 
 <template>
@@ -52,7 +52,9 @@ watch(() => loginStore.isLogin, updateDropdownItems);
       <NavItem :dropdown-items="dropdownItems" dropdown-class="min-w-[7rem]">
         <v-icon name="fa-regular-user" scale="0.75" class="mr-1" />
         <span>{{
-          loginStore.isLogin ? loginStore.userInfo : $t("navbar.account")
+          loginStore.isLoggedIn
+            ? loginStore.user?.username
+            : $t("navbar.account")
         }}</span>
       </NavItem>
       <NavItem
