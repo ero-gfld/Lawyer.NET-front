@@ -1,3 +1,62 @@
+<script setup lang="ts">
+import { useUserStore } from "@/stores/UserStore";
+import RegistrationUserModel from "@/models/RegistrationUserModel";
+import { Ref, ref } from "vue";
+import VLabel from "@/components/atoms/VLabel.vue";
+import LabelTypes from "@/constants/LabelTypes";
+import * as Yup from "yup";
+
+const userStore = useUserStore();
+
+const schema = Yup.object().shape({
+  username: Yup.string().required("Username is required"),
+  firstName: Yup.string().required("First name is required"),
+  lastName: Yup.string().required("Last name is required"),
+  email: Yup.string()
+    .required("Email is required")
+    .email("Invalid email format"),
+  password: Yup.string().required("Password is required"),
+});
+
+const userForm: Ref<RegistrationUserModel> = ref({
+  username: "",
+  firstName: "",
+  lastName: "",
+  email: "",
+  password: "",
+});
+
+const validationErrors: Ref<{ [id: string]: string }> = ref({
+  username: "",
+  firstName: "",
+  lastName: "",
+  email: "",
+  password: "",
+});
+
+function onRegister() {
+  schema
+    .validate(userForm.value, { abortEarly: false })
+    .then(() => {
+      userStore.createUser(userForm.value);
+    })
+    .catch((err: Yup.ValidationError) => {
+      err.inner.forEach((e) => {
+        if (e.path) validationErrors.value[e.path] = e.message;
+      });
+    });
+}
+
+function validate(field: string) {
+  schema
+    .validateAt(field, userForm.value)
+    .then(() => (validationErrors.value[field] = ""))
+    .catch((err) => {
+      validationErrors.value[err.path] = err.message;
+    });
+}
+</script>
+
 <template>
   <div class="flex justify-center items-center h-screen bg-gray-100">
     <div class="w-full max-w-xs">
@@ -17,10 +76,16 @@
           <input
             class="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
             id="username"
-            v-model="username"
+            v-model="userForm.username"
             placeholder="Enter username"
-            required
+            @blur="validate('username')"
           />
+          <v-label
+            :label-type="LabelTypes.DANGER"
+            class="text-xs"
+            v-if="validationErrors.username"
+            >{{ validationErrors.username }}</v-label
+          >
         </div>
         <div class="mb-4">
           <label class="block mb-2 text-sm font-bold text-gray-700" for="email"
@@ -30,10 +95,16 @@
             class="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
             type="email"
             id="email"
-            v-model="email"
+            v-model="userForm.email"
             placeholder="Enter email"
-            required
+            @blur="validate('email')"
           />
+          <v-label
+            :label-type="LabelTypes.DANGER"
+            class="text-xs"
+            v-if="validationErrors.email"
+            >{{ validationErrors.email }}</v-label
+          >
         </div>
         <div class="mb-4">
           <label
@@ -42,13 +113,19 @@
             >Password:</label
           >
           <input
-            class="w-full px-3 py-2 mb-3 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+            class="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
             type="password"
             id="password"
-            v-model="password"
+            v-model="userForm.password"
             placeholder="Enter password"
-            required
+            @blur="validate('password')"
           />
+          <v-label
+            :label-type="LabelTypes.DANGER"
+            class="text-xs"
+            v-if="validationErrors.password"
+            >{{ validationErrors.password }}</v-label
+          >
         </div>
         <div class="mb-4">
           <label class="block mb-2 text-sm font-bold text-gray-700" for="name"
@@ -58,9 +135,15 @@
             class="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
             type="text"
             id="name"
-            v-model="name"
-            required
+            v-model="userForm.firstName"
+            @blur="validate('firstName')"
           />
+          <v-label
+            :label-type="LabelTypes.DANGER"
+            class="text-xs"
+            v-if="validationErrors.firstName"
+            >{{ validationErrors.firstName }}</v-label
+          >
         </div>
 
         <!-- Last Name Field -->
@@ -74,9 +157,15 @@
             class="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
             type="text"
             id="lastName"
-            v-model="lastName"
-            required
+            v-model="userForm.lastName"
+            @blur="validate('lastName')"
           />
+          <v-label
+            :label-type="LabelTypes.DANGER"
+            class="text-xs"
+            v-if="validationErrors.lastName"
+            >{{ validationErrors.lastName }}</v-label
+          >
         </div>
         <div class="flex items-center justify-between">
           <button
@@ -90,44 +179,3 @@
     </div>
   </div>
 </template>
-
-<script>
-import { useUserStore } from "@/stores/UserStore";
-import { useNotificationStore } from "@/stores/NotificationStore";
-import NotificationTypes from "@/constants/NotificationTypes";
-import UserRoles from "@/constants/UserRoles";
-export default {
-  data() {
-    return {
-      username: "",
-      name: "",
-      lastName: "",
-      email: "",
-      password: "",
-    };
-  },
-  methods: {
-    async onRegister() {
-      const response = await useUserStore().registerUser({
-        username: this.username,
-        firstName: this.name,
-        lastName: this.lastName,
-        email: this.email,
-        password: this.password,
-        role: UserRoles.USER,
-      });
-
-      if (response.status === 200) {
-        useNotificationStore().generateNotification(
-          "Registration successful",
-          "You have successfully registered!",
-          NotificationTypes.SUCCESS
-        );
-        this.$router.push({ name: "Homepage" });
-      }
-    },
-  },
-};
-</script>
-@/constants/NotificationTypes @/constants/UserRoles
-@/stores/NotificationStore.js

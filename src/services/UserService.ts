@@ -7,7 +7,9 @@ import {
 import TokenResponse from "@/models/TokenResponse";
 import apiConfig from "@/config/api-config.json";
 import axios from "axios";
-import { ModifiedUserModel, UserModel } from "@/models/UserModel";
+import UserModel from "@/models/UserModel";
+import ModifiedUserModel from "@/models/ModifiedUserModel";
+import RegistrationUserModel from "@/models/RegistrationUserModel";
 
 export async function postLogin(
   username: string,
@@ -38,7 +40,7 @@ export async function postLogin(
 }
 
 export async function postUser(
-  user: UserModel,
+  user: RegistrationUserModel,
   token: string
 ): Promise<HttpResponse<UserModel>> {
   const response = await axios

@@ -1,7 +1,9 @@
 import { defineStore } from "pinia";
 import axios from "axios";
 import apiConfig from "@/config/api-config.json";
-import { ModifiedUserModel, UserModel } from "@/models/UserModel";
+import UserModel from "@/models/UserModel";
+import ModifiedUserModel from "@/models/ModifiedUserModel";
+import RegistrationUserModel from "@/models/RegistrationUserModel";
 import {
   deleteUser,
   getUsers,
@@ -37,7 +39,7 @@ export const useUserStore = defineStore("userStore", {
       }
     },
 
-    async createUser(userData: UserModel) {
+    async createUser(userData: RegistrationUserModel) {
       const token = localStorage.getItem("access_token");
       if (token) {
         const response = await postUser(userData, token);
