@@ -5,15 +5,16 @@ import TheNavBar from "@/components/templates/TheNavBar.vue";
 import TheErrorModal from "@/components/templates/TheErrorModal.vue";
 import TheNotificationList from "@/components/templates/TheNotificationList.vue";
 
-function tryLogin() {
-  const loginStore = useLoginStore();
+const loginStore = useLoginStore();
+
+async function tryLogin() {
   if (loginStore.hasJwtToken() && !loginStore.isLoggedIn) {
-    loginStore.fetchUser();
+    await loginStore.fetchUser();
   }
 }
 
-onMounted(() => {
-  tryLogin();
+onMounted(async () => {
+  await tryLogin();
 });
 </script>
 

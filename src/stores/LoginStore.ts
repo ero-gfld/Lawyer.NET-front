@@ -1,6 +1,7 @@
 import { defineStore } from "pinia";
-import axios from "axios";
 import router from "@/router";
+import { useNotificationStore } from "@/stores/NotificationStore";
+import NotificationTypes from "@/constants/NotificationTypes";
 import UserRoles from "@/constants/UserRoles";
 import {
   HttpResponseStatus,
@@ -28,7 +29,12 @@ export const useLoginStore = defineStore("loginStore", {
         const success = response as HttpSuccessResponse<TokenResponse>;
         localStorage.setItem("access_token", success.data.token);
         localStorage.setItem("access_id", success.data.id);
-        this.fetchUser(success.data.token, success.data.id);
+        this.fetchUser();
+        useNotificationStore().generateNotification(
+          "Logged in successfully.",
+          "You have been logged in successfully.",
+          NotificationTypes.SUCCESS
+        );
         router.push({ name: "Homepage" });
       }
       if (isHttpErrorResponse(response)) {
@@ -36,15 +42,16 @@ export const useLoginStore = defineStore("loginStore", {
         useErrorStore().showError(error.message, error.details);
       }
     },
-    async fetchUser(token = "", userId = "") {
-      token = token ?? localStorage.getItem("access_token");
-      userId = userId ?? localStorage.getItem("access_id");
+    async fetchUser() {
+      const token = localStorage.getItem("access_token");
+      const userId = localStorage.getItem("access_id");
       if (token !== null && userId !== null) {
         const response = await getUser(userId, token);
         if (isHttpSuccessResponse(response)) {
           const success = response as HttpSuccessResponse<UserModel>;
           this.user = success.data;
           this.isLoggedIn = true;
+          return;
         }
         localStorage.clear();
         this.user = null;
