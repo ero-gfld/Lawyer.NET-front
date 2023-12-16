@@ -26,6 +26,7 @@ const allHttpSuccessResponses: ReadonlyArray<HttpResponseStatus> = [
   HttpResponseStatus.OK,
   HttpResponseStatus.CREATED,
   HttpResponseStatus.ACCEPTED,
+  HttpResponseStatus.NO_CONTENT,
 ];
 
 const allHttpErrorResponses: ReadonlyArray<HttpResponseStatus> = [

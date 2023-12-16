@@ -1,7 +1,21 @@
 import { defineStore } from "pinia";
 import axios from "axios";
 import apiConfig from "@/config/api-config.json";
-import { UserModel } from "@/models/UserModel";
+import { ModifiedUserModel, UserModel } from "@/models/UserModel";
+import {
+  deleteUser,
+  getUsers,
+  postUser,
+  putUser,
+} from "@/services/UserService";
+import { useErrorStore } from "@/stores/ErrorStore";
+import {
+  HttpErrorResponse,
+  HttpSuccessResponse,
+  isHttpSuccessResponse,
+} from "@/models/HttpResponses/HttpResponse";
+
+const getAuthToken = () => localStorage.getItem("access_token");
 
 export const useUserStore = defineStore("userStore", {
   state: () => ({
@@ -9,81 +23,61 @@ export const useUserStore = defineStore("userStore", {
     users: [] as UserModel[],
   }),
   actions: {
-    getAuthHeader() {
+    async fetchUsers() {
       const token = localStorage.getItem("access_token");
-      return {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      };
+      if (token) {
+        const response = await getUsers(token);
+        if (isHttpSuccessResponse(response)) {
+          const success = response as HttpSuccessResponse<UserModel[]>;
+          this.users = success.data;
+          return;
+        }
+        const error = response as HttpErrorResponse;
+        useErrorStore().showError(error.message, error.details);
+      }
     },
 
-    fetchUsers() {
-      axios
-        .get(`${apiConfig.URL}/api/users`, this.getAuthHeader())
-        .then((response) => {
-          this.users = response.data;
-        })
-        .catch((error) => {
-          console.error("Error fetching users:", error);
-        });
+    async createUser(userData: UserModel) {
+      const token = localStorage.getItem("access_token");
+      if (token) {
+        const response = await postUser(userData, token);
+        if (isHttpSuccessResponse(response)) {
+          const success = response as HttpSuccessResponse<UserModel>;
+          this.users.push(success.data);
+          return;
+        }
+        const error = response as HttpErrorResponse;
+        useErrorStore().showError(error.message, error.details);
+      }
     },
 
-    createUser(userData: UserModel) {
-      axios
-        .post(`${apiConfig.URL}/api/users/new`, userData, this.getAuthHeader())
-        .then(() => {
-          this.fetchUsers();
-        })
-        .catch((error) => {
-          console.error("Error creating user:", error);
-        });
-    },
-
-    async registerUser(userData: UserModel) {
-      await axios
-        .post(`${apiConfig.URL}/api/users/new`, userData)
-        .catch((error) => {
-          console.error("Error creating user:", error);
-          return {
-            status: error.response.status,
-            message: error.response.data.message,
-          };
-        });
-
-      return {
-        status: 200,
-        message: "User created successfully.",
-      };
-    },
-
-    updateUser(userId: string, updatedData: UserModel) {
-      axios
-        .put(
-          `${apiConfig.URL}/api/users/${userId}`,
-          updatedData,
-          this.getAuthHeader()
-        )
-        .then((response) => {
+    async updateUser(userId: string, updatedData: ModifiedUserModel) {
+      const token = localStorage.getItem("access_token");
+      if (token) {
+        const response = await putUser(userId, updatedData, token);
+        if (isHttpSuccessResponse(response)) {
+          const success = response as HttpSuccessResponse<UserModel>;
           const index = this.users.findIndex((user) => user.id === userId);
-          if (index !== -1) {
-            this.users[index] = response.data;
-          }
-        })
-        .catch((error) => {
-          console.error("Error updating user:", error);
-        });
+          this.users[index] = success.data;
+          return;
+        }
+        const error = response as HttpErrorResponse;
+        useErrorStore().showError(error.message, error.details);
+      }
     },
 
-    deleteUser(userId: string) {
-      axios
-        .delete(`${apiConfig.URL}/api/users/${userId}`, this.getAuthHeader())
-        .then(() => {
-          this.users = this.users.filter((user) => user.id !== userId);
-        })
-        .catch((error) => {
-          console.error("Error deleting user:", error);
-        });
+    async deleteUser(userId: string) {
+      const token = localStorage.getItem("access_token");
+      if (token) {
+        const response = await deleteUser(userId, token);
+        if (isHttpSuccessResponse(response)) {
+          const index = this.users.findIndex((user) => user.id === userId);
+          this.users.splice(index, 1);
+          return;
+        }
+        const error = response as HttpErrorResponse;
+        useErrorStore().showError(error.message, error.details);
+      }
     },
   },
 });

@@ -21,7 +21,6 @@ const errors: Ref<{ [id: string]: string }> = ref({
 });
 
 function onSignIn() {
-  console.log("onSignIn method called");
   schema
     .validate(formData.value, { abortEarly: false })
     .then(() => {
@@ -29,7 +28,6 @@ function onSignIn() {
     })
     .catch((err: Yup.ValidationError) => {
       err.inner.forEach((e) => {
-        console.log(e.path, e.message);
         if (e.path) errors.value[e.path] = e.message;
       });
     });
