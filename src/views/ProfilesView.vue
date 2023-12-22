@@ -9,11 +9,11 @@ const profiles = MOCK_LAWYERS;
 <template>
   <div class="mx-60">
     <div class="my-5">
-      <OhVueIcon name="hi-solid-search" />
+      <oh-vue-icon name="hi-solid-search" />
       {{ $t("profile.result.count", { count: profiles.length }) }}
     </div>
     <div class="grid gap-y-5 mb-5">
-      <ProfileResult
+      <profile-result
         v-for="profile in profiles"
         :key="profile.id"
         :profile="profile"

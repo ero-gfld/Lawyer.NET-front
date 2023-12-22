@@ -56,7 +56,7 @@ function hideDropdown() {
           <div v-for="(item, index) in props.dropdownItems" :key="index">
             <div v-if="item.type === DropdownItemType.Link">
               <router-link :to="item.link" :class="navItemClass">
-                <OhVueIcon v-if="item.icon" :name="item.icon" />
+                <oh-vue-icon v-if="item.icon" :name="item.icon" />
                 <span v-if="item.label">{{ $t(item.label) }}</span>
               </router-link>
             </div>
@@ -66,7 +66,7 @@ function hideDropdown() {
                 :type="ButtonTypes.NONE"
                 :class="navItemClass"
               >
-                <OhVueIcon v-if="item.icon" :name="item.icon" />
+                <oh-vue-icon v-if="item.icon" :name="item.icon" />
                 <span v-if="item.label">{{ $t(item.label) }}</span>
               </v-button>
             </div>

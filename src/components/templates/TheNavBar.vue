@@ -49,21 +49,21 @@ watch(() => loginStore.isLoggedIn, updateDropdownItems);
         <v-icon name="fa-question-circle" scale="0.75" class="mr-1" />
         <span>{{ $t("navbar.help") }}</span>
       </router-link>
-      <NavItem :dropdown-items="dropdownItems" dropdown-class="min-w-[7rem]">
+      <nav-item :dropdown-items="dropdownItems" dropdown-class="min-w-[7rem]">
         <v-icon name="fa-regular-user" scale="0.75" class="mr-1" />
         <span>{{
           loginStore.isLoggedIn
             ? loginStore.user?.username
             : $t("navbar.account")
         }}</span>
-      </NavItem>
-      <NavItem
+      </nav-item>
+      <nav-item
         class="border-none px-1 -mx-1"
         :dropdown-items="languageItems"
         dropdown-class="min-w-[3rem]"
       >
         <v-icon name="fa-globe" scale="1.3" />
-      </NavItem>
+      </nav-item>
     </div>
   </div>
 </template>

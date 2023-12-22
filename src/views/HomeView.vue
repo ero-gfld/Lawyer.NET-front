@@ -1,24 +1,20 @@
-<script>
-import VInput from "@/components/atoms/VInput";
-import VButton from "@/components/atoms/VButton";
+<script setup lang="ts">
+import VInput from "@/components/atoms/VInput.vue";
+import VButton from "@/components/atoms/VButton.vue";
 import { OhVueIcon } from "oh-vue-icons";
+import { ref } from "vue";
+import router from "@/router";
 
-export default {
-  name: "HomeView",
-  methods: {
-    search() {
-      this.$router.push({
-        name: "Profiles",
-        params: { search: this.searchTerm ?? "all" },
-      });
+const searchTerm = ref("");
+
+function search() {
+  router.push({
+    name: "Profiles",
+    params: {
+      search: searchTerm.value === "" ? "all" : searchTerm.value,
     },
-  },
-  components: {
-    VInput,
-    VButton,
-    "v-icon": OhVueIcon,
-  },
-};
+  });
+}
 </script>
 
 <template>
@@ -43,13 +39,13 @@ export default {
                   Empower your legal decisions with personalized consultations
                 </p>
                 <div class="flex mt-7 w-full gap-x-3">
-                  <VInput
+                  <v-input
                     class="flex-1"
                     v-model="searchTerm"
                     placeholder="Search for a profile..."
                     @keyup.enter="search"
                   />
-                  <VButton @click="search">Search</VButton>
+                  <v-button @click="search">Search</v-button>
                 </div>
               </div>
             </div>
@@ -86,7 +82,7 @@ export default {
                   <div
                     class="text-white p-3 text-center inline-flex items-center justify-center w-12 h-12 mb-5 shadow-lg rounded-full bg-primary"
                   >
-                    <v-icon name="fa-award" scale="1.25" />
+                    <oh-vue-icon name="fa-award" scale="1.25" />
                   </div>
                   <h6 class="text-xl font-semibold">
                     Innovative Legal Solutions
@@ -107,7 +103,7 @@ export default {
                   <div
                     class="text-white p-3 text-center inline-flex items-center justify-center w-12 h-12 mb-5 shadow-lg rounded-full bg-primary"
                   >
-                    <v-icon name="md-connectwithoutcontact" scale="1.25" />
+                    <oh-vue-icon name="md-connectwithoutcontact" scale="1.25" />
                   </div>
                   <h6 class="text-xl font-semibold">
                     Connect with Top Lawyers
@@ -128,7 +124,7 @@ export default {
                   <div
                     class="text-white p-3 text-center inline-flex items-center justify-center w-12 h-12 mb-5 shadow-lg rounded-full bg-primary"
                   >
-                    <v-icon name="fa-fingerprint" scale="1.25" />
+                    <oh-vue-icon name="fa-fingerprint" scale="1.25" />
                   </div>
                   <h6 class="text-xl font-semibold">Tailored Legal Support</h6>
                   <p class="mt-2 mb-4 text-gray-600">
@@ -145,7 +141,7 @@ export default {
               <div
                 class="text-gray-600 p-3 text-center inline-flex items-center justify-center w-16 h-16 mb-6 shadow-lg rounded-full bg-primary"
               >
-                <v-icon
+                <oh-vue-icon
                   name="fa-user-friends"
                   class="text-white"
                   scale="1.75"
@@ -173,7 +169,7 @@ export default {
             </div>
             <div class="w-full md:w-4/12 px-4 mr-auto ml-auto">
               <div
-                class="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded-lg bg-pink-600"
+                class="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded-lg"
               >
                 <img
                   alt="..."

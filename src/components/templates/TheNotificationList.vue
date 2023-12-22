@@ -6,7 +6,7 @@ const notificationStore = useNotificationStore();
 
 <template>
   <div class="fixed grid flex-col top-5 right-5 z-50 gap-y-3">
-    <NotificationModal
+    <notification-modal
       v-for="notification in notificationStore.notifications"
       :key="notification.id"
       :notification="notification"
