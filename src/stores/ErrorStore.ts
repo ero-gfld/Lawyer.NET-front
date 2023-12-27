@@ -12,7 +12,7 @@ export const useErrorStore = defineStore("errorStore", {
       this.errorDetail = "";
       this.isShown = false;
     },
-    showError(errorMessage, errorDetails = "") {
+    showError(errorMessage: string, errorDetails = "") {
       this.errorMessage = errorMessage;
       this.errorDetail = errorDetails;
       this.isShown = true;

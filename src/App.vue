@@ -1,32 +1,26 @@
-<script>
-import NavBar from "@/components/molecules/NavBar.vue";
-import { useLoginStore } from "@/stores/loginStore";
-import ErrorModal from "@/components/templates/ErrorModal.vue";
-import Notifications from "@/components/templates/Notifications.vue";
-export default {
-  name: "App",
-  components: {
-    NavBar,
-    ErrorModal,
-    Notifications,
-  },
-  methods: {
-    tryLogin() {
-      const loginStore = useLoginStore();
-      if (loginStore.hasJwtToken && !loginStore.isLogin) {
-        loginStore.getUserInfo();
-      }
-    },
-  },
-  created() {
-    this.tryLogin();
-  },
-};
+<script setup lang="ts">
+import { useLoginStore } from "@/stores/LoginStore";
+import { onMounted } from "vue";
+import TheNavBar from "@/components/templates/TheNavBar.vue";
+import TheErrorModal from "@/components/templates/TheErrorModal.vue";
+import TheNotificationList from "@/components/templates/TheNotificationList.vue";
+
+const loginStore = useLoginStore();
+
+async function tryLogin() {
+  if (loginStore.hasJwtToken() && !loginStore.isLoggedIn) {
+    await loginStore.fetchUser();
+  }
+}
+
+onMounted(async () => {
+  await tryLogin();
+});
 </script>
 
 <template>
-  <NavBar />
-  <Notifications />
-  <ErrorModal />
+  <the-nav-bar />
+  <the-notification-list />
+  <the-error-modal />
   <router-view />
 </template>

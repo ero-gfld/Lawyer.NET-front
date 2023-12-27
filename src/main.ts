@@ -1,7 +1,7 @@
 import { createApp } from "vue";
-import App from "./App.vue";
-import router from "./router";
-import "./assets/style.css";
+import App from "@/App.vue";
+import router from "@/router";
+import "@/assets/style.css";
 import { OhVueIcon, addIcons } from "oh-vue-icons";
 import { createI18n } from "vue-i18n";
 import {

@@ -1,13 +1,32 @@
+<script setup lang="ts">
+import VButton from "@/components/atoms/VButton.vue";
+import ButtonTypes from "@/constants/ButtonTypes";
+import NotificationTypes from "@/constants/NotificationTypes";
+import NotificationModel from "@/models/NotificationModel";
+import { useNotificationStore } from "@/stores/NotificationStore";
+import { defineProps } from "vue";
+
+const props = defineProps<{
+  notification: NotificationModel;
+}>();
+
+const notificationStore = useNotificationStore();
+
+function closeNotification() {
+  notificationStore.closeNotification(props.notification.id);
+}
+</script>
+
 <template>
   <div class="p-4 bg-white text-primary rounded-lg shadow-xl">
     <div class="flex flex-row gap-x-4">
       <div>
         <v-icon
-          v-if="notification.type === BUTTON_TYPES.SUCCESS"
+          v-if="notification.type === NotificationTypes.SUCCESS"
           name="fa-check-circle"
         />
         <v-icon
-          v-else-if="notification.type === BUTTON_TYPES.INFO"
+          v-else-if="notification.type === NotificationTypes.INFO"
           name="fa-info-circle"
         />
       </div>
@@ -17,48 +36,14 @@
           {{ notification.message }}
         </p>
       </div>
-      <Button
-        :button-type="BUTTON_TYPES.ICON"
+      <v-button
+        :button-type="ButtonTypes.ICON"
         @click="closeNotification"
         class="ml-auto"
       >
         <v-icon name="io-close-sharp" scale="1" />
-      </Button>
+      </v-button>
     </div>
   </div>
 </template>
-
-<script>
-import { OhVueIcon } from "oh-vue-icons";
-import Button from "@/components/atoms/Button.vue";
-import BUTTON_TYPES from "@/constants/button-types.js";
-import { useNotificationStore } from "@/stores/notificationStore";
-
-export default {
-  name: "NotificationModal",
-  props: {
-    notification: {
-      id: String,
-      title: String,
-      message: String,
-      type: String,
-      isShown: Boolean,
-    },
-  },
-  components: {
-    "v-icon": OhVueIcon,
-    Button,
-  },
-  data() {
-    return {
-      BUTTON_TYPES,
-      notificationStore: useNotificationStore(),
-    };
-  },
-  methods: {
-    closeNotification() {
-      this.notificationStore.closeNotification(this.notification.id);
-    },
-  },
-};
-</script>
+@/stores/NotificationStore
