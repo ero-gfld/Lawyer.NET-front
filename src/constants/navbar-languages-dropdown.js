@@ -1,4 +1,4 @@
-export const languages = Object.freeze([
+export const LANGUAGES_OPTIONS = Object.freeze([
   {
     icon: "co-gb",
     link: "/en",
@@ -20,3 +20,5 @@ export const languages = Object.freeze([
     scale: 1.3,
   },
 ]);
+
+export default LANGUAGES_OPTIONS;

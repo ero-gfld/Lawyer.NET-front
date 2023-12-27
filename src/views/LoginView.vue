@@ -59,6 +59,8 @@
 import { useLoginStore } from "@/stores/loginStore";
 import * as Yup from "yup";
 import { useErrorStore } from "@/stores/errorStore";
+import { useNotificationStore } from "@/stores/notificationStore";
+import NOTIFICATION_TYPES from "@/constants/notification-types";
 
 const schema = Yup.object().shape({
   username: Yup.string().required("Username is required"),
@@ -88,9 +90,11 @@ export default {
           loginStore
             .login(this.formData.username, this.formData.password)
             .then(() => {
-              if (loginStore.isLogin) {
-                return;
-              }
+              useNotificationStore().generateNotification(
+                "Login successful",
+                "You have successfully logged in.",
+                NOTIFICATION_TYPES.SUCCESS
+              );
             })
             .catch((error) => {
               useErrorStore().showError(

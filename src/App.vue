@@ -2,11 +2,13 @@
 import NavBar from "@/components/molecules/NavBar.vue";
 import { useLoginStore } from "@/stores/loginStore";
 import ErrorModal from "@/components/templates/ErrorModal.vue";
+import Notifications from "@/components/templates/Notifications.vue";
 export default {
   name: "App",
   components: {
     NavBar,
     ErrorModal,
+    Notifications,
   },
   methods: {
     tryLogin() {
@@ -24,6 +26,7 @@ export default {
 
 <template>
   <NavBar />
+  <Notifications />
   <ErrorModal />
   <router-view />
 </template>

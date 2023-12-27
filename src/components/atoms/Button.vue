@@ -1,33 +1,31 @@
 <template>
-  <button :class="buttonClass" @click="handleClick">
+  <button :class="getClass(this.buttonType)" @click="handleClick">
     <slot></slot>
   </button>
 </template>
 
 <script>
-import ButtonTypes from "../../constants/button-types.js";
+import BUTTON_TYPES from "@/constants/button-types.js";
 export default {
   name: "Button",
   props: {
     handleClick: Function,
     buttonType: {
       type: String,
-      default: ButtonTypes.PRIMARY,
+      default: BUTTON_TYPES.PRIMARY,
     },
   },
-  data() {
-    return {
-      buttonClass: this.getClass(this.buttonType),
-    };
-  },
   methods: {
-    getClass(type) {
-      switch (type) {
-        case ButtonTypes.PRIMARY:
+    getClass() {
+      switch (this.buttonType) {
+        case BUTTON_TYPES.PRIMARY:
           return "bg-primary text-white px-3 py-1 rounded-lg text-sm hover:bg-primary-light active:bg-primary-lighter";
-        case ButtonTypes.SECONDARY:
+        case BUTTON_TYPES.SECONDARY:
           return "border text-stone-700 font-semibold px-3 py-1 rounded-lg text-sm";
+        case BUTTON_TYPES.ICON:
+          return "text-primary hover:text-primary-light active:text-primary-lighter";
       }
+      return "";
     },
   },
 };

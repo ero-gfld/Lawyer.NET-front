@@ -2,12 +2,14 @@
 import { OhVueIcon } from "oh-vue-icons";
 import NavLink from "../atoms/NavLink.vue";
 import { useLoginStore } from "@/stores/loginStore";
-import { languages } from "@/constants/navbar-languages-dropdown.js";
+import { LANGUAGES_OPTIONS } from "@/constants/navbar-languages-dropdown.js";
+import { useNotificationStore } from "@/stores/notificationStore";
+import NOTIFICATION_TYPES from "@/constants/notification-types.js";
 export default {
   name: "NavBar",
   data() {
     return {
-      languages: languages,
+      languages: LANGUAGES_OPTIONS,
       dropdownItems: this.getDropdownItems(),
     };
   },
@@ -39,6 +41,11 @@ export default {
             {
               label: this.$t("navbar.logout"),
               action: () => {
+                useNotificationStore().generateNotification(
+                  "Logout successful",
+                  "You have successfully logged out.",
+                  NOTIFICATION_TYPES.SUCCESS
+                );
                 this.loginStore.logout();
               },
             },
