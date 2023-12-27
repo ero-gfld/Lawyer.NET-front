@@ -1,4 +1,5 @@
 import { defineStore } from "pinia";
+import router from "@/router";
 import axios from "axios";
 import apiConfig from "@/config/api-config.json";
 import UserModel from "@/models/UserModel";
@@ -40,17 +41,15 @@ export const useUserStore = defineStore("userStore", {
     },
 
     async createUser(userData: RegistrationUserModel) {
-      const token = localStorage.getItem("access_token");
-      if (token) {
-        const response = await postUser(userData, token);
-        if (isHttpSuccessResponse(response)) {
-          const success = response as HttpSuccessResponse<UserModel>;
-          this.users.push(success.data);
-          return;
-        }
-        const error = response as HttpErrorResponse;
-        useErrorStore().showError(error.message, error.details);
+      const response = await postUser(userData);
+      if (isHttpSuccessResponse(response)) {
+        const success = response as HttpSuccessResponse<UserModel>;
+        this.users.push(success.data);
+        router.push({ name: "Login" });
+        return;
       }
+      const error = response as HttpErrorResponse;
+      useErrorStore().showError(error.message, error.details);
     },
 
     async updateUser(userId: string, updatedData: ModifiedUserModel) {

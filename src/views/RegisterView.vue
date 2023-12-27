@@ -5,10 +5,14 @@ import { Ref, ref } from "vue";
 import VLabel from "@/components/atoms/VLabel.vue";
 import LabelTypes from "@/constants/LabelTypes";
 import * as Yup from "yup";
+import UserRoles from "@/constants/UserRoles";
 
 const userStore = useUserStore();
+const customGender = ref("");
 
 const schema = Yup.object().shape({
+  salutation: Yup.string().required("Salutation is required"),
+  countryCode: Yup.string().required("Country is required"),
   username: Yup.string().required("Username is required"),
   firstName: Yup.string().required("First name is required"),
   lastName: Yup.string().required("Last name is required"),
@@ -19,6 +23,8 @@ const schema = Yup.object().shape({
 });
 
 const userForm: Ref<RegistrationUserModel> = ref({
+  salutation: "",
+  countryCode: "",
   username: "",
   firstName: "",
   lastName: "",
@@ -27,6 +33,8 @@ const userForm: Ref<RegistrationUserModel> = ref({
 });
 
 const validationErrors: Ref<{ [id: string]: string }> = ref({
+  salutation: "",
+  countryCode: "",
   username: "",
   firstName: "",
   lastName: "",
@@ -38,6 +46,15 @@ function onRegister() {
   schema
     .validate(userForm.value, { abortEarly: false })
     .then(() => {
+      userForm.value.role = UserRoles.USER;
+      if (
+        customGender.value !== "" &&
+        userForm.value.salutation !== "male" &&
+        userForm.value.salutation !== "female"
+      ) {
+        userForm.value.salutation = customGender.value;
+      }
+
       userStore.createUser(userForm.value);
     })
     .catch((err: Yup.ValidationError) => {
@@ -59,7 +76,7 @@ function validate(field: string) {
 
 <template>
   <div class="flex justify-center items-center h-screen bg-gray-100">
-    <div class="w-full max-w-xs">
+    <div class="w-full max-w-xs mt-60">
       <h2 class="mb-6 text-2xl font-bold text-center text-gray-700">
         Register
       </h2>
@@ -67,6 +84,65 @@ function validate(field: string) {
         @submit.prevent="onRegister"
         class="px-8 pt-6 pb-8 mb-4 bg-white rounded shadow-md"
       >
+        <fieldset class="mb-4">
+          <label class="block mb-2 text-sm font-bold text-gray-700"
+            >Salutation:</label
+          >
+
+          <div class="flex mb-4">
+            <div class="mr-4">
+              <input
+                type="radio"
+                class="form-radio h-4 w-4 text-indigo-600 border-2 border-indigo-600 focus:ring-2 focus:ring-offset-0 focus:ring-indigo-500"
+                id="male"
+                v-model="userForm.salutation"
+                value="male"
+                @blur="validate('salutation')"
+              />
+              <label for="male" class="ml-1 text-gray-700">Male</label>
+            </div>
+
+            <div class="mr-4">
+              <input
+                type="radio"
+                class="form-radio h-4 w-4 text-indigo-600 border-2 border-indigo-600 focus:ring-2 focus:ring-offset-0 focus:ring-indigo-500"
+                id="female"
+                v-model="userForm.salutation"
+                value="female"
+                @blur="validate('salutation')"
+              />
+              <label for="female" class="ml-1 text-gray-700">Female</label>
+            </div>
+
+            <div>
+              <input
+                type="radio"
+                class="form-radio h-4 w-4 text-indigo-600 border-2 border-indigo-600 focus:ring-2 focus:ring-offset-0 focus:ring-indigo-500"
+                id="other"
+                v-model="userForm.salutation"
+                value="other"
+                @blur="validate('salutation')"
+              />
+              <label for="other" class="ml-1 text-gray-700">Other</label>
+            </div>
+          </div>
+          <div v-if="userForm.salutation === 'other'" class="mb-4">
+            <input
+              type="text"
+              id="customGender"
+              v-model="customGender"
+              class="mt-1 p-2 w-full border rounded-md"
+              placeholder="Enter your gender"
+              required
+            />
+          </div>
+          <v-label
+            :label-type="LabelTypes.DANGER"
+            class="text-xs"
+            v-if="validationErrors.salutation"
+            >{{ validationErrors.salutation }}</v-label
+          >
+        </fieldset>
         <div class="mb-4">
           <label
             class="block mb-2 text-sm font-bold text-gray-700"
@@ -77,7 +153,6 @@ function validate(field: string) {
             class="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
             id="username"
             v-model="userForm.username"
-            placeholder="Enter username"
             @blur="validate('username')"
           />
           <v-label
@@ -96,7 +171,6 @@ function validate(field: string) {
             type="email"
             id="email"
             v-model="userForm.email"
-            placeholder="Enter email"
             @blur="validate('email')"
           />
           <v-label
@@ -117,7 +191,6 @@ function validate(field: string) {
             type="password"
             id="password"
             v-model="userForm.password"
-            placeholder="Enter password"
             @blur="validate('password')"
           />
           <v-label
@@ -129,7 +202,7 @@ function validate(field: string) {
         </div>
         <div class="mb-4">
           <label class="block mb-2 text-sm font-bold text-gray-700" for="name"
-            >Name:</label
+            >First Name:</label
           >
           <input
             class="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
@@ -165,6 +238,25 @@ function validate(field: string) {
             class="text-xs"
             v-if="validationErrors.lastName"
             >{{ validationErrors.lastName }}</v-label
+          >
+        </div>
+        <div class="mb-4">
+          <label
+            class="block mb-2 text-sm font-bold text-gray-700"
+            for="countryCode"
+            >Country Code:</label
+          >
+          <input
+            class="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+            id="countryCode"
+            v-model="userForm.countryCode"
+            @blur="validate('countryCode')"
+          />
+          <v-label
+            :label-type="LabelTypes.DANGER"
+            class="text-xs"
+            v-if="validationErrors.countryCode"
+            >{{ validationErrors.countryCode }}</v-label
           >
         </div>
         <div class="flex items-center justify-between">
