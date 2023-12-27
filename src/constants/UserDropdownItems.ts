@@ -8,7 +8,7 @@ export const USER_LOGGED_DROPDOWN_ITEMS: ReadonlyArray<DropdownItemOptions> = [
   {
     type: DropdownItemType.Link,
     label: "navbar.profile",
-    link: "/profile",
+    link: "/my-account",
   },
   {
     type: DropdownItemType.Action,

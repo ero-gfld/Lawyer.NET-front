@@ -5,6 +5,7 @@ export type UserModel = {
   lastName: string;
   email: string;
   role: string;
+  appointments: string[];
 };
 
 export default UserModel;

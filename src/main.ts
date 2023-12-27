@@ -20,6 +20,7 @@ import {
   FaInfoCircle,
   IoCloseSharp,
   FaCheckCircle,
+  MdModeedit,
 } from "oh-vue-icons/icons";
 import { createPinia } from "pinia";
 
@@ -38,7 +39,8 @@ addIcons(
   MdConnectwithoutcontact,
   FaInfoCircle,
   IoCloseSharp,
-  FaCheckCircle
+  FaCheckCircle,
+  MdModeedit
 );
 
 const i18n = createI18n({
