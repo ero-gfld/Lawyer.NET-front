@@ -8,6 +8,7 @@ export type RegistrationUserModel = {
   lastName: string;
   email: string;
   password: string;
+  passwordConfirmation: string;
   role: UserRoles.USER;
 };
 

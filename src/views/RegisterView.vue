@@ -13,13 +13,25 @@ const customGender = ref("");
 const schema = Yup.object().shape({
   salutation: Yup.string().required("Salutation is required"),
   countryCode: Yup.string().required("Country is required"),
-  username: Yup.string().required("Username is required"),
+  username: Yup.string()
+    .min(5, "Username must be at least 5 characters long")
+    .required("Username is required"),
   firstName: Yup.string().required("First name is required"),
   lastName: Yup.string().required("Last name is required"),
   email: Yup.string()
     .required("Email is required")
     .email("Invalid email format"),
-  password: Yup.string().required("Password is required"),
+  password: Yup.string()
+    .min(12, "Password must be at least 12 characters long")
+    .matches(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/,
+      "Password must include a mix of uppercase and lowercase letters, numbers, and symbols"
+    )
+    .required("Password is required"),
+  passwordConfirmation: Yup.string().oneOf(
+    [Yup.ref("password")],
+    "Passwords must match"
+  ),
 });
 
 const userForm: Ref<RegistrationUserModel> = ref({
@@ -30,6 +42,8 @@ const userForm: Ref<RegistrationUserModel> = ref({
   lastName: "",
   email: "",
   password: "",
+  passwordConfirmation: "",
+  role: UserRoles.USER,
 });
 
 const validationErrors: Ref<{ [id: string]: string }> = ref({
@@ -40,13 +54,13 @@ const validationErrors: Ref<{ [id: string]: string }> = ref({
   lastName: "",
   email: "",
   password: "",
+  passwordConfirmation: "",
 });
 
 function onRegister() {
   schema
     .validate(userForm.value, { abortEarly: false })
     .then(() => {
-      userForm.value.role = UserRoles.USER;
       if (
         customGender.value !== "" &&
         userForm.value.salutation !== "male" &&
@@ -134,6 +148,7 @@ function validate(field: string) {
               class="mt-1 p-2 w-full border rounded-md"
               placeholder="Enter your gender"
               required
+              maxlength="30"
             />
           </div>
           <v-label
@@ -168,7 +183,7 @@ function validate(field: string) {
           >
           <input
             class="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-            type="email"
+            type="text"
             id="email"
             v-model="userForm.email"
             @blur="validate('email')"
@@ -198,6 +213,26 @@ function validate(field: string) {
             class="text-xs"
             v-if="validationErrors.password"
             >{{ validationErrors.password }}</v-label
+          >
+        </div>
+        <div class="mb-4">
+          <label
+            class="block mb-2 text-sm font-bold text-gray-700"
+            for="passwordConfirmation"
+            >Confirm Password:</label
+          >
+          <input
+            class="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+            type="password"
+            id="passwordConfirmation"
+            v-model="userForm.passwordConfirmation"
+            @blur="validate('passwordConfirmation')"
+          />
+          <v-label
+            :label-type="LabelTypes.DANGER"
+            class="text-xs"
+            v-if="validationErrors.passwordConfirmation"
+            >{{ validationErrors.passwordConfirmation }}</v-label
           >
         </div>
         <div class="mb-4">
