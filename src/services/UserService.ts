@@ -55,7 +55,8 @@ export async function postUser(
       return {
         status: err.response.status,
         message: err.message,
-        details: "Couldn't create user.",
+        details:
+          "Couldn't create user. Maybe your username or email is already taken",
       } as HttpErrorResponse;
     });
   return response;
