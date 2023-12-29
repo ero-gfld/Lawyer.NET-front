@@ -6,8 +6,12 @@ import VLabel from "@/components/atoms/VLabel.vue";
 import LabelTypes from "@/constants/LabelTypes";
 import * as Yup from "yup";
 import UserRoles from "@/constants/UserRoles";
+import { useCountryStore } from "@/stores/CountryStore";
 
 const userStore = useUserStore();
+const countryStore = useCountryStore();
+countryStore.fetchCountries();
+
 const customGender = ref("");
 
 const schema = Yup.object().shape({
@@ -89,8 +93,8 @@ function validate(field: string) {
 </script>
 
 <template>
-  <div class="flex justify-center items-center h-screen bg-gray-100">
-    <div class="w-full max-w-xs mt-60">
+  <div class="flex justify-center items-center min-h-screen bg-gray-100">
+    <div class="w-full max-w-xs mt-8">
       <h2 class="mb-6 text-2xl font-bold text-center text-gray-700">
         Register
       </h2>
@@ -279,14 +283,19 @@ function validate(field: string) {
           <label
             class="block mb-2 text-sm font-bold text-gray-700"
             for="countryCode"
-            >Country Code:</label
+            >Country:</label
           >
-          <input
+          <select
             class="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
             id="countryCode"
             v-model="userForm.countryCode"
             @blur="validate('countryCode')"
-          />
+          >
+            <option value="" disabled>Select your country...</option>
+            <option v-for="country in countryStore.countries" :key="country">
+              {{ country.Code }}
+            </option>
+          </select>
           <v-label
             :label-type="LabelTypes.DANGER"
             class="text-xs"
