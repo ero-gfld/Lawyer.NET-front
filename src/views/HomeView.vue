@@ -4,6 +4,7 @@ import VButton from "@/components/atoms/VButton.vue";
 import { OhVueIcon } from "oh-vue-icons";
 import { ref } from "vue";
 import router from "@/router";
+import BlogResult from "@/components/organisms/BlogResult.vue";
 
 const searchTerm = ref("");
 
@@ -136,6 +137,7 @@ function search() {
               </div>
             </div>
           </div>
+          <blog-result />
           <div class="flex flex-wrap items-center mt-16">
             <div class="w-full md:w-5/12 px-4 mr-auto ml-auto">
               <div
