@@ -44,6 +44,11 @@ const routes = [
     component: () => import("@/views/HelpView.vue"),
   },
   {
+    path: "/add-lawyer",
+    name: "AddLawyer",
+    component: () => import("@/views/addLawyer.vue"),
+  },
+  {
     path: "/imprint",
     name: "Imprint",
     component: () => import("@/views/ImprintView.vue"),
