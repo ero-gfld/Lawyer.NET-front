@@ -24,7 +24,7 @@ function onSignIn() {
   schema
     .validate(formData.value, { abortEarly: false })
     .then(() => {
-      loginStore.login(formData.value.password, formData.value.password);
+      loginStore.login(formData.value.username, formData.value.password);
     })
     .catch((err: Yup.ValidationError) => {
       err.inner.forEach((e) => {

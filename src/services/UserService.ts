@@ -40,15 +40,10 @@ export async function postLogin(
 }
 
 export async function postUser(
-  user: RegistrationUserModel,
-  token: string
+  user: RegistrationUserModel
 ): Promise<HttpResponse<UserModel>> {
   const response = await axios
-    .post(`${apiConfig.URL}/api/users/new`, user, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
+    .post(`${apiConfig.URL}/api/users/new`, user)
     .then((res) => {
       return {
         status: res.status,
@@ -60,7 +55,8 @@ export async function postUser(
       return {
         status: err.response.status,
         message: err.message,
-        details: "Couldn't create user.",
+        details:
+          "Couldn't create user. Maybe your username or email is already taken",
       } as HttpErrorResponse;
     });
   return response;
