@@ -49,13 +49,6 @@ watch(() => loginStore.isLoggedIn, updateDropdownItems);
         <v-icon name="fa-question-circle" scale="0.75" class="mr-1" />
         <span>{{ $t("navbar.help") }}</span>
       </router-link>
-      <router-link
-        to="/add-lawyer"
-        class="flex px-4 py-1 font-bold text-primary bg-white rounded-md items-center hover:text-primary-lighter"
-      >
-        <v-icon name="fa-question-circle" scale="0.75" class="mr-1" />
-        <span>{{ $t("navbar.add-lawyer") }}</span>
-      </router-link>
       <nav-item :dropdown-items="dropdownItems" dropdown-class="min-w-[7rem]">
         <v-icon name="fa-regular-user" scale="0.75" class="mr-1" />
         <span>{{

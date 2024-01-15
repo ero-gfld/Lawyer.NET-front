@@ -11,6 +11,10 @@ import {
   postUser,
   putUser,
 } from "@/services/UserService";
+import {
+  photoUpload,
+  getPhoto,
+} from "@/services/PhotoService";
 import { useErrorStore } from "@/stores/ErrorStore";
 import {
   HttpErrorResponse,
@@ -40,19 +44,17 @@ export const useUserStore = defineStore("userStore", {
       }
     },
 
-    async createUser(userData: RegistrationUserModel) {
+    async createUser(userData: UserModel) {
       const response = await postUser(userData);
       if (isHttpSuccessResponse(response)) {
         const success = response as HttpSuccessResponse<UserModel>;
-        this.users.push(success.data);
-        router.push({ name: "Login" });
         return;
       }
       const error = response as HttpErrorResponse;
       useErrorStore().showError(error.message, error.details);
     },
 
-    async updateUser(userId: string, updatedData: ModifiedUserModel) {
+    async updateUser(userId: string, updatedData: UserModel) {
       const token = localStorage.getItem("access_token");
       if (token) {
         const response = await putUser(userId, updatedData, token);
@@ -79,6 +81,30 @@ export const useUserStore = defineStore("userStore", {
         const error = response as HttpErrorResponse;
         useErrorStore().showError(error.message, error.details);
       }
+    },
+
+    async uploadPhoto(file: File, bucketName: string, objectName: string){
+      const token = localStorage.getItem("access_token");
+      if (token) {
+        const response = await photoUpload(file, bucketName, objectName, token);
+        if (isHttpSuccessResponse(response)) {
+          return;
+        }
+        const error = response as HttpErrorResponse;
+        useErrorStore().showError(error.message, error.details);
+      }
+      
+    },
+
+
+    async getFile(photoBucket: string, photoName:string) {
+      const token = localStorage.getItem("access_token");
+      if (!token) {
+        console.error('No access token available');
+        return null; // or a default image path
+      }
+    
+      return await getPhoto(photoBucket, photoName, token);
     },
   },
 });

@@ -1,7 +1,7 @@
 import DayScheduleModel from "@/models/DayScheduleModel";
 
 export type LawyerResultModel = {
-  id: number;
+  id: string;
   firstName: string;
   lastName: string;
   specialization: string;
@@ -10,6 +10,8 @@ export type LawyerResultModel = {
   postalCode: string;
   city: string;
   availabilities: DayScheduleModel[];
+  photoBucket: string;
+  photoName: string;
 };
 
 export default LawyerResultModel;
