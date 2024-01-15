@@ -14,10 +14,16 @@ import {
 
   
   export async function postLawyers(
-    lawyer: LawyerResultModel
+    lawyer: LawyerResultModel,
+    token: string
   ): Promise<HttpResponse<LawyerResultModel>> {
     const response = await axios
-      .post(`${apiConfig.URL}/lawyers`, lawyer)
+      .post(`${apiConfig.URL}/lawyers`, lawyer, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        }
+        })
+
       .then((res) => {
         return {
           status: res.status,

@@ -17,13 +17,15 @@ export async function photoUpload(
     file: File,
     bucketName: string,
     objectName: string,
-    token: string
+    token: string,
+    uuid: string,
   ): Promise<HttpResponse<null>> {
     // Create a FormData instance to hold the file and other form data
     const formData = new FormData();
     formData.append('file', file); // 'file' is the key expected by the Spring controller
     formData.append('bucketName', bucketName); // 'bucketName' as expected by the Spring controller
-    formData.append('objectName', objectName); // 'objectName' as expected by the Spring controller
+    formData.append('objectName', objectName);
+    formData.append('id', uuid); 
   
    
     const response = await axios.post(`${apiConfig.URL}/api/files/upload`, formData, {
@@ -51,9 +53,9 @@ export async function photoUpload(
     return response;
   }
   
-  export async function getPhoto(photoBucket: string, photoName: string, token: string) {
+  export async function getPhoto(photoBucket: string, photoName: string, token: string, id: string) {
     try {
-      const response = await axios.get(`${apiConfig.URL}/api/files/download/image/${photoBucket}/${photoName}`, {
+      const response = await axios.get(`${apiConfig.URL}/api/files/download/image/${photoBucket}/${photoName}/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`
         },
