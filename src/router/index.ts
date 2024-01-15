@@ -25,7 +25,7 @@ const routes = [
   {
     path: "/admin/users",
     name: "AdminUsers",
-    component: () => import("@/views/LoginCRUD.vue"),
+    component: () => import("@/views/ManageUsersView.vue"),
     beforeEnter: () => {
       const loginStore = useLoginStore();
       if (!loginStore.isAdmin()) {
@@ -44,9 +44,15 @@ const routes = [
     component: () => import("@/views/HelpView.vue"),
   },
   {
-    path: "/add-lawyer",
-    name: "AddLawyer",
-    component: () => import("@/views/addLawyer.vue"),
+    path: "/admin/lawyers",
+    name: "AdminLawyers",
+    component: () => import("@/views/ManageLawyersView.vue"),
+    beforeEnter: () => {
+      const loginStore = useLoginStore();
+      if (!loginStore.isAdmin()) {
+        return "/not-found";
+      }
+    },
   },
   {
     path: "/imprint",

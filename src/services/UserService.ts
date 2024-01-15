@@ -40,7 +40,7 @@ export async function postLogin(
 }
 
 export async function postUser(
-  user: RegistrationUserModel
+  user: UserModel
 ): Promise<HttpResponse<UserModel>> {
   const response = await axios
     .post(`${apiConfig.URL}/api/users/new`, user)

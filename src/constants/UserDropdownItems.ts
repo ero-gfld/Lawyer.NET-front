@@ -49,4 +49,9 @@ export const ADMIN_DROPDOWN_ITEMS: ReadonlyArray<DropdownItemOptions> = [
     label: "navbar.admin-users",
     link: "/admin/users",
   },
+  {
+    type: DropdownItemType.Link,
+    label: "navbar.add-lawyer",
+    link: "/admin/lawyers",
+  },
 ];
