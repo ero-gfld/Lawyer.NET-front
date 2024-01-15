@@ -7,6 +7,7 @@ import LabelTypes from "@/constants/LabelTypes";
 import * as Yup from "yup";
 import UserRoles from "@/constants/UserRoles";
 import { useCountryStore } from "@/stores/CountryStore";
+import router from "@/router";
 
 const userStore = useUserStore();
 const countryStore = useCountryStore();
@@ -73,8 +74,9 @@ function onRegister() {
         userForm.value.salutation = customGender.value;
       }
 
-      userStore.createUser(userForm.value);
-    })
+      userStore.createUser(userForm.value).then(() => {
+        router.push({ name: "Login" });
+      });    })
     .catch((err: Yup.ValidationError) => {
       err.inner.forEach((e) => {
         if (e.path) validationErrors.value[e.path] = e.message;

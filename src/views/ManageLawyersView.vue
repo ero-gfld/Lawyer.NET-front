@@ -78,7 +78,7 @@ const isEditMode = ref(false);
 watchEffect(async () => {
   for (const lawyer of lawyers.value) {
     try {
-      const imageUrl = await lawyerStore.getFile(lawyer.photoBucket, lawyer.photoName);
+      const imageUrl = await lawyerStore.getFile(lawyer.photoBucket, lawyer.photoName, lawyer.id);
       lawyerImages.value[lawyer.id] = imageUrl ?? undefined; // Convert null to undefined
     } catch (error) {
       console.error('Error loading image for lawyer:', lawyer.id, error);
@@ -174,7 +174,7 @@ async function uploadFile(uuid: string, fileName: string) {
   }
   
   // Pass the fileName to the uploadPhoto method as well
-  await lawyerStore.uploadPhoto(selectedFile.value, "lawyers", `${uuid}_${fileName}`);
+  await lawyerStore.uploadPhoto(selectedFile.value, "lawyers", fileName, uuid);
 }
 
 
