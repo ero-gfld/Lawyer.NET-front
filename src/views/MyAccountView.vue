@@ -51,7 +51,7 @@ watchEffect(async () => {
       console.log(`Fetching image for user ${userId}`);
       console.log(`photoBucket for user ${userId}: ${userPhotoBucket}`);
       console.log(`photoName for user ${userId}: ${userPhotoName}`);
-      const imageUrl = await userStore.getFile(userPhotoBucket, userPhotoName);
+      const imageUrl = await userStore.getFile(userPhotoBucket, userPhotoName, userId);
       console.log(`Image URL for user ${userId}: ${imageUrl}`);
       userImages.value[userId] = imageUrl ?? undefined; // Convert null to undefined
     } catch (error) {
@@ -113,7 +113,7 @@ async function uploadFile(uuid: string, fileName: string) {
   }
   
   // Pass the fileName to the uploadPhoto method as well
-  await userStore.uploadPhoto(selectedFile.value, "lawyers", `${uuid}_${fileName}`);
+  await userStore.uploadPhoto(selectedFile.value, "lawyers", fileName, uuid);
 }
 
 </script>
