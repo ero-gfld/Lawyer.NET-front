@@ -135,7 +135,7 @@ watchEffect(async () => {
       console.log(`Fetching image for user ${user.id}`);
       console.log(`photoBucket for user ${user.id}: ${user.photoBucket}`);
       console.log(`photoName for user ${user.id}: ${user.photoName}`);
-      const imageUrl = await userStore.getFile(user.photoBucket, user.photoName);
+      const imageUrl = await userStore.getFile(user.photoBucket, user.photoName, user.id);
       console.log(`Image URL for user ${user.id}: ${imageUrl}`);
       userImages.value[user.id] = imageUrl ?? undefined; // Convert null to undefined
     } catch (error) {
@@ -227,7 +227,7 @@ async function submitUser() {
   }
   
   // Pass the fileName to the uploadPhoto method as well
-  await userStore.uploadPhoto(selectedFile.value, "lawyers", `${uuid}_${fileName}`);
+  await userStore.uploadPhoto(selectedFile.value, "lawyers", fileName, uuid);
 }
 
     function deleteUser(userId: string) {

@@ -83,10 +83,10 @@ export const useUserStore = defineStore("userStore", {
       }
     },
 
-    async uploadPhoto(file: File, bucketName: string, objectName: string){
+    async uploadPhoto(file: File, bucketName: string, objectName: string, uuid: string){
       const token = localStorage.getItem("access_token");
       if (token) {
-        const response = await photoUpload(file, bucketName, objectName, token);
+        const response = await photoUpload(file, bucketName, objectName, token, uuid );
         if (isHttpSuccessResponse(response)) {
           return;
         }
@@ -97,14 +97,14 @@ export const useUserStore = defineStore("userStore", {
     },
 
 
-    async getFile(photoBucket: string, photoName:string) {
+    async getFile(photoBucket: string, photoName:string, id:string) {
       const token = localStorage.getItem("access_token");
       if (!token) {
         console.error('No access token available');
         return null; // or a default image path
       }
     
-      return await getPhoto(photoBucket, photoName, token);
+      return await getPhoto(photoBucket, photoName, token, id);
     },
   },
 });
