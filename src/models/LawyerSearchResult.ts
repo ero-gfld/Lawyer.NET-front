@@ -1,7 +1,7 @@
-import LawyerResultModel from "@/models/LawyerSearchModel";
+import LawyerSearchModel from "@/models/LawyerSearchModel";
 
 export type LawyerSearchResult = {
-  results: LawyerResultModel[];
+  results: LawyerSearchModel[];
   totalCount: number;
   totalPages: number;
   page: number;

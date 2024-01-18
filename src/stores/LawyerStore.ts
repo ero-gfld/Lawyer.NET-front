@@ -2,7 +2,6 @@ import { defineStore } from "pinia";
 import { LawyerModel } from "@/models/LawyerModel";
 import {
   deleteLawyers,
-  getLawyerResultBySearchTerm,
   getLawyers,
   postLawyers,
   putLawyers,
@@ -14,20 +13,12 @@ import {
   HttpSuccessResponse,
   isHttpSuccessResponse,
 } from "@/models/HttpResponses/HttpResponse";
-import LawyerSearchResult from "@/models/LawyerSearchResult";
 
 const getAuthToken = () => localStorage.getItem("access_token");
 
 export const useLawyerStore = defineStore("lawyerStore", {
   state: () => ({
-    lawyersInfo: null,
     lawyers: [] as LawyerModel[],
-    lawyerSearch: {
-      results: [],
-      totalCount: 0,
-      totalPages: 0,
-      page: 0,
-    } as LawyerSearchResult,
   }),
   actions: {
     async fetchLawyers() {
@@ -120,25 +111,6 @@ export const useLawyerStore = defineStore("lawyerStore", {
       }
 
       return await getPhoto(photoBucket, photoName, token, id);
-    },
-
-    async searchLawyers(searchTerm: string, page: number) {
-      const token = localStorage.getItem("access_token");
-      if (token) {
-        const response = await getLawyerResultBySearchTerm(
-          searchTerm,
-          page,
-          10,
-          token
-        );
-        if (isHttpSuccessResponse(response)) {
-          const success = response as HttpSuccessResponse<LawyerSearchResult>;
-          this.lawyerSearch = success.data;
-          return;
-        }
-        const error = response as HttpErrorResponse;
-        useErrorStore().showError(error.message, error.details);
-      }
     },
   },
 });

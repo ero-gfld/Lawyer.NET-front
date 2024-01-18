@@ -78,19 +78,21 @@ function formatSpecialization(str: string) {
         :key="date"
       >
         <div class="flex flex-col place-items-center">
-          <v-label class="text-stone-500">{{ getDayOfWeek(date) }}</v-label>
-          <v-label>{{ getFullDay(date) }}</v-label>
+          <v-label class="text-stone-500 font-semibold">{{
+            getDayOfWeek(date)
+          }}</v-label>
+          <v-label class="text-sm">{{ getFullDay(date) }}</v-label>
           <div class="flex flex-col mt-4 gap-y-3">
             <div
               v-for="time in timeslots.slice(0, 5)"
               :key="time"
-              class="text-primary font-semibold bg-primary-lightest border-2 border-primary-lighter rounded-lg px-4"
+              class="text-primary font-semibold text-sm bg-primary-lightest border-2 border-primary-lighter rounded-lg px-4 py-0.5"
             >
               {{ time }}
             </div>
           </div>
           <div v-if="timeslots.length > 5" class="mt-2">
-            <v-label class="text-stone-500 mt-4">
+            <v-label class="text-stone-500">
               +{{ timeslots.length - 5 }}
             </v-label>
           </div>
