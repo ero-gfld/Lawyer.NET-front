@@ -173,16 +173,12 @@
 </template>
 
 <script setup lang="ts">
-import { Ref, ref } from "vue";
+import { ref } from "vue";
 import { v4 as uuidv4 } from "uuid";
 import { LawyerResultModel } from "@/models/LawyerResultModel";
 import { useLawyerStore } from "@/stores/LawyerStore";
 import { storeToRefs } from "pinia";
 import { watchEffect } from "vue";
-import * as Yup from "yup";
-import LabelTypes from "@/constants/LabelTypes";
-import VLabel from "@/components/atoms/VLabel.vue";
-import LawyerSpecializations from "@/constants/LawyerSpecializations";
 
 interface LawyerImages {
   [key: string]: string | null | undefined; // Allowing string, null, and undefined
@@ -221,44 +217,11 @@ const lawyerFormData = ref<LawyerResultModel>({
   postalCode: "",
   city: "",
   availabilities: [],
+
   photoBucket: "",
   photoName: "",
+  // Include additional fields as needed
 });
-
-const validationErrors: Ref<{ [id: string]: string }> = ref({
-  firstName: "",
-  lastName: "",
-  specialization: "",
-  hourlyRate: "",
-  address: "",
-  postalCode: "",
-  city: "",
-});
-
-const schema = Yup.object().shape({
-  firstName: Yup.string().required("First name is required"),
-  lastName: Yup.string().required("Last name is required"),
-  specialization: Yup.string().required("Specialization is required"),
-  hourlyRate: Yup.number()
-    .typeError(() => {
-      return `Hourly Rate is required`;
-    })
-    .required("Hourly Rate is required")
-    .min(1, "Hourly Rate must be a number greater than 0"),
-  address: Yup.string().required("Address is required"),
-  postalCode: Yup.string().required("Postal code is required"),
-  city: Yup.string().required("City is required"),
-});
-
-function validate(field: string) {
-  schema
-    .validateAt(field, lawyerFormData.value)
-    .then(() => (validationErrors.value[field] = ""))
-    .catch((err) => {
-      validationErrors.value[err.path] = err.message;
-    });
-}
-
 const selectedFile = ref<File | null>(null);
 
 // Fetch lawyers
@@ -281,42 +244,44 @@ function handleFileUpload(event: Event) {
 }
 
 // Submit lawyer
+// Submit lawyer
 async function submitLawyer() {
-  schema
-    .validate(lawyerFormData.value, { abortEarly: false })
-    .then(() => {
-      if (isEditMode.value) {
-        if (selectedFile.value) {
-          // If a new file is selected, update photo information
-          const file = selectedFile.value;
-          const fileName = file.name;
-          uploadFile(lawyerFormData.value.id, fileName);
-          lawyerFormData.value.photoBucket = "lawyers";
-          lawyerFormData.value.photoName = `${lawyerFormData.value.id}_${fileName}`;
-        }
-        lawyerStore.updateLawyer(lawyerFormData.value.id, lawyerFormData.value);
-        resetForm();
-        isEditMode.value = false;
-      } else {
-        const uuid = uuidv4();
-        lawyerFormData.value.id = uuid;
-        if (selectedFile.value) {
-          // Handle new lawyer photo upload
-          const file = selectedFile.value;
-          const fileName = file.name;
-          uploadFile(uuid, fileName);
-          lawyerFormData.value.photoBucket = "lawyers";
-          lawyerFormData.value.photoName = `${uuid}_${fileName}`;
-        }
-        lawyerStore.createLawyer(lawyerFormData.value);
-        resetForm();
-      }
-    })
-    .catch((err: Yup.ValidationError) => {
-      err.inner.forEach((e) => {
-        if (e.path) validationErrors.value[e.path] = e.message;
-      });
-    });
+  if (isEditMode.value) {
+    if (!selectedFile.value) {
+      alert("Please select a file to upload.");
+      return;
+    }
+    const file = selectedFile.value; // Get the file from the Ref object
+    const fileName = file.name; // Access the name property of the File object
+    await uploadFile(lawyerFormData.value.id, fileName);
+    lawyerFormData.value.photoName = `${lawyerFormData.value.id}_${fileName}`;
+    await lawyerStore.updateLawyer(
+      lawyerFormData.value.id,
+      lawyerFormData.value
+    );
+    resetForm();
+    isEditMode.value = false;
+  } else {
+    if (!selectedFile.value) {
+      alert("Please select a file to upload.");
+      return;
+    }
+    try {
+      const uuid = uuidv4();
+      const file = selectedFile.value; // Get the file from the Ref object
+      const fileName = file.name; // Access the name property of the File object
+      await uploadFile(uuid, fileName); // Pass fileName as an argument
+      lawyerFormData.value.id = uuid;
+      // Use template literals to construct the photoPath string
+      lawyerFormData.value.photoBucket = "lawyers";
+      lawyerFormData.value.photoName = `${uuid}_${fileName}`;
+      await lawyerStore.createLawyer(lawyerFormData.value);
+      resetForm();
+    } catch (error) {
+      alert("Error uploading file.");
+      console.error("Error uploading file: ", error);
+    }
+  }
 }
 
 // Upload file
@@ -341,6 +306,7 @@ function setCreateMode() {
   resetForm();
 }
 
+// Reset form
 // Reset form
 function resetForm() {
   lawyerFormData.value = {

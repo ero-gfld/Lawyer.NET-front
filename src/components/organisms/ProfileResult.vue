@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { parse, format } from "date-fns";
 import { defineProps } from "vue";
-import LawyerResultModel from "@/models/LawyerResultModel";
+import LawyerSearchModel from "@/models/LawyerSearchModel";
 
 import VButton from "@/components/atoms/VButton.vue";
 import VLabel from "@/components/atoms/VLabel.vue";
 
 const props = defineProps<{
-  profile: LawyerResultModel;
+  profile: LawyerSearchModel;
 }>();
 
 function getDayOfWeek(date: string) {
@@ -18,6 +18,16 @@ function getDayOfWeek(date: string) {
 function getFullDay(date: string) {
   const parsedDate = parse(date, "yyyy-MM-dd", new Date());
   return format(parsedDate, "dd MMMM yyyy");
+}
+
+function formatSpecialization(str: string) {
+  return str
+    .replace(/_/g, " ")
+    .replace(
+      /(\w)(\w*)/g,
+      (_, firstChar, restOfString) =>
+        firstChar.toUpperCase() + restOfString.toLowerCase()
+    );
 }
 </script>
 
@@ -37,7 +47,7 @@ function getFullDay(date: string) {
             `${props.profile.firstName} ${props.profile.lastName}`
           }}</v-label>
           <v-label class="text-md text-stone-700 font-medium">{{
-            props.profile.specialization
+            formatSpecialization(props.profile.specialization)
           }}</v-label>
           <v-label class="text-sm text-stone-500"
             >${{
@@ -62,22 +72,27 @@ function getFullDay(date: string) {
       class="mt-5 flex flex-row justify-between border rounded-lg px-10 py-3"
     >
       <div
-        v-for="schedule in props.profile.availabilities"
-        :key="schedule.date"
+        v-for="[date, timeslots] in Object.entries(
+          props.profile.availableSlots.timeslotsByDate.availabilityTimetable
+        )"
+        :key="date"
       >
         <div class="flex flex-col place-items-center">
-          <v-label class="text-stone-500">{{
-            getDayOfWeek(schedule.date)
-          }}</v-label>
-          <v-label>{{ getFullDay(schedule.date) }}</v-label>
+          <v-label class="text-stone-500">{{ getDayOfWeek(date) }}</v-label>
+          <v-label>{{ getFullDay(date) }}</v-label>
           <div class="flex flex-col mt-4 gap-y-3">
             <div
-              v-for="time in schedule.availabilities"
+              v-for="time in timeslots.slice(0, 5)"
               :key="time"
               class="text-primary font-semibold bg-primary-lightest border-2 border-primary-lighter rounded-lg px-4"
             >
               {{ time }}
             </div>
+          </div>
+          <div v-if="timeslots.length > 5" class="mt-2">
+            <v-label class="text-stone-500 mt-4">
+              +{{ timeslots.length - 5 }}
+            </v-label>
           </div>
         </div>
       </div>
