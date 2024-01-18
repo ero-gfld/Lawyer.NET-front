@@ -3,23 +3,14 @@ import ProfileResult from "@/components/organisms/ProfileResult.vue";
 import { LawyerSearchResult } from "@/models/LawyerSearchResult";
 import { useSearchStore } from "@/stores/SearchStore";
 import { OhVueIcon } from "oh-vue-icons";
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 import { useRoute } from "vue-router";
 
-const page = ref(0);
-const isLoading = ref(true);
-
-const route = useRoute();
-
+const isLoading = ref(false);
 const lawyerResult = ref<LawyerSearchResult>();
 
+const route = useRoute();
 const searchStore = useSearchStore();
-searchStore
-  .searchLawyers(route.params.search.toString(), page.value)
-  .then(() => {
-    lawyerResult.value = searchStore.lawyerSearchResult;
-    isLoading.value = false;
-  });
 
 function isPageActive(page: number) {
   if (!lawyerResult.value) {
@@ -27,6 +18,18 @@ function isPageActive(page: number) {
   }
   return page === lawyerResult.value.page + 1;
 }
+
+function search(page: number) {
+  isLoading.value = true;
+  searchStore.searchLawyers(route.params.search.toString(), page).then(() => {
+    lawyerResult.value = searchStore.lawyerSearchResult;
+    isLoading.value = false;
+  });
+}
+
+onMounted(() => {
+  search(0);
+});
 </script>
 
 <template>
@@ -49,19 +52,25 @@ function isPageActive(page: number) {
         />
       </div>
       <div class="flex justify-center gap-x-3 mb-5">
-        <button :disabled="page <= 0">
+        <button
+          @click="search(lawyerResult.page - 1)"
+          :disabled="lawyerResult.page <= 0"
+        >
           <oh-vue-icon name="la-angle-left-solid" />
         </button>
         <button
           v-for="page in lawyerResult.totalPages"
           :key="page"
           :disabled="isPageActive(page)"
-          :class="isPageActive(page) ? 'text-gray-600' : 'bg-white'"
-          @click="() => {}"
+          :class="isPageActive(page) ? 'text-gray-600 font-bold' : 'bg-white'"
+          @click="search(page - 1)"
         >
           {{ `Page ${page}` }}
         </button>
-        <button :disabled="page + 2 > lawyerResult.totalPages">
+        <button
+          @click="search(lawyerResult.page + 1)"
+          :disabled="lawyerResult.page + 1 >= lawyerResult.totalPages"
+        >
           <oh-vue-icon name="la-angle-right-solid" />
         </button>
       </div>
