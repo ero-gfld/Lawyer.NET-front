@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { parse, format } from "date-fns";
-import { defineProps } from "vue";
+import { defineProps, ref } from "vue";
 import LawyerSearchModel from "@/models/LawyerSearchModel";
 
 import VButton from "@/components/atoms/VButton.vue";
@@ -9,6 +9,10 @@ import VLabel from "@/components/atoms/VLabel.vue";
 const props = defineProps<{
   profile: LawyerSearchModel;
 }>();
+
+const timetable = ref(
+  props.profile.availableSlots.timeslotsByDate.availabilityTimetable
+);
 
 function getDayOfWeek(date: string) {
   const parsedDate = parse(date, "yyyy-MM-dd", new Date());
@@ -28,6 +32,20 @@ function formatSpecialization(str: string) {
       (_, firstChar, restOfString) =>
         firstChar.toUpperCase() + restOfString.toLowerCase()
     );
+}
+
+function filledTimetable(): [string, string[]] {
+  const newTimetable = timetable.value;
+  for (const [date, timeslots] of Object.entries(newTimetable)) {
+    console.log(date);
+    if (typeof timeslots === "string") {
+      break;
+    }
+    for (let i = timeslots.length; i < 5; i++) {
+      timeslots.push("--:--");
+    }
+  }
+  return newTimetable;
 }
 </script>
 
@@ -68,33 +86,36 @@ function formatSpecialization(str: string) {
         </div>
       </div>
     </div>
-    <div
-      class="mt-5 flex flex-row justify-between border rounded-lg px-10 py-3"
-    >
-      <div
-        v-for="[date, timeslots] in Object.entries(
-          props.profile.availableSlots.timeslotsByDate.availabilityTimetable
-        )"
-        :key="date"
-      >
-        <div class="flex flex-col place-items-center">
-          <v-label class="text-stone-500 font-semibold">{{
-            getDayOfWeek(date)
-          }}</v-label>
-          <v-label class="text-sm">{{ getFullDay(date) }}</v-label>
-          <div class="flex flex-col mt-4 gap-y-3">
-            <div
-              v-for="time in timeslots.slice(0, 5)"
-              :key="time"
-              class="text-primary font-semibold text-sm bg-primary-lightest border-2 border-primary-lighter rounded-lg px-4 py-0.5"
-            >
-              {{ time }}
+    <div class="mt-5 border rounded-lg px-10 py-3">
+      <div class="flex flex-row justify-between">
+        <div
+          v-for="[date, timeslots] in Object.entries(filledTimetable())"
+          :key="date"
+        >
+          <div class="flex flex-col place-items-center">
+            <v-label class="text-stone-500 font-semibold">{{
+              getDayOfWeek(date)
+            }}</v-label>
+            <v-label class="text-sm">{{ getFullDay(date) }}</v-label>
+            <div class="flex flex-col mt-4 gap-y-3">
+              <div
+                v-for="time in timeslots.slice(0, 5)"
+                :key="time"
+                class="font-semibold text-sm border-2 rounded-lg px-4 py-0.5"
+                :class="
+                  time === '--:--'
+                    ? 'bg-stone-100 text-gray-400'
+                    : 'bg-primary-lightest border-primary-lighter text-primary'
+                "
+              >
+                {{ time }}
+              </div>
             </div>
-          </div>
-          <div v-if="timeslots.length > 5" class="mt-2">
-            <v-label class="text-stone-500">
-              +{{ timeslots.length - 5 }}
-            </v-label>
+            <div v-if="timeslots.length > 5" class="mt-2">
+              <v-label class="text-stone-500">
+                +{{ timeslots.length - 5 }}
+              </v-label>
+            </div>
           </div>
         </div>
       </div>
