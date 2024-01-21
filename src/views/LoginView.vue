@@ -4,7 +4,7 @@ import { Ref, ref } from "vue";
 import * as Yup from "yup";
 
 const schema = Yup.object().shape({
-  username: Yup.string().required("Username is required"),
+  username: Yup.string().required("Username/Email is required"),
   password: Yup.string().required("Password is required"),
 });
 
@@ -55,14 +55,13 @@ function validate(field: string) {
           <label
             class="block mb-2 text-sm font-bold text-gray-700"
             for="username"
-            >Username:</label
+            >Username/Email:</label
           >
           <input
             class="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
             type="text"
             id="username"
             v-model="formData.username"
-            placeholder="Enter username"
             @blur="validate('username')"
           />
           <span class="text-xs text-red-500" v-if="!!errors.username">
@@ -80,7 +79,6 @@ function validate(field: string) {
             type="password"
             id="password"
             v-model="formData.password"
-            placeholder="Enter password"
             @blur="validate('password')"
           />
           <span class="text-xs text-red-500" v-if="!!errors.password">
