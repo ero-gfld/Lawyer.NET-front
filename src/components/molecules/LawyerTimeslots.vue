@@ -16,6 +16,8 @@ const INITIAL_TIMESLOTS_SHOWN = 5;
 
 const timeslotsShown = ref(INITIAL_TIMESLOTS_SHOWN);
 
+const currentTimeslots = ref(props.timeslots);
+
 const appointmentStore = useAppointmentStore();
 
 function getDayOfWeek(date: string) {
@@ -37,6 +39,21 @@ function getEmptySlots(timeslots: string[]) {
     return Array(timeslotsShown.value - timeslots.length).fill("--:--");
   }
 }
+
+function showModal(time: string, date: string, lawyer: LawyerSearchModel) {
+  appointmentStore.showAppointment(
+    time,
+    date,
+    lawyer.id,
+    `${lawyer.firstName} ${lawyer.lastName}`,
+    (isBooked) => {
+      if (isBooked) {
+        currentTimeslots.value.splice(currentTimeslots.value.indexOf(time), 1);
+        timeslotsShown.value = INITIAL_TIMESLOTS_SHOWN;
+      }
+    }
+  );
+}
 </script>
 
 <template>
@@ -47,35 +64,28 @@ function getEmptySlots(timeslots: string[]) {
     <v-label class="text-sm">{{ getFullDay(props.date) }}</v-label>
     <div class="flex flex-col mt-4 gap-y-3">
       <div
-        v-for="time in timeslots.slice(0, timeslotsShown)"
+        v-for="time in currentTimeslots.slice(0, timeslotsShown)"
         :key="time"
         class="text-center"
       >
         <v-button
           button-type="timeslot"
-          @click="
-            appointmentStore.showAppointment(
-              time,
-              date,
-              lawyer.id,
-              `${lawyer.firstName} ${lawyer.lastName}`
-            )
-          "
+          @click="showModal(time, props.date, props.lawyer)"
         >
           {{ time }}
         </v-button>
       </div>
-      <div v-for="empty in getEmptySlots(timeslots)" :key="empty">
+      <div v-for="empty in getEmptySlots(currentTimeslots)" :key="empty">
         <div class="font-semibold text-gray-400 px-4 py-0.5">--:--</div>
       </div>
     </div>
-    <div v-if="timeslots.length >= timeslotsShown" class="mt-2">
+    <div v-if="currentTimeslots.length > timeslotsShown" class="mt-2">
       <v-button
         v-if="timeslotsShown === INITIAL_TIMESLOTS_SHOWN"
         @click="showFullTimetable"
         button-type="link"
       >
-        +{{ timeslots.length - timeslotsShown }}
+        +{{ currentTimeslots.length - timeslotsShown }}
       </v-button>
       <v-button
         v-else

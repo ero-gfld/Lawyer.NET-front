@@ -44,7 +44,11 @@ const appointmentStore = useAppointmentStore();
                 </p>
               </div>
               <div class="space-x-3">
-                <v-button>
+                <v-button
+                  @click="
+                    async () => await appointmentStore.confirmAppointment()
+                  "
+                >
                   {{ $t("appointment-confirmation.confirm") }}
                 </v-button>
                 <v-button
