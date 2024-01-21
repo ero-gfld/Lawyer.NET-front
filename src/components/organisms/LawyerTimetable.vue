@@ -57,9 +57,9 @@ function filledTimetable(): [string, string[]] {
             <v-button button-type="timeslot" v-if="time !== EMPTY_TIMESLOT">
               {{ time }}
             </v-button>
-            <span v-else class="font-semibold text-gray-400">
+            <div v-else class="font-semibold text-gray-400 px-4 py-0.5">
               {{ time }}
-            </span>
+            </div>
           </div>
         </div>
         <div v-if="timeslots.length > 5" class="mt-2">
