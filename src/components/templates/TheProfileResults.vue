@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import LawyerSearchResult from "@/models/LawyerSearchResult";
-import ProfileResult from "@/components/organisms/ProfileResult.vue";
+import ProfileResult from "@/components/templates/ProfileResult.vue";
 import PageSelection from "@/components/organisms/PageSelection.vue";
 import { defineProps } from "vue";
 

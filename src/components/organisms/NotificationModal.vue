@@ -46,4 +46,3 @@ function closeNotification() {
     </div>
   </div>
 </template>
-@/stores/NotificationStore
