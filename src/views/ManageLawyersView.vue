@@ -286,38 +286,30 @@ async function submitLawyer() {
     .validate(lawyerFormData.value, { abortEarly: false })
     .then(() => {
       if (isEditMode.value) {
-        if (!selectedFile.value) {
-          alert("Please select a file to upload.");
-          return;
+        if (selectedFile.value) {
+          // If a new file is selected, update photo information
+          const file = selectedFile.value;
+          const fileName = file.name;
+          uploadFile(lawyerFormData.value.id, fileName);
+          lawyerFormData.value.photoBucket = "lawyers";
+          lawyerFormData.value.photoName = `${lawyerFormData.value.id}_${fileName}`;
         }
-        const file = selectedFile.value; // Get the file from the Ref object
-        const fileName = file.name; // Access the name property of the File object
-        uploadFile(lawyerFormData.value.id, fileName);
-        lawyerFormData.value.photoBucket = "lawyers";
-        lawyerFormData.value.photoName = `${lawyerFormData.value.id}_${fileName}`;
         lawyerStore.updateLawyer(lawyerFormData.value.id, lawyerFormData.value);
         resetForm();
         isEditMode.value = false;
       } else {
-        if (!selectedFile.value) {
-          alert("Please select a file to upload.");
-          return;
-        }
-        try {
-          const uuid = uuidv4();
-          const file = selectedFile.value; // Get the file from the Ref object
-          const fileName = file.name; // Access the name property of the File object
-          uploadFile(uuid, fileName); // Pass fileName as an argument
-          lawyerFormData.value.id = uuid;
-          // Use template literals to construct the photoPath string
+        const uuid = uuidv4();
+        lawyerFormData.value.id = uuid;
+        if (selectedFile.value) {
+          // Handle new lawyer photo upload
+          const file = selectedFile.value;
+          const fileName = file.name;
+          uploadFile(uuid, fileName);
           lawyerFormData.value.photoBucket = "lawyers";
           lawyerFormData.value.photoName = `${uuid}_${fileName}`;
-          lawyerStore.createLawyer(lawyerFormData.value);
-          resetForm();
-        } catch (error) {
-          alert("Error uploading file.");
-          console.error("Error uploading file: ", error);
         }
+        lawyerStore.createLawyer(lawyerFormData.value);
+        resetForm();
       }
     })
     .catch((err: Yup.ValidationError) => {
