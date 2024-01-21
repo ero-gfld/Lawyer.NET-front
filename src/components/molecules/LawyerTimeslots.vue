@@ -1,10 +1,13 @@
 <script setup lang="ts">
 import VButton from "@/components/atoms/VButton.vue";
 import VLabel from "@/components/atoms/VLabel.vue";
+import LawyerSearchModel from "@/models/LawyerSearchModel";
+import { useAppointmentStore } from "@/stores/AppointmentStore";
 import { parse, format } from "date-fns";
 import { defineProps, ref } from "vue";
 
 const props = defineProps<{
+  lawyer: LawyerSearchModel;
   date: string;
   timeslots: string[];
 }>();
@@ -12,6 +15,8 @@ const props = defineProps<{
 const INITIAL_TIMESLOTS_SHOWN = 5;
 
 const timeslotsShown = ref(INITIAL_TIMESLOTS_SHOWN);
+
+const appointmentStore = useAppointmentStore();
 
 function getDayOfWeek(date: string) {
   const parsedDate = parse(date, "yyyy-MM-dd", new Date());
@@ -46,7 +51,17 @@ function getEmptySlots(timeslots: string[]) {
         :key="time"
         class="text-center"
       >
-        <v-button button-type="timeslot">
+        <v-button
+          button-type="timeslot"
+          @click="
+            appointmentStore.showAppointment(
+              time,
+              date,
+              lawyer.id,
+              `${lawyer.firstName} ${lawyer.lastName}`
+            )
+          "
+        >
           {{ time }}
         </v-button>
       </div>

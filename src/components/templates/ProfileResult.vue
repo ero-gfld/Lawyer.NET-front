@@ -14,6 +14,7 @@ const props = defineProps<{
     <lawyer-information :profile="props.profile" />
     <lawyer-timetable
       class="mt-5 px-10 py-3 border rounded-xl"
+      :lawyer="props.profile"
       :timetable="
         props.profile.availableSlots.timeslotsByDate.availabilityTimetable
       "

@@ -12,5 +12,10 @@
   "profile.result.check-profile": "Check profile",
   "profile.result.count": "There is {count} results for the search \"{searchTerm}\"",
   "profile.result.no-results": "No results found",
-  "profile.result.no-results-description": "There is no results for the search. Try to change the search term."
+  "profile.result.no-results-description": "There is no results for the search. Try to change the search term.",
+  "appointment-confirmation.title": "Appointment confirmation",
+  "appointment-confirmation.description": "You are about to book an appointment with {lawyerName} on {date} at {time}.",
+  "appointment-confirmation.proceed": "Are you sure you want to proceed?",
+  "appointment-confirmation.confirm": "Confirm",
+  "appointment-confirmation.cancel": "Cancel"
 }
