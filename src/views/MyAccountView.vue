@@ -27,7 +27,7 @@ const editMode = ref(false);
 fetchUser();
 
 const userFormData = ref<UserModel>({
-  id: "", // Add an appropriate value for the user's ID
+  id: "", 
   salutation: "",
   username: "",
   firstName: "",
@@ -35,7 +35,7 @@ const userFormData = ref<UserModel>({
   email: "",
   countryCode: "",
   role: "",
-  appointments: [], // Add an empty array or appropriate data for user appointments
+  appointments: [], 
   photoBucket: "",
   photoName: "",
   password: "",
@@ -115,6 +115,7 @@ watchEffect(async () => {
   }
 });
 
+
 async function fetchUser() {
   console.log("fetchUser method called");
   await loginStore.fetchUser();
@@ -142,20 +143,24 @@ function handleFileUpload(event: Event) {
 async function submitUser() {
   schema
     .validate(userFormData.value, { abortEarly: false })
-    .then(() => {
-      if (!selectedFile.value) {
-        alert("Please select a file to upload.");
-        return;
+    .then(async () => {
+      // Check if a new file is selected for upload
+      if (selectedFile.value) {
+        const file = selectedFile.value;
+        const fileName = file.name;
+
+        // Upload new file and update photo information
+        await uploadFile(userFormData.value.id, fileName);
+        userFormData.value.photoBucket = "lawyers";
+        userFormData.value.photoName = `${userFormData.value.id}_${fileName}`;
       }
-      const file = selectedFile.value; // Get the file from the Ref object
-      const fileName = file.name; // Access the name property of the File object
-      uploadFile(userFormData.value.id, fileName);
-      userFormData.value.photoBucket = "lawyers";
-      userFormData.value.photoName = `${userFormData.value.id}_${fileName}`;
-      userStore.updateUser(userFormData.value.id, userFormData.value);
+
+      // Update user information
+      await userStore.updateUser(userFormData.value.id, userFormData.value);
+      await fetchUser();
     })
     .catch((err: Yup.ValidationError) => {
-      console.log("error");
+      console.error("Validation error:", err);
       err.inner.forEach((e) => {
         if (e.path) validationErrors.value[e.path] = e.message;
       });
@@ -164,12 +169,16 @@ async function submitUser() {
 
 async function uploadFile(uuid: string, fileName: string) {
   if (!selectedFile.value) {
-    alert("No file selected for upload.");
-    return Promise.reject("No file selected for upload.");
+    return; // Exit the function if no file is selected
   }
 
-  // Pass the fileName to the uploadPhoto method as well
-  await userStore.uploadPhoto(selectedFile.value, "lawyers", fileName, uuid);
+  try {
+    // Proceed with the file upload
+    await userStore.uploadPhoto(selectedFile.value, "lawyers", fileName, uuid);
+  } catch (error) {
+    console.error("Error uploading file: ", error);
+    throw error; // Re-throw the error for further handling if needed
+  }
 }
 </script>
 
@@ -310,7 +319,7 @@ async function uploadFile(uuid: string, fileName: string) {
             type="submit"
             class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
           >
-            "Update"
+            Update
           </button>
         </form>
       </div>

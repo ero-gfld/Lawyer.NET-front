@@ -325,38 +325,30 @@ async function submitUser() {
     .validate(userFormData.value, { abortEarly: false })
     .then(() => {
       if (isEditMode.value) {
-        if (!selectedFile.value) {
-          alert("Please select a file to upload.");
-          return;
+        if (selectedFile.value) {
+          // If a new file is selected, update photo information
+          const file = selectedFile.value;
+          const fileName = file.name;
+          uploadFile(userFormData.value.id, fileName);
+          userFormData.value.photoBucket = "lawyers";
+          userFormData.value.photoName = `${userFormData.value.id}_${fileName}`;
         }
-        const file = selectedFile.value; // Get the file from the Ref object
-        const fileName = file.name; // Access the name property of the File object
-        uploadFile(userFormData.value.id, fileName);
-        userFormData.value.photoBucket = "lawyers";
-        userFormData.value.photoName = `${userFormData.value.id}_${fileName}`;
         userStore.updateUser(userFormData.value.id, userFormData.value);
         resetForm();
         isEditMode.value = false;
       } else {
-        if (!selectedFile.value) {
-          alert("Please select a file to upload.");
-          return;
-        }
-        try {
-          const uuid = uuidv4();
-          const file = selectedFile.value; // Get the file from the Ref object
-          const fileName = file.name; // Access the name property of the File object
-          uploadFile(uuid, fileName); // Pass fileName as an argument
-          userFormData.value.id = uuid;
-          // Use template literals to construct the photoPath string
+        const uuid = uuidv4();
+        userFormData.value.id = uuid;
+        if (selectedFile.value) {
+          // Handle new user photo upload
+          const file = selectedFile.value;
+          const fileName = file.name;
+          uploadFile(uuid, fileName);
           userFormData.value.photoBucket = "lawyers";
           userFormData.value.photoName = `${uuid}_${fileName}`;
-          userStore.createUser(userFormData.value);
-          resetForm();
-        } catch (error) {
-          alert("Error uploading file.");
-          console.error("Error uploading file: ", error);
         }
+        userStore.createUser(userFormData.value);
+        resetForm();
       }
     })
     .catch((err: Yup.ValidationError) => {
