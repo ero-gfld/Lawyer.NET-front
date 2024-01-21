@@ -3,6 +3,7 @@ enum ButtonTypes {
   SECONDARY = "secondary",
   ICON = "icon",
   TIMESLOT = "timeslot",
+  LINK = "link",
   NONE = "none",
 }
 

@@ -9,7 +9,9 @@ const props = defineProps<{
   timeslots: string[];
 }>();
 
-const timeslotsShown = ref(5);
+const INITIAL_TIMESLOTS_SHOWN = 5;
+
+const timeslotsShown = ref(INITIAL_TIMESLOTS_SHOWN);
 
 function getDayOfWeek(date: string) {
   const parsedDate = parse(date, "yyyy-MM-dd", new Date());
@@ -19,6 +21,10 @@ function getDayOfWeek(date: string) {
 function getFullDay(date: string) {
   const parsedDate = parse(date, "yyyy-MM-dd", new Date());
   return format(parsedDate, "dd MMMM yyyy");
+}
+
+function showFullTimetable() {
+  timeslotsShown.value = props.timeslots.length;
 }
 
 function getEmptySlots(timeslots: string[]) {
@@ -48,10 +54,20 @@ function getEmptySlots(timeslots: string[]) {
         <div class="font-semibold text-gray-400 px-4 py-0.5">--:--</div>
       </div>
     </div>
-    <div v-if="timeslots.length > timeslotsShown" class="mt-2">
-      <v-label class="text-stone-500">
+    <div v-if="timeslots.length >= timeslotsShown" class="mt-2">
+      <v-button
+        v-if="timeslotsShown === INITIAL_TIMESLOTS_SHOWN"
+        @click="showFullTimetable"
+        button-type="link"
+      >
         +{{ timeslots.length - timeslotsShown }}
-      </v-label>
+      </v-button>
+      <v-button
+        v-else
+        @click="timeslotsShown = INITIAL_TIMESLOTS_SHOWN"
+        button-type="link"
+        >Show less</v-button
+      >
     </div>
   </div>
 </template>

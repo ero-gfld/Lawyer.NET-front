@@ -24,6 +24,8 @@ function getClass() {
       return "text-primary hover:text-primary-light active:text-primary-lightest disabled:text-primary-lightest";
     case ButtonTypes.TIMESLOT:
       return "font-semibold text-sm border-2 rounded-lg px-4 py-0.5 bg-primary-lightest border-primary-lighter text-primary hover:bg-primary-lighter hover:text-primary-lightest";
+    case ButtonTypes.LINK:
+      return "text-primary underline hover:text-primary-light active:text-primary-lightest disabled:text-primary-lightest";
     case ButtonTypes.NONE:
       return "";
   }
