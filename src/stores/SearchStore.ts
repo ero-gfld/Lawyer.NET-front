@@ -9,6 +9,8 @@ import {
 import LawyerSearchResult from "@/models/LawyerSearchResult";
 import LawyerSearchModel from "@/models/LawyerSearchModel";
 
+const config = require("@/config/api-config.json");
+
 const getAuthToken = () => localStorage.getItem("access_token");
 
 export const useSearchStore = defineStore("lawyerStore", {
@@ -27,7 +29,7 @@ export const useSearchStore = defineStore("lawyerStore", {
         const response = await getLawyerResultBySearchTerm(
           searchTerm,
           page,
-          2,
+          config.NUMBER_OF_RESULTS_PER_PAGE,
           token
         );
         if (isHttpSuccessResponse(response)) {
