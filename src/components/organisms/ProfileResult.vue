@@ -52,7 +52,7 @@ function filledTimetable(): [string, string[]] {
 </script>
 
 <template>
-  <div class="profile border p-5">
+  <div class="border border-gray-300 p-5">
     <div class="recap flex flex-row">
       <div class="pr-5">
         <img
@@ -88,7 +88,7 @@ function filledTimetable(): [string, string[]] {
         </div>
       </div>
     </div>
-    <div class="mt-5 border rounded-lg px-10 py-3">
+    <div class="mt-5 px-10 py-3 border rounded-xl">
       <div class="flex flex-row justify-between">
         <div
           v-for="[date, timeslots] in Object.entries(filledTimetable())"
