@@ -1,5 +1,5 @@
 import LawyerResultModel from "@/models/LawyerResultModel";
-
+/*
 export const MOCK_LAWYERS: ReadonlyArray<LawyerResultModel> = [
   {
     id: 1,
@@ -76,3 +76,4 @@ export const MOCK_LAWYERS: ReadonlyArray<LawyerResultModel> = [
     ],
   },
 ];
+*/
