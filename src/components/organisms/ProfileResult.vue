@@ -10,6 +10,8 @@ const props = defineProps<{
   profile: LawyerSearchModel;
 }>();
 
+const emptyString = "--:--";
+
 const timetable = ref(
   props.profile.availableSlots.timeslotsByDate.availabilityTimetable
 );
@@ -42,7 +44,7 @@ function filledTimetable(): [string, string[]] {
       break;
     }
     for (let i = timeslots.length; i < 5; i++) {
-      timeslots.push("--:--");
+      timeslots.push(emptyString);
     }
   }
   return newTimetable;
@@ -101,14 +103,17 @@ function filledTimetable(): [string, string[]] {
               <div
                 v-for="time in timeslots.slice(0, 5)"
                 :key="time"
-                class="font-semibold text-sm border-2 rounded-lg px-4 py-0.5"
-                :class="
-                  time === '--:--'
-                    ? 'bg-stone-100 text-gray-400'
-                    : 'bg-primary-lightest border-primary-lighter text-primary'
-                "
+                class="text-center"
               >
-                {{ time }}
+                <button
+                  v-if="time !== emptyString"
+                  class="font-semibold text-sm border-2 rounded-lg px-4 py-0.5 bg-primary-lightest border-primary-lighter text-primary"
+                >
+                  {{ time }}
+                </button>
+                <span v-else class="font-semibold text-gray-400">
+                  {{ time }}
+                </span>
               </div>
             </div>
             <div v-if="timeslots.length > 5" class="mt-2">
