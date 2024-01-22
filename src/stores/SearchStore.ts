@@ -13,7 +13,7 @@ const config = require("@/config/api-config.json");
 
 const getAuthToken = () => localStorage.getItem("access_token");
 
-export const useSearchStore = defineStore("lawyerStore", {
+export const useSearchStore = defineStore("searchStore", {
   state: () => ({
     lawyerSearchResult: {
       results: [] as LawyerSearchModel[],
