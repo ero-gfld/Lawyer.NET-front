@@ -27,7 +27,7 @@ const editMode = ref(false);
 fetchUser();
 
 const userFormData = ref<UserModel>({
-  id: "", 
+  id: "",
   salutation: "",
   username: "",
   firstName: "",
@@ -35,7 +35,7 @@ const userFormData = ref<UserModel>({
   email: "",
   countryCode: "",
   role: "",
-  appointments: [], 
+  appointments: [],
   photoBucket: "",
   photoName: "",
   password: "",
@@ -115,7 +115,6 @@ watchEffect(async () => {
   }
 });
 
-
 async function fetchUser() {
   console.log("fetchUser method called");
   await loginStore.fetchUser();
@@ -183,8 +182,12 @@ async function uploadFile(uuid: string, fileName: string) {
 </script>
 
 <template>
-  <div class="grid grid-cols-5 mx-10 p-8 bg-gray-100 h-[calc(100vh-4rem)]">
-    <div>
+  <div
+    class="grid grid-cols-1 lg:grid-cols-5 gap-4 mx-4 lg:mx-10 p-4 lg:p-8 min-h-screen"
+  >
+    <div
+      class="col-span-1 lg:col-span-2 flex flex-col justify-center items-center"
+    >
       <img
         :src="
           userImages[loginStore.user?.id || 'defaultId'] ||
@@ -193,8 +196,8 @@ async function uploadFile(uuid: string, fileName: string) {
         alt="User Avatar"
         class="rounded-full mb-4 h-40 w-40 object-cover"
       />
-      <div class="w-min">
-        <h2 class="text-lg font-bold">
+      <div class="text-center">
+        <h2 class="text-lg font-bold mb-2">
           {{ loginStore.user?.username }}
           <oh-vue-icon
             v-if="!editMode"
@@ -203,12 +206,13 @@ async function uploadFile(uuid: string, fileName: string) {
             class="cursor-pointer text-primary hover:text-primary-light active:text-primary-lighter"
           />
         </h2>
-        <div class="border-gray-300 border-b my-2" />
-        <p class="font-semibold">
+        <p class="font-semibold mb-1">
           {{ `${loginStore.user?.firstName} ${loginStore.user?.lastName}` }}
         </p>
-        <p class="text-gray-500">{{ loginStore.user?.email }}</p>
-        <form @submit.prevent="submitUser" class="grid grid-cols-1 gap-4">
+        <p class="text-gray-500 mb-4">{{ loginStore.user?.email }}</p>
+      </div>
+      <form @submit.prevent="submitUser" class="w-full max-w-md mx-auto">
+        <div class="flex flex-col gap-4">
           <input
             class="shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             v-model="userFormData.username"
@@ -321,24 +325,24 @@ async function uploadFile(uuid: string, fileName: string) {
           >
             Update
           </button>
-        </form>
-      </div>
-
+        </div>
+      </form>
       <v-button
         v-if="editMode"
         @click="editMode = false"
-        class="mt-8 px-4 py-2 bg-blue-500 text-white rounded-md"
+        class="mt-4 px-4 py-2 bg-blue-500 text-white rounded-md"
       >
         Save
       </v-button>
     </div>
 
-    <div class="flex flex-col col-span-4">
-      <h3 class="text-xl font-bold mb-4">My appointments</h3>
-      <div class="grid border border-gray-300 grow place-content-center">
+    <div class="col-span-1 lg:col-span-3 flex flex-col">
+      <h3 class="text-xl font-bold mb-4">My Appointments</h3>
+      <div class="grid border border-gray-300 place-content-center">
         <no-appointments-message
           v-if="loginStore.user?.appointments.length === 0"
         />
+        <!-- Hier können weitere Terminelemente eingefügt werden -->
       </div>
     </div>
   </div>

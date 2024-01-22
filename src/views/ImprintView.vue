@@ -1,11 +1,11 @@
 <script setup lang="ts" />
 
 <template>
-  <div class="container mx-auto p-14 bg-gray-100">
+  <div class="container mx-auto p-8 lg:p-14">
     <h1 class="text-4xl font-bold mb-8">Imprint</h1>
 
     <!-- Company Information -->
-    <div class="mb-8 bg-white p-10 rounded-lg shadow-md w-1/2">
+    <div class="mb-8 bg-gray-50 p-10 rounded-lg shadow-xl lg:w-1/2">
       <h2 class="text-3xl font-semibold text-blue-600 mb-4">
         Company Information
       </h2>
@@ -32,7 +32,7 @@
     </div>
 
     <!-- Legal Representative -->
-    <div class="mb-8 bg-white p-10 rounded-lg shadow-md w-1/2">
+    <div class="mb-8 bg-gray-50 p-10 rounded-lg shadow-xl lg:w-1/2">
       <h2 class="text-3xl font-semibold text-blue-600 mb-4">
         Legal Representative
       </h2>
@@ -49,7 +49,7 @@
     </div>
 
     <!-- Trade Register Information -->
-    <div class="bg-white p-10 rounded-lg shadow-md w-1/2">
+    <div class="mb-8 bg-gray-50 p-10 rounded-lg shadow-xl lg:w-1/2">
       <h2 class="text-3xl font-semibold text-blue-600 mb-4">
         Trade Register Information
       </h2>

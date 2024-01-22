@@ -4,14 +4,14 @@ import FAQ_CONTENT from "@/constants/FaqContent";
 </script>
 
 <template>
-  <div class="container mx-auto p-14 bg-gray-100">
+  <div class="container mx-auto p-8 lg:p-14">
     <h1 class="text-4xl font-bold mb-8">Help and Support</h1>
 
     <!-- FAQ Sections -->
     <div
       v-for="(faqSection, index) in FAQ_CONTENT"
       :key="index"
-      class="mb-8 bg-white p-10 rounded-lg shadow-md w-3/4"
+      class="mb-8 bg-gray-50 p-10 rounded-lg shadow-xl lg:w-1/2"
     >
       <h2 class="text-3xl font-semibold text-blue-600 mb-4">
         {{ faqSection.title }}

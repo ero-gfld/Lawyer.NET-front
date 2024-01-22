@@ -1,7 +1,6 @@
 <template>
   <div class="container mx-auto p-6">
     <h1 class="text-3xl font-bold mb-6">Lawyer Management</h1>
-
     <div class="flex space-x-4 mb-6">
       <button
         class="bg-blue-600 hover:bg-blue-800 text-white font-bold py-3 px-6 rounded"
@@ -16,7 +15,6 @@
         Add New Lawyer
       </button>
     </div>
-
     <div v-if="lawyers.length > 0">
       <ul class="list-disc pl-5 mb-6">
         <li v-for="lawyer in lawyers" :key="lawyer.id" class="mb-4">
@@ -44,7 +42,6 @@
         </li>
       </ul>
     </div>
-
     <div class="mt-6">
       <h2 class="text-2xl font-bold mb-5">
         {{ isEditMode ? "Edit Lawyer" : "Add Lawyer" }}
@@ -171,26 +168,25 @@
     </div>
   </div>
 </template>
-
 <script setup lang="ts">
-import { ref } from "vue";
+import { Ref, ref } from "vue";
 import { v4 as uuidv4 } from "uuid";
-import { LawyerResultModel } from "@/models/LawyerResultModel";
+import LawyerModel from "@/models/LawyerModel";
 import { useLawyerStore } from "@/stores/LawyerStore";
 import { storeToRefs } from "pinia";
 import { watchEffect } from "vue";
-
+import * as Yup from "yup";
+import LabelTypes from "@/constants/LabelTypes";
+import VLabel from "@/components/atoms/VLabel.vue";
+import LawyerSpecializations from "@/constants/LawyerSpecializations";
 interface LawyerImages {
   [key: string]: string | null | undefined; // Allowing string, null, and undefined
 }
-
 const lawyerImages = ref<LawyerImages>({});
-
 // States
 const lawyerStore = useLawyerStore();
 const { lawyers } = storeToRefs(lawyerStore);
 const isEditMode = ref(false);
-
 watchEffect(async () => {
   for (const lawyer of lawyers.value) {
     try {
@@ -206,8 +202,7 @@ watchEffect(async () => {
     }
   }
 });
-
-const lawyerFormData = ref<LawyerResultModel>({
+const lawyerFormData = ref<LawyerModel>({
   id: "",
   firstName: "",
   lastName: "",
@@ -217,96 +212,113 @@ const lawyerFormData = ref<LawyerResultModel>({
   postalCode: "",
   city: "",
   availabilities: [],
-
   photoBucket: "",
   photoName: "",
-  // Include additional fields as needed
 });
+const validationErrors: Ref<{ [id: string]: string }> = ref({
+  firstName: "",
+  lastName: "",
+  specialization: "",
+  hourlyRate: "",
+  address: "",
+  postalCode: "",
+  city: "",
+});
+const schema = Yup.object().shape({
+  firstName: Yup.string().required("First name is required"),
+  lastName: Yup.string().required("Last name is required"),
+  specialization: Yup.string().required("Specialization is required"),
+  hourlyRate: Yup.number()
+    .typeError(() => {
+      return `Hourly Rate is required`;
+    })
+    .required("Hourly Rate is required")
+    .min(1, "Hourly Rate must be a number greater than 0"),
+  address: Yup.string().required("Address is required"),
+  postalCode: Yup.string().required("Postal code is required"),
+  city: Yup.string().required("City is required"),
+});
+function validate(field: string) {
+  schema
+    .validateAt(field, lawyerFormData.value)
+    .then(() => (validationErrors.value[field] = ""))
+    .catch((err) => {
+      validationErrors.value[err.path] = err.message;
+    });
+}
 const selectedFile = ref<File | null>(null);
-
 // Fetch lawyers
 function fetchLawyers() {
   console.log("fetchLawyers method called");
   lawyerStore.fetchLawyers();
 }
-
 // Edit lawyer
-function editLawyer(lawyer: LawyerResultModel) {
+function editLawyer(lawyer: LawyerModel) {
   isEditMode.value = true;
   lawyerFormData.value = { ...lawyer };
 }
-
 function handleFileUpload(event: Event) {
   const input = event.target as HTMLInputElement;
   if (input && input.files) {
     selectedFile.value = input.files[0];
   }
 }
-
-// Submit lawyer
 // Submit lawyer
 async function submitLawyer() {
-  if (isEditMode.value) {
-    if (!selectedFile.value) {
-      alert("Please select a file to upload.");
-      return;
-    }
-    const file = selectedFile.value; // Get the file from the Ref object
-    const fileName = file.name; // Access the name property of the File object
-    await uploadFile(lawyerFormData.value.id, fileName);
-    lawyerFormData.value.photoName = `${lawyerFormData.value.id}_${fileName}`;
-    await lawyerStore.updateLawyer(
-      lawyerFormData.value.id,
-      lawyerFormData.value
-    );
-    resetForm();
-    isEditMode.value = false;
-  } else {
-    if (!selectedFile.value) {
-      alert("Please select a file to upload.");
-      return;
-    }
-    try {
-      const uuid = uuidv4();
-      const file = selectedFile.value; // Get the file from the Ref object
-      const fileName = file.name; // Access the name property of the File object
-      await uploadFile(uuid, fileName); // Pass fileName as an argument
-      lawyerFormData.value.id = uuid;
-      // Use template literals to construct the photoPath string
-      lawyerFormData.value.photoBucket = "lawyers";
-      lawyerFormData.value.photoName = `${uuid}_${fileName}`;
-      await lawyerStore.createLawyer(lawyerFormData.value);
-      resetForm();
-    } catch (error) {
-      alert("Error uploading file.");
-      console.error("Error uploading file: ", error);
-    }
-  }
+  schema
+    .validate(lawyerFormData.value, { abortEarly: false })
+    .then(() => {
+      if (isEditMode.value) {
+        if (selectedFile.value) {
+          // If a new file is selected, update photo information
+          const file = selectedFile.value;
+          const fileName = file.name;
+          uploadFile(lawyerFormData.value.id, fileName);
+          lawyerFormData.value.photoBucket = "lawyers";
+          lawyerFormData.value.photoName = `${lawyerFormData.value.id}_${fileName}`;
+        }
+        lawyerStore.updateLawyer(lawyerFormData.value.id, lawyerFormData.value);
+        resetForm();
+        isEditMode.value = false;
+      } else {
+        const uuid = uuidv4();
+        lawyerFormData.value.id = uuid;
+        if (selectedFile.value) {
+          // Handle new lawyer photo upload
+          const file = selectedFile.value;
+          const fileName = file.name;
+          uploadFile(uuid, fileName);
+          lawyerFormData.value.photoBucket = "lawyers";
+          lawyerFormData.value.photoName = `${uuid}_${fileName}`;
+        }
+        lawyerStore.createLawyer(lawyerFormData.value);
+        resetForm();
+      }
+    })
+    .catch((err: Yup.ValidationError) => {
+      err.inner.forEach((e) => {
+        if (e.path) validationErrors.value[e.path] = e.message;
+      });
+    });
 }
-
 // Upload file
 async function uploadFile(uuid: string, fileName: string) {
   if (!selectedFile.value) {
     alert("No file selected for upload.");
     return Promise.reject("No file selected for upload.");
   }
-
   // Pass the fileName to the uploadPhoto method as well
   await lawyerStore.uploadPhoto(selectedFile.value, "lawyers", fileName, uuid);
 }
-
 // Delete lawyer
 async function deleteLawyer(lawyerId: string) {
   lawyerStore.deleteLawyer(lawyerId);
 }
-
 // Set create mode
 function setCreateMode() {
   isEditMode.value = false;
   resetForm();
 }
-
-// Reset form
 // Reset form
 function resetForm() {
   lawyerFormData.value = {
