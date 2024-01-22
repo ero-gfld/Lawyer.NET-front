@@ -12,9 +12,9 @@ const props = defineProps<{
   timeslots: string[];
 }>();
 
-const INITIAL_TIMESLOTS_SHOWN = 5;
+const MIN_TIMESLOTS_SHOWN = 5;
 
-const timeslotsShown = ref(INITIAL_TIMESLOTS_SHOWN);
+const timeslotsShown = ref(MIN_TIMESLOTS_SHOWN);
 
 const currentTimeslots = ref(props.timeslots);
 
@@ -49,7 +49,7 @@ function showModal(time: string, date: string, lawyer: LawyerSearchModel) {
     (isBooked) => {
       if (isBooked) {
         currentTimeslots.value.splice(currentTimeslots.value.indexOf(time), 1);
-        timeslotsShown.value = INITIAL_TIMESLOTS_SHOWN;
+        timeslotsShown.value = MIN_TIMESLOTS_SHOWN;
       }
     }
   );
@@ -62,7 +62,7 @@ function showModal(time: string, date: string, lawyer: LawyerSearchModel) {
       getDayOfWeek(props.date)
     }}</v-label>
     <v-label class="text-sm">{{ getFullDay(props.date) }}</v-label>
-    <div class="flex flex-col mt-4 gap-y-3">
+    <div class="flex flex-col mt-3 gap-y-2">
       <div
         v-for="time in currentTimeslots.slice(0, timeslotsShown)"
         :key="time"
@@ -79,17 +79,20 @@ function showModal(time: string, date: string, lawyer: LawyerSearchModel) {
         <div class="font-semibold text-gray-400 px-4 py-0.5">--:--</div>
       </div>
     </div>
-    <div v-if="currentTimeslots.length > timeslotsShown" class="mt-2">
+    <div class="mt-2">
       <v-button
-        v-if="timeslotsShown === INITIAL_TIMESLOTS_SHOWN"
+        v-if="
+          currentTimeslots.length > timeslotsShown &&
+          timeslotsShown === MIN_TIMESLOTS_SHOWN
+        "
         @click="showFullTimetable"
         button-type="link"
       >
         +{{ currentTimeslots.length - timeslotsShown }}
       </v-button>
       <v-button
-        v-else
-        @click="timeslotsShown = INITIAL_TIMESLOTS_SHOWN"
+        v-else-if="timeslotsShown > MIN_TIMESLOTS_SHOWN"
+        @click="timeslotsShown = MIN_TIMESLOTS_SHOWN"
         button-type="link"
         >Show less</v-button
       >

@@ -12,7 +12,7 @@ const timetable = ref(props.timetable);
 </script>
 
 <template>
-  <div class="flex flex-row justify-between">
+  <div class="flex">
     <div v-for="[date, timeslots] in Object.entries(timetable)" :key="date">
       <lawyer-timeslots
         v-if="Array.isArray(timeslots)"

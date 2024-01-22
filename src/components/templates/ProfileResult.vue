@@ -10,10 +10,10 @@ const props = defineProps<{
 </script>
 
 <template>
-  <div class="border border-gray-300 p-5">
+  <div class="border border-gray-300 p-5 space-y-4">
     <lawyer-information :profile="props.profile" />
     <lawyer-timetable
-      class="mt-5 px-10 py-3 border rounded-xl"
+      class="justify-between ml-5 p-4 border rounded-xl"
       :lawyer="props.profile"
       :timetable="
         props.profile.availableSlots.timeslotsByDate.availabilityTimetable

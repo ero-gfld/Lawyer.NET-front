@@ -19,7 +19,7 @@ function formatSpecialization(str: string) {
 </script>
 
 <template>
-  <div class="flex gap-x-5 items-center">
+  <div class="flex gap-x-5">
     <div>
       <img
         class="rounded-full"
