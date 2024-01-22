@@ -1,6 +1,6 @@
 import DayScheduleModel from "@/models/DayScheduleModel";
 
-export type LawyerResultModel = {
+export type LawyerModel = {
   id: string;
   firstName: string;
   lastName: string;
@@ -14,4 +14,4 @@ export type LawyerResultModel = {
   photoName: string;
 };
 
-export default LawyerResultModel;
+export default LawyerModel;

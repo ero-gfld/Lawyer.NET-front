@@ -21,6 +21,11 @@ import {
   IoCloseSharp,
   FaCheckCircle,
   MdModeedit,
+  LaSpinnerSolid,
+  LaAngleLeftSolid,
+  LaAngleRightSolid,
+  BiCalendar2XFill,
+  BiCalendar2CheckFill,
 } from "oh-vue-icons/icons";
 import { createPinia } from "pinia";
 
@@ -40,7 +45,12 @@ addIcons(
   FaInfoCircle,
   IoCloseSharp,
   FaCheckCircle,
-  MdModeedit
+  MdModeedit,
+  LaSpinnerSolid,
+  LaAngleLeftSolid,
+  LaAngleRightSolid,
+  BiCalendar2XFill,
+  BiCalendar2CheckFill
 );
 
 const i18n = createI18n({

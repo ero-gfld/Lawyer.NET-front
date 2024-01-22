@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import NavItem from "@/components/molecules/NavItem.vue";
+import NavItem from "@/components/atoms/NavItem.vue";
 import { useLoginStore } from "@/stores/LoginStore";
 import DropdownItemOptions from "@/models/DropdownItemOptions/DropdownItemOptions";
 import { ref, watch } from "vue";

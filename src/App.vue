@@ -4,6 +4,7 @@ import { onMounted } from "vue";
 import TheNavBar from "@/components/templates/TheNavBar.vue";
 import TheErrorModal from "@/components/templates/TheErrorModal.vue";
 import TheNotificationList from "@/components/templates/TheNotificationList.vue";
+import TheAppointmentConfirmationModal from "@/components/templates/TheAppointmentConfirmationModal.vue";
 
 const loginStore = useLoginStore();
 
@@ -21,6 +22,7 @@ onMounted(async () => {
 <template>
   <the-nav-bar />
   <the-notification-list />
+  <the-appointment-confirmation-modal />
   <the-error-modal />
   <router-view />
 </template>

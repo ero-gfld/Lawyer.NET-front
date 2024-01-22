@@ -1,24 +1,40 @@
 <script setup lang="ts">
-import { MOCK_LAWYERS } from "@/assets/Mockup";
-import ProfileResult from "@/components/organisms/ProfileResult.vue";
-import { OhVueIcon } from "oh-vue-icons";
+import TheProfileResults from "@/components/templates/TheProfileResults.vue";
+import { LawyerSearchResult } from "@/models/LawyerSearchResult";
+import { useSearchStore } from "@/stores/SearchStore";
+import { onMounted, ref } from "vue";
+import { useRoute } from "vue-router";
 
-const profiles = MOCK_LAWYERS;
+const isLoading = ref(false);
+const lawyerResult = ref<LawyerSearchResult>();
+
+const route = useRoute();
+const searchStore = useSearchStore();
+
+function search(page: number) {
+  isLoading.value = true;
+  searchStore.searchLawyers(route.params.search.toString(), page).then(() => {
+    lawyerResult.value = searchStore.lawyerSearchResult;
+    isLoading.value = false;
+  });
+}
+
+onMounted(() => {
+  search(0);
+});
 </script>
 
 <template>
-  <div class="mx-60">
-    <div class="my-5">
-      <oh-vue-icon name="hi-solid-search" />
-      {{ $t("profile.result.count", { count: profiles.length }) }}
-    </div>
-    <div class="grid gap-y-5 mb-5">
-      <profile-result
-        v-for="profile in profiles"
-        :key="profile.id"
-        :profile="profile"
-      />
+  <div class="flex justify-center my-6">
+    <the-profile-results
+      class="w-3/5"
+      v-if="!isLoading && lawyerResult"
+      :lawyerResult="lawyerResult"
+      :search="search"
+    />
+    <div v-else>
+      <v-icon name="la-spinner-solid" class="animate-spin" />
+      Searching for new lawyers...
     </div>
   </div>
 </template>
-@/assets/Mockup
