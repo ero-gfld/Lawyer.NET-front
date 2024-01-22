@@ -4,8 +4,8 @@ import { useLoginStore } from "@/stores/LoginStore";
 import { useNotificationStore } from "@/stores/NotificationStore";
 import NotificationTypes from "@/constants/NotificationTypes";
 import { useErrorStore } from "./ErrorStore";
-import { HttpResponse } from "@/models/HttpResponses/HttpResponse";
-import { is } from "date-fns/locale";
+import { AvailabilityTimetable } from "@/models/AvailabilityTimetable";
+import { getAvailabilityForPeriod } from "@/services/AppointmentService";
 
 const getAuthToken = () => localStorage.getItem("access_token");
 
@@ -77,11 +77,42 @@ export const useAppointmentStore = defineStore("appointmentStore", {
       } else {
         useErrorStore().showError(
           "Couldn't create appointment.",
-          "Invalid user."
+          "Invalid token or user data incorrect."
         );
       }
       this.callback(isBooked);
       return isBooked;
+    },
+    async getAvailabilityForPeriod(
+      lawyerId: string,
+      date: string,
+      numberOfDays: number
+    ): Promise<AvailabilityTimetable> {
+      const token = getAuthToken();
+      const defaultResponse: AvailabilityTimetable = {
+        availabilityTimetable: ["", []],
+      };
+      if (token) {
+        const response = await getAvailabilityForPeriod(
+          lawyerId,
+          date,
+          numberOfDays.toString(),
+          token
+        );
+        if (response.status === 200) {
+          return response.data;
+        }
+        useErrorStore().showError(
+          "Couldn't get the timetable.",
+          response.details
+        );
+        return defaultResponse;
+      }
+      useErrorStore().showError(
+        "Couldn't get the timetable.",
+        "Invalid token."
+      );
+      return defaultResponse;
     },
   },
 });

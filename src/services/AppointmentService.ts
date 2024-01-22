@@ -2,9 +2,12 @@ import axios from "axios";
 import apiConfig from "@/config/api-config.json";
 import {
   HttpErrorResponse,
+  HttpResponse,
   HttpSuccessResponse,
 } from "@/models/HttpResponses/HttpResponse";
-import CreateAppointmentRequest from "@/models/CreateAppointmentRequest";
+import CreateAppointmentRequest from "@/dtos/appointments/CreateAppointmentRequest";
+import GetAppointmentTimeslotsRequest from "@/dtos/appointments/GetAppointmentTimeslotsRequest";
+import { AvailabilityTimetable } from "@/models/AvailabilityTimetable";
 
 export async function createAppointment(
   lawyerId: string,
@@ -13,14 +16,14 @@ export async function createAppointment(
   time: string,
   token: string
 ) {
-  const appointmentRequest: CreateAppointmentRequest = {
+  const payload: CreateAppointmentRequest = {
     lawyerId,
     userId,
     date,
     time,
   };
   const response = await axios
-    .post(`${apiConfig.URL}/appointments`, appointmentRequest, {
+    .post(`${apiConfig.URL}/appointments`, payload, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -38,6 +41,42 @@ export async function createAppointment(
         status: err.response.status,
         message: err.message,
         details: "Couldn't create appointment.",
+      } as HttpErrorResponse;
+    });
+  return response;
+}
+
+export async function getAvailabilityForPeriod(
+  lawyerId: string,
+  startDate: string,
+  numberOfDays: string,
+  token: string
+): Promise<HttpResponse<AvailabilityTimetable>> {
+  const payload: GetAppointmentTimeslotsRequest = {
+    lawyerId,
+    startDate,
+    numberOfDays,
+  };
+  const response = await axios
+    .get(`${apiConfig.URL}/appointments/available-timeslots`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      params: payload,
+    })
+    .then((response) => {
+      const availability = response.data;
+      return {
+        status: response.status,
+        data: availability,
+        details: "Successfully retrieved availability.",
+      } as HttpSuccessResponse<AvailabilityTimetable>;
+    })
+    .catch((err) => {
+      return {
+        status: err.response.status,
+        message: err.message,
+        details: "Couldn't retrieve availability.",
       } as HttpErrorResponse;
     });
   return response;
