@@ -25,8 +25,9 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="mx-60 my-6">
+  <div class="flex justify-center my-6">
     <the-profile-results
+      class="w-1/2"
       v-if="!isLoading && lawyerResult"
       :lawyerResult="lawyerResult"
       :search="search"
