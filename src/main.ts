@@ -25,6 +25,7 @@ import {
   LaAngleLeftSolid,
   LaAngleRightSolid,
   BiCalendar2XFill,
+  BiCalendar2CheckFill,
 } from "oh-vue-icons/icons";
 import { createPinia } from "pinia";
 
@@ -48,7 +49,8 @@ addIcons(
   LaSpinnerSolid,
   LaAngleLeftSolid,
   LaAngleRightSolid,
-  BiCalendar2XFill
+  BiCalendar2XFill,
+  BiCalendar2CheckFill
 );
 
 const i18n = createI18n({

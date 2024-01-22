@@ -26,7 +26,12 @@ const appointmentStore = useAppointmentStore();
         >
           <div>
             <div class="text-center space-y-2">
-              <h1 class="text-xl font-semibold text-gray-600">
+              <v-icon
+                name="bi-calendar2-check-fill"
+                scale="2"
+                class="text-primary"
+              />
+              <h1 class="text-xl font-semibold text-primary-light">
                 {{ $t("appointment-confirmation.title") }}
               </h1>
               <div>
