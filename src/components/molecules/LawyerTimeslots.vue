@@ -62,11 +62,10 @@ function showModal(time: string, date: string, lawyer: LawyerSearchModel) {
       getDayOfWeek(props.date)
     }}</v-label>
     <v-label class="text-sm">{{ getFullDay(props.date) }}</v-label>
-    <div class="flex flex-col mt-3 gap-y-2">
+    <div class="flex flex-col mt-3 gap-y-2 text-center">
       <div
         v-for="time in currentTimeslots.slice(0, timeslotsShown)"
         :key="time"
-        class="text-center"
       >
         <v-button
           button-type="timeslot"

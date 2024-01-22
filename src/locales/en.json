@@ -17,5 +17,7 @@
   "appointment-confirmation.description": "You are about to book an appointment with {lawyerName} on {date} at {time}.",
   "appointment-confirmation.proceed": "Are you sure you want to proceed?",
   "appointment-confirmation.confirm": "Confirm",
-  "appointment-confirmation.cancel": "Cancel"
+  "appointment-confirmation.cancel": "Cancel",
+  "timetable.is-empty.title": "No appointments",
+  "timetable.is-empty.description": "There is no appointments available for this week."
 }
