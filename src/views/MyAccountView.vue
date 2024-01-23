@@ -2,8 +2,6 @@
 import { Ref, ref } from "vue";
 import VButton from "@/components/atoms/VButton.vue";
 import { useLoginStore } from "@/stores/LoginStore";
-import { OhVueIcon } from "oh-vue-icons";
-import NoAppointmentsMessage from "@/components/organisms/NoAppointmentsMessage.vue";
 import { UserModel } from "@/models/UserModel";
 import { useUserStore } from "@/stores/UserStore";
 import { storeToRefs } from "pinia";
@@ -11,6 +9,7 @@ import { watchEffect } from "vue";
 import * as Yup from "yup";
 import LabelTypes from "@/constants/LabelTypes";
 import VLabel from "@/components/atoms/VLabel.vue";
+import UserAppointments from "@/components/organisms/UserAppointments.vue";
 interface UserImages {
   [key: string]: string | null | undefined; // Allowing string, null, and undefined
 }
@@ -21,8 +20,6 @@ const userImages = ref<UserImages>({});
 const userStore = useUserStore();
 const loginStore = useLoginStore();
 const { user } = storeToRefs(loginStore);
-
-const editMode = ref(false);
 
 fetchUser();
 
@@ -184,11 +181,9 @@ async function uploadFile(uuid: string, fileName: string) {
 
 <template>
   <div
-    class="grid grid-cols-1 lg:grid-cols-5 gap-4 mx-4 lg:mx-10 p-4 lg:p-8 min-h-screen"
+    class="grid grid-cols-1 lg:grid-cols-5 mx-10 my-5 min-h-screen space-x-5"
   >
-    <div
-      class="col-span-1 lg:col-span-2 flex flex-col justify-center items-center"
-    >
+    <div class="col-span-1 flex flex-col items-center">
       <img
         :src="
           userImages[loginStore.user?.id || 'defaultId'] ||
@@ -197,20 +192,14 @@ async function uploadFile(uuid: string, fileName: string) {
         alt="User Avatar"
         class="rounded-full mb-4 h-40 w-40 object-cover"
       />
-      <div class="text-center">
-        <h2 class="text-lg font-bold mb-2">
+      <div class="flex flex-col text-center mb-3">
+        <h2 class="text-lg font-bold mb-1">
           {{ loginStore.user?.username }}
-          <oh-vue-icon
-            v-if="!editMode"
-            @click="editMode = true"
-            name="md-modeedit"
-            class="cursor-pointer text-primary hover:text-primary-light active:text-primary-lighter"
-          />
         </h2>
-        <p class="font-semibold mb-1">
+        <v-label class="font-semibold">
           {{ `${loginStore.user?.firstName} ${loginStore.user?.lastName}` }}
-        </p>
-        <p class="text-gray-500 mb-4">{{ loginStore.user?.email }}</p>
+        </v-label>
+        <v-label class="text-gray-500">{{ loginStore.user?.email }}</v-label>
       </div>
       <form @submit.prevent="submitUser" class="w-full max-w-md mx-auto">
         <div class="flex flex-col gap-4">
@@ -320,31 +309,18 @@ async function uploadFile(uuid: string, fileName: string) {
               class="border rounded w-full text-gray-700 py-3 px-4"
             />
           </div>
-          <button
-            type="submit"
+          <v-button
             class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
           >
             Update
-          </button>
+          </v-button>
         </div>
       </form>
-      <v-button
-        v-if="editMode"
-        @click="editMode = false"
-        class="mt-4 px-4 py-2 bg-blue-500 text-white rounded-md"
-      >
-        Save
-      </v-button>
     </div>
 
-    <div class="col-span-1 lg:col-span-3 flex flex-col">
+    <div class="col-span-1 lg:col-span-4 flex flex-col">
       <h3 class="text-xl font-bold mb-4">My Appointments</h3>
-      <div class="grid border border-gray-300 place-content-center">
-        <no-appointments-message
-          v-if="loginStore.user?.appointments.length === 0"
-        />
-        <!-- Hier können weitere Terminelemente eingefügt werden -->
-      </div>
+      <user-appointments class="border px-4 py-1" :user-id="user?.id ?? ''" />
     </div>
   </div>
 </template>
