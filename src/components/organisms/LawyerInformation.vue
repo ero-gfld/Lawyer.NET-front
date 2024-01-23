@@ -1,11 +1,14 @@
 <script setup lang="ts">
 import VLabel from "@/components/atoms/VLabel.vue";
 import LawyerSearchModel from "@/models/LawyerSearchModel";
-import { defineProps } from "vue";
+import { defineProps, onBeforeMount, ref } from "vue";
+import { useLawyerStore } from "@/stores/LawyerStore";
 
 const props = defineProps<{
   profile: LawyerSearchModel;
 }>();
+
+const imageUrl = ref("https://via.placeholder.com/100");
 
 function formatSpecialization(str: string) {
   return str
@@ -16,18 +19,29 @@ function formatSpecialization(str: string) {
         firstChar.toUpperCase() + restOfString.toLowerCase()
     );
 }
+
+onBeforeMount(async () => {
+  const imageResponse = await useLawyerStore().getFile(
+    props.profile.photoBucket,
+    props.profile.photoName,
+    props.profile.id
+  );
+  if (imageResponse) {
+    imageUrl.value = imageResponse;
+  }
+});
 </script>
 
 <template>
-  <div class="flex gap-x-5">
+  <div class="flex gap-x-5 h-28">
     <div>
       <img
-        class="rounded-full"
-        src="https://via.placeholder.com/100"
+        class="rounded-full object-cover object-center w-28 h-28"
+        :src="imageUrl"
         :alt="`${props.profile.firstName} ${props.profile.lastName} profile picture`"
       />
     </div>
-    <div class="flex flex-col justify-between">
+    <div class="flex flex-col justify-center">
       <div class="flex flex-col">
         <v-label class="text-primary font-bold text-lg -mb-1">{{
           `${props.profile.firstName} ${props.profile.lastName}`
