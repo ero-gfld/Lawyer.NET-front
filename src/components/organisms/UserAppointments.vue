@@ -2,6 +2,7 @@
 import NoAppointmentsMessage from "@/components/organisms/NoAppointmentsMessage.vue";
 import SimpleAppointment from "@/dtos/appointments/SimpleAppointment";
 import UserAppointment from "@/components/molecules/UserAppointment.vue";
+import { format } from "date-fns";
 import { useAppointmentStore } from "@/stores/AppointmentStore";
 import { defineProps, onMounted, ref } from "vue";
 
@@ -14,28 +15,27 @@ const props = defineProps({
 
 const appointments = ref<SimpleAppointment[]>([]);
 
+async function deleteAppointment(id: string) {
+  await useAppointmentStore().deleteAppointment(id, () => {
+    appointments.value = appointments.value.filter((a) => a.id !== id);
+  });
+}
+
 onMounted(async () => {
-  appointments.value = (
-    await useAppointmentStore().getAllAppointmentsForUser(props.userId)
-  )
-    .sort((a, b) => {
-      return (
-        new Date(a.date + " " + a.time).getTime() -
-        new Date(b.date + " " + b.time).getTime()
-      );
-    })
-    .filter((appointment) => {
-      return new Date(appointment.date) > new Date();
-    });
+  appointments.value = await useAppointmentStore().getAllAppointmentsForUser(
+    props.userId,
+    format(new Date(), "yyyy-MM-dd")
+  );
 });
 </script>
 
 <template>
   <div>
-    <no-appointments-message v-if="appointments.length <= 0" />
+    <no-appointments-message class="my-2" v-if="appointments.length <= 0" />
     <div class="divide-y">
       <user-appointment
         v-for="appointment in appointments"
+        :delete-appointment="() => deleteAppointment(appointment.id)"
         :key="appointment.id"
         :appointment="appointment"
       />

@@ -85,13 +85,15 @@ export async function getAvailabilityForPeriod(
 
 export async function getAllAppointmentsByUser(
   id: string,
-  token: string
+  token: string,
+  from?: string
 ): Promise<HttpResponse<SimpleAppointments>> {
   const response = await axios
     .get(`${apiConfig.URL}/appointments/user/${id}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
+      params: { date: from },
     })
     .then((response) => {
       const appointments = response.data;
@@ -106,6 +108,34 @@ export async function getAllAppointmentsByUser(
         status: err.response.status,
         message: err.message,
         details: "Couldn't retrieve appointments.",
+      };
+    });
+  return response;
+}
+
+export async function deleteAppointment(
+  id: string,
+  token: string
+): Promise<HttpResponse<void>> {
+  const response = await axios
+    .delete(`${apiConfig.URL}/appointments/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    .then((response) => {
+      const appointments = response.data;
+      return {
+        status: response.status,
+        data: appointments,
+        details: "Successfully deleted appointment.",
+      };
+    })
+    .catch((err) => {
+      return {
+        status: err.response.status,
+        message: err.message,
+        details: "Couldn't delete appointment.",
       };
     });
   return response;
