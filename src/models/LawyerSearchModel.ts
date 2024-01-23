@@ -9,6 +9,8 @@ export type LawyerSearchModel = {
   address: string;
   postalCode: string;
   city: string;
+  photoBucket: string;
+  photoName: string;
   availableSlots: LawyerAvailability;
 };
 
