@@ -1,11 +1,16 @@
 import { defineStore } from "pinia";
-import { createAppointment } from "@/services/AppointmentService";
+import {
+  createAppointment,
+  getAllAppointmentsByUser,
+} from "@/services/AppointmentService";
 import { useLoginStore } from "@/stores/LoginStore";
 import { useNotificationStore } from "@/stores/NotificationStore";
 import NotificationTypes from "@/constants/NotificationTypes";
 import { useErrorStore } from "./ErrorStore";
 import { AvailabilityTimetable } from "@/models/AvailabilityTimetable";
 import { getAvailabilityForPeriod } from "@/services/AppointmentService";
+import HttpResponseStatus from "@/models/HttpResponses/HttpResponseStatus";
+import SimpleAppointment from "@/dtos/appointments/SimpleAppointment";
 
 const getAuthToken = () => localStorage.getItem("access_token");
 
@@ -61,7 +66,7 @@ export const useAppointmentStore = defineStore("appointmentStore", {
           token
         );
         this.closeModal();
-        if (response.status === 200) {
+        if (response.status === HttpResponseStatus.OK) {
           useNotificationStore().generateNotification(
             "Appointment booked",
             "Appointment created successfully.",
@@ -99,7 +104,7 @@ export const useAppointmentStore = defineStore("appointmentStore", {
           numberOfDays.toString(),
           token
         );
-        if (response.status === 200) {
+        if (response.status === HttpResponseStatus.OK) {
           return response.data;
         }
         useErrorStore().showError(
@@ -113,6 +118,31 @@ export const useAppointmentStore = defineStore("appointmentStore", {
         "Invalid token."
       );
       return defaultResponse;
+    },
+    async getAllAppointmentsForUser(
+      userId: string
+    ): Promise<SimpleAppointment[]> {
+      const token = getAuthToken();
+      if (token) {
+        const response = await getAllAppointmentsByUser(userId, token);
+        switch (response.status) {
+          case HttpResponseStatus.OK:
+            return response.data.appointments;
+          case HttpResponseStatus.UNAUTHORIZED:
+            useErrorStore().showError(
+              "Couldn't get the appointments.",
+              "Invalid token. Please log in again."
+            );
+            break;
+          case HttpResponseStatus.BAD_REQUEST:
+            useErrorStore().showError(
+              "Couldn't get the appointments.",
+              "Invalid user id."
+            );
+            break;
+        }
+      }
+      return [];
     },
   },
 });
