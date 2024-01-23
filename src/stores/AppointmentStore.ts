@@ -11,6 +11,7 @@ import { AvailabilityTimetable } from "@/models/AvailabilityTimetable";
 import { getAvailabilityForPeriod } from "@/services/AppointmentService";
 import HttpResponseStatus from "@/models/HttpResponses/HttpResponseStatus";
 import SimpleAppointment from "@/dtos/appointments/SimpleAppointment";
+import { deleteAppointment } from "@/services/AppointmentService";
 
 const getAuthToken = () => localStorage.getItem("access_token");
 
@@ -120,11 +121,12 @@ export const useAppointmentStore = defineStore("appointmentStore", {
       return defaultResponse;
     },
     async getAllAppointmentsForUser(
-      userId: string
+      userId: string,
+      from?: string
     ): Promise<SimpleAppointment[]> {
       const token = getAuthToken();
       if (token) {
-        const response = await getAllAppointmentsByUser(userId, token);
+        const response = await getAllAppointmentsByUser(userId, token, from);
         switch (response.status) {
           case HttpResponseStatus.OK:
             return response.data.appointments;
@@ -143,6 +145,38 @@ export const useAppointmentStore = defineStore("appointmentStore", {
         }
       }
       return [];
+    },
+    async deleteAppointment(
+      appointmentId: string,
+      callback: (hasBeenDeleted: boolean) => void
+    ): Promise<void> {
+      const token = getAuthToken();
+      if (token) {
+        const response = await deleteAppointment(appointmentId, token);
+        switch (response.status) {
+          case HttpResponseStatus.OK:
+            useNotificationStore().generateNotification(
+              "Appointment deleted",
+              "Appointment deleted successfully.",
+              NotificationTypes.SUCCESS
+            );
+            callback(true);
+            return;
+          case HttpResponseStatus.UNAUTHORIZED:
+            useErrorStore().showError(
+              "Couldn't delete the appointment.",
+              "Invalid token. Please log in again."
+            );
+            break;
+          case HttpResponseStatus.BAD_REQUEST:
+            useErrorStore().showError(
+              "Couldn't delete the appointment.",
+              "Invalid user id."
+            );
+            break;
+        }
+      }
+      callback(false);
     },
   },
 });
