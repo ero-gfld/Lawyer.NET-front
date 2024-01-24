@@ -31,12 +31,15 @@ export async function postLogin(
       return {
         status: err.response.status,
         message: err.message,
-        details: HttpResponseStatus.UNAUTHORIZED
+        details: err.response.status === HttpResponseStatus.UNAUTHORIZED
           ? "Invalid username or password."
-          : "Couldn't login.",
+          : err.response.status === 500  // Check if the status is 500
+          ? "Account is locked."          // Return "Account is locked" for status 500
+          : "Couldn't login.",            // Default message for other errors
       } as HttpErrorResponse;
     });
-  return response;
+    return response;
+    
 }
 
 export async function postUser(
