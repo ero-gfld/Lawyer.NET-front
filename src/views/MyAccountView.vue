@@ -38,6 +38,7 @@ const userFormData = ref<UserModel>({
   photoName: "",
   password: "",
   passwordConfirmation: "",
+  isLocked: false,
 });
 
 const validationErrors: Ref<{ [id: string]: string }> = ref({

@@ -12,6 +12,7 @@ export type UserModel = {
   photoName: string;
   password: string;
   passwordConfirmation: string;
+  isLocked: boolean;
 };
 
 export default UserModel;
