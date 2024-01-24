@@ -1,8 +1,6 @@
 <template>
-  <div class="container mx-auto p-4">
+  <div class="p-4 mx-48">
     <h1 class="text-2xl font-bold mb-4">User Management</h1>
-
-
     <div class="flex space-x-2 mb-4">
       <button
         class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
@@ -17,6 +15,7 @@
         Add New User
       </button>
     </div>
+
 
     <div class="mb-4">
   <input
@@ -53,7 +52,7 @@
     </div>
 
     <!-- User Form for Add/Edit -->
-    <div class="mt-6">
+    <div>
       <h2 class="text-xl font-bold mb-3">
         {{ isEditMode ? "Edit User" : "Add User" }}
       </h2>
@@ -185,7 +184,7 @@
           v-if="validationErrors.passwordConfirmation"
           >{{ validationErrors.passwordConfirmation }}</v-label
         >
-        <div class="mb-4">
+        <div>
           <label
             for="fileUpload"
             class="block text-gray-700 text-sm font-bold mb-2"
@@ -197,6 +196,12 @@
             @change="handleFileUpload"
             class="border rounded w-full text-gray-700 py-3 px-4"
           />
+        </div>
+        <div class="mb-5" v-if="isEditMode">
+          <h2 class="text-xl font-bold mb-3">Appointments</h2>
+          <div class="border py-2 px-4">
+            <user-appointments :user-id="userFormData.id" />
+          </div>
         </div>
         <button
           type="submit"
@@ -220,7 +225,10 @@ import * as Yup from "yup";
 import LabelTypes from "@/constants/LabelTypes";
 import VLabel from "@/components/atoms/VLabel.vue";
 import UserRoles from "@/constants/UserRoles";
+import UserAppointments from "@/components/organisms/UserAppointments.vue";
+
 import { computed} from 'vue';
+
 
 
 interface UserImages {

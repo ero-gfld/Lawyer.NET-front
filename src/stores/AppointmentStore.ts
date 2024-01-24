@@ -1,11 +1,18 @@
 import { defineStore } from "pinia";
-import { createAppointment } from "@/services/AppointmentService";
+import {
+  createAppointment,
+  getAllAppointmentsByLawyer,
+  getAllAppointmentsByUser,
+} from "@/services/AppointmentService";
 import { useLoginStore } from "@/stores/LoginStore";
 import { useNotificationStore } from "@/stores/NotificationStore";
 import NotificationTypes from "@/constants/NotificationTypes";
 import { useErrorStore } from "./ErrorStore";
 import { AvailabilityTimetable } from "@/models/AvailabilityTimetable";
 import { getAvailabilityForPeriod } from "@/services/AppointmentService";
+import HttpResponseStatus from "@/models/HttpResponses/HttpResponseStatus";
+import SimpleAppointment from "@/dtos/appointments/SimpleAppointment";
+import { deleteAppointment } from "@/services/AppointmentService";
 
 const getAuthToken = () => localStorage.getItem("access_token");
 
@@ -61,7 +68,7 @@ export const useAppointmentStore = defineStore("appointmentStore", {
           token
         );
         this.closeModal();
-        if (response.status === 200) {
+        if (response.status === HttpResponseStatus.OK) {
           useNotificationStore().generateNotification(
             "Appointment booked",
             "Appointment created successfully.",
@@ -99,7 +106,7 @@ export const useAppointmentStore = defineStore("appointmentStore", {
           numberOfDays.toString(),
           token
         );
-        if (response.status === 200) {
+        if (response.status === HttpResponseStatus.OK) {
           return response.data;
         }
         useErrorStore().showError(
@@ -113,6 +120,94 @@ export const useAppointmentStore = defineStore("appointmentStore", {
         "Invalid token."
       );
       return defaultResponse;
+    },
+    async getAllAppointmentsForUser(
+      userId: string,
+      from?: string
+    ): Promise<SimpleAppointment[]> {
+      const token = getAuthToken();
+      if (token) {
+        const response = await getAllAppointmentsByUser(userId, token, from);
+        switch (response.status) {
+          case HttpResponseStatus.OK:
+            return response.data.appointments;
+          case HttpResponseStatus.UNAUTHORIZED:
+            useErrorStore().showError(
+              "Couldn't get the appointments.",
+              "Invalid token. Please log in again."
+            );
+            break;
+          case HttpResponseStatus.BAD_REQUEST:
+            useErrorStore().showError(
+              "Couldn't get the appointments.",
+              "Invalid user id."
+            );
+            break;
+        }
+      }
+      return [];
+    },
+    async getAllAppointmentsForLawyer(
+      lawyerId: string,
+      from?: string
+    ): Promise<SimpleAppointment[]> {
+      const token = getAuthToken();
+      if (token) {
+        const response = await getAllAppointmentsByLawyer(
+          lawyerId,
+          token,
+          from
+        );
+        switch (response.status) {
+          case HttpResponseStatus.OK:
+            return response.data.appointments;
+          case HttpResponseStatus.UNAUTHORIZED:
+            useErrorStore().showError(
+              "Couldn't get the appointments.",
+              "Invalid token. Please log in again."
+            );
+            break;
+          case HttpResponseStatus.BAD_REQUEST:
+            useErrorStore().showError(
+              "Couldn't get the appointments.",
+              "Invalid user id."
+            );
+            break;
+        }
+      }
+      return [];
+    },
+    async deleteAppointment(
+      appointmentId: string,
+      callback: (hasBeenDeleted: boolean) => void
+    ): Promise<void> {
+      const token = getAuthToken();
+      if (token) {
+        const response = await deleteAppointment(appointmentId, token);
+        switch (response.status) {
+          case HttpResponseStatus.OK:
+            useNotificationStore().generateNotification(
+              "Appointment deleted",
+              "Appointment deleted successfully.",
+              NotificationTypes.SUCCESS
+            );
+            callback(true);
+            return;
+          case HttpResponseStatus.UNAUTHORIZED:
+            useErrorStore().showError(
+              "Couldn't delete the appointment.",
+              "Invalid token. Please log in again."
+            );
+            break;
+          case HttpResponseStatus.BAD_REQUEST:
+            useErrorStore().showError(
+              "Couldn't delete the appointment.",
+              "Invalid user id."
+            );
+            break;
+        }
+      }
+      callback(false);
     },
   },
 });
