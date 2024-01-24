@@ -1,6 +1,7 @@
 import { defineStore } from "pinia";
 import {
   createAppointment,
+  getAllAppointmentsByLawyer,
   getAllAppointmentsByUser,
 } from "@/services/AppointmentService";
 import { useLoginStore } from "@/stores/LoginStore";
@@ -127,6 +128,36 @@ export const useAppointmentStore = defineStore("appointmentStore", {
       const token = getAuthToken();
       if (token) {
         const response = await getAllAppointmentsByUser(userId, token, from);
+        switch (response.status) {
+          case HttpResponseStatus.OK:
+            return response.data.appointments;
+          case HttpResponseStatus.UNAUTHORIZED:
+            useErrorStore().showError(
+              "Couldn't get the appointments.",
+              "Invalid token. Please log in again."
+            );
+            break;
+          case HttpResponseStatus.BAD_REQUEST:
+            useErrorStore().showError(
+              "Couldn't get the appointments.",
+              "Invalid user id."
+            );
+            break;
+        }
+      }
+      return [];
+    },
+    async getAllAppointmentsForLawyer(
+      lawyerId: string,
+      from?: string
+    ): Promise<SimpleAppointment[]> {
+      const token = getAuthToken();
+      if (token) {
+        const response = await getAllAppointmentsByLawyer(
+          lawyerId,
+          token,
+          from
+        );
         switch (response.status) {
           case HttpResponseStatus.OK:
             return response.data.appointments;

@@ -113,6 +113,36 @@ export async function getAllAppointmentsByUser(
   return response;
 }
 
+export async function getAllAppointmentsByLawyer(
+  id: string,
+  token: string,
+  from?: string
+): Promise<HttpResponse<SimpleAppointments>> {
+  const response = await axios
+    .get(`${apiConfig.URL}/appointments/lawyer/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      params: { date: from },
+    })
+    .then((response) => {
+      const appointments = response.data;
+      return {
+        status: response.status,
+        data: appointments,
+        details: "Successfully retrieved appointments.",
+      };
+    })
+    .catch((err) => {
+      return {
+        status: err.response.status,
+        message: err.message,
+        details: "Couldn't retrieve appointments.",
+      };
+    });
+  return response;
+}
+
 export async function deleteAppointment(
   id: string,
   token: string
