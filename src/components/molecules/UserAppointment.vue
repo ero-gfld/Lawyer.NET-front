@@ -5,13 +5,20 @@ import { defineProps } from "vue";
 const props = defineProps<{
   appointment: SimpleAppointment;
   deleteAppointment: () => void;
+  typeOfUser: "lawyer" | "user";
 }>();
 </script>
 
 <template>
   <div class="flex justify-between py-2">
     <div>
-      <p class="text-lg">{{ props.appointment.lawyerName }}</p>
+      <p class="text-lg">
+        {{
+          typeOfUser === "user"
+            ? props.appointment.lawyerName
+            : props.appointment.userName
+        }}
+      </p>
     </div>
     <div class="flex flex-right gap-x-3">
       <div class="text-right">

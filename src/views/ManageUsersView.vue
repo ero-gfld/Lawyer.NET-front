@@ -1,8 +1,6 @@
 <template>
-  <div class="container mx-auto p-4">
+  <div class="p-4 mx-48">
     <h1 class="text-2xl font-bold mb-4">User Management</h1>
-
-
     <div class="flex space-x-2 mb-4">
       <button
         class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
@@ -19,13 +17,13 @@
     </div>
 
     <div class="mb-4">
-  <input
-    type="text"
-    v-model="searchQuery"
-    class="shadow border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-    placeholder="Search users..."
-  />
-</div>
+      <input
+        type="text"
+        v-model="searchQuery"
+        class="shadow border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+        placeholder="Search users..."
+      />
+    </div>
 
     <div v-if="users && users.length > 0">
       <ul class="list-disc pl-5">
@@ -53,7 +51,7 @@
     </div>
 
     <!-- User Form for Add/Edit -->
-    <div class="mt-6">
+    <div>
       <h2 class="text-xl font-bold mb-3">
         {{ isEditMode ? "Edit User" : "Add User" }}
       </h2>
@@ -171,21 +169,25 @@
           @blur="validate('passwordConfirmation')"
         />
         <div class="mb-4">
-  <label for="isLocked" class="block text-gray-700 text-sm font-bold mb-2">Lock User:</label>
-  <input
-    type="checkbox"
-    id="isLocked"
-    v-model="userFormData.isLocked"
-    class="shadow border rounded text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-  />
-</div>
+          <label
+            for="isLocked"
+            class="block text-gray-700 text-sm font-bold mb-2"
+            >Lock User:</label
+          >
+          <input
+            type="checkbox"
+            id="isLocked"
+            v-model="userFormData.isLocked"
+            class="shadow border rounded text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          />
+        </div>
         <v-label
           :label-type="LabelTypes.DANGER"
           class="text-xs"
           v-if="validationErrors.passwordConfirmation"
           >{{ validationErrors.passwordConfirmation }}</v-label
         >
-        <div class="mb-4">
+        <div>
           <label
             for="fileUpload"
             class="block text-gray-700 text-sm font-bold mb-2"
@@ -197,6 +199,12 @@
             @change="handleFileUpload"
             class="border rounded w-full text-gray-700 py-3 px-4"
           />
+        </div>
+        <div class="mb-5" v-if="isEditMode">
+          <h2 class="text-xl font-bold mb-3">Appointments</h2>
+          <div class="border py-2 px-4">
+            <user-appointments :user-id="userFormData.id" />
+          </div>
         </div>
         <button
           type="submit"
@@ -220,8 +228,8 @@ import * as Yup from "yup";
 import LabelTypes from "@/constants/LabelTypes";
 import VLabel from "@/components/atoms/VLabel.vue";
 import UserRoles from "@/constants/UserRoles";
-import { computed} from 'vue';
-
+import UserAppointments from "@/components/organisms/UserAppointments.vue";
+import { computed } from "vue";
 
 interface UserImages {
   [key: string]: string | null | undefined; // Allowing string, null, and undefined
@@ -233,14 +241,14 @@ const userImages = ref<UserImages>({});
 const userStore = useUserStore();
 const { users } = storeToRefs(userStore);
 const isEditMode = ref(false);
-const searchQuery = ref('');
+const searchQuery = ref("");
 
 const filteredUsers = computed(() => {
   if (!searchQuery.value) {
     return users.value;
   }
   return users.value.filter((user) => {
-    return Object.values(user).some(value =>
+    return Object.values(user).some((value) =>
       String(value).toLowerCase().includes(searchQuery.value.toLowerCase())
     );
   });

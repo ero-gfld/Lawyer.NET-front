@@ -10,6 +10,7 @@ import * as Yup from "yup";
 import LabelTypes from "@/constants/LabelTypes";
 import VLabel from "@/components/atoms/VLabel.vue";
 import UserAppointments from "@/components/organisms/UserAppointments.vue";
+import { format } from "date-fns";
 interface UserImages {
   [key: string]: string | null | undefined; // Allowing string, null, and undefined
 }
@@ -320,7 +321,11 @@ async function uploadFile(uuid: string, fileName: string) {
 
     <div class="col-span-1 lg:col-span-4 flex flex-col">
       <h3 class="text-xl font-bold mb-4">My Appointments</h3>
-      <user-appointments class="border px-4 py-1" :user-id="user?.id ?? ''" />
+      <user-appointments
+        class="border px-4 py-1"
+        :user-id="user?.id ?? ''"
+        :from="format(new Date(), 'yyyy-MM-dd')"
+      />
     </div>
   </div>
 </template>

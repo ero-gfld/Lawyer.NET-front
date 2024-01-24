@@ -158,6 +158,12 @@
             class="border rounded w-full text-gray-700 py-3 px-4"
           />
         </div>
+        <div class="mb-5" v-if="isEditMode">
+          <h2 class="text-xl font-bold mb-3">Appointments</h2>
+          <div class="border py-2 px-4">
+            <lawyer-appointments :lawyer-id="lawyerFormData.id" />
+          </div>
+        </div>
         <button
           type="submit"
           class="bg-blue-600 hover:bg-blue-800 text-white font-bold py-3 px-6 rounded"
@@ -179,6 +185,7 @@ import * as Yup from "yup";
 import LabelTypes from "@/constants/LabelTypes";
 import VLabel from "@/components/atoms/VLabel.vue";
 import LawyerSpecializations from "@/constants/LawyerSpecializations";
+import LawyerAppointments from "@/components/organisms/LawyerAppointments.vue";
 interface LawyerImages {
   [key: string]: string | null | undefined; // Allowing string, null, and undefined
 }

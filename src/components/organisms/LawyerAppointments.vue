@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import NoAppointmentsMessage from "@/components/organisms/NoAppointmentsMessage.vue";
 import SimpleAppointment from "@/dtos/appointments/SimpleAppointment";
+import VLabel from "@/components/atoms/VLabel.vue";
 import UserAppointment from "@/components/molecules/UserAppointment.vue";
 import { useAppointmentStore } from "@/stores/AppointmentStore";
 import { defineProps, onMounted, ref } from "vue";
 
 const props = defineProps({
-  userId: {
+  lawyerId: {
     type: String,
     required: true,
   },
@@ -25,8 +25,8 @@ async function deleteAppointment(id: string) {
 }
 
 onMounted(async () => {
-  appointments.value = await useAppointmentStore().getAllAppointmentsForUser(
-    props.userId,
+  appointments.value = await useAppointmentStore().getAllAppointmentsForLawyer(
+    props.lawyerId,
     props.from
   );
 });
@@ -34,11 +34,13 @@ onMounted(async () => {
 
 <template>
   <div>
-    <no-appointments-message class="my-2" v-if="appointments.length <= 0" />
+    <v-label v-if="appointments.length <= 0"
+      >You have no appointments schedules for the moment.</v-label
+    >
     <div class="divide-y">
       <user-appointment
         v-for="appointment in appointments"
-        typeOfUser="user"
+        typeOfUser="lawyer"
         :delete-appointment="() => deleteAppointment(appointment.id)"
         :key="appointment.id"
         :appointment="appointment"
