@@ -2,6 +2,7 @@
   <div class="container mx-auto p-4">
     <h1 class="text-2xl font-bold mb-4">User Management</h1>
 
+
     <div class="flex space-x-2 mb-4">
       <button
         class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
@@ -17,9 +18,18 @@
       </button>
     </div>
 
+    <div class="mb-4">
+  <input
+    type="text"
+    v-model="searchQuery"
+    class="shadow border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+    placeholder="Search users..."
+  />
+</div>
+
     <div v-if="users && users.length > 0">
       <ul class="list-disc pl-5">
-        <li v-for="user in users" :key="user.id" class="mb-2">
+        <li v-for="user in filteredUsers" :key="user.id" class="mb-2">
           <img
             :src="userImages[user.id || ''] || '/img/default-avatar.png'"
             alt="Users's Photo"
@@ -160,6 +170,15 @@
           type="password"
           @blur="validate('passwordConfirmation')"
         />
+        <div class="mb-4">
+  <label for="isLocked" class="block text-gray-700 text-sm font-bold mb-2">Lock User:</label>
+  <input
+    type="checkbox"
+    id="isLocked"
+    v-model="userFormData.isLocked"
+    class="shadow border rounded text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+  />
+</div>
         <v-label
           :label-type="LabelTypes.DANGER"
           class="text-xs"
@@ -201,6 +220,8 @@ import * as Yup from "yup";
 import LabelTypes from "@/constants/LabelTypes";
 import VLabel from "@/components/atoms/VLabel.vue";
 import UserRoles from "@/constants/UserRoles";
+import { computed} from 'vue';
+
 
 interface UserImages {
   [key: string]: string | null | undefined; // Allowing string, null, and undefined
@@ -212,6 +233,18 @@ const userImages = ref<UserImages>({});
 const userStore = useUserStore();
 const { users } = storeToRefs(userStore);
 const isEditMode = ref(false);
+const searchQuery = ref('');
+
+const filteredUsers = computed(() => {
+  if (!searchQuery.value) {
+    return users.value;
+  }
+  return users.value.filter((user) => {
+    return Object.values(user).some(value =>
+      String(value).toLowerCase().includes(searchQuery.value.toLowerCase())
+    );
+  });
+});
 
 watchEffect(async () => {
   console.log("WatchEffect: Start fetching user images");
@@ -249,6 +282,7 @@ const userFormData = ref<UserModel>({
   photoName: "",
   password: "",
   passwordConfirmation: "",
+  isLocked: false,
 });
 
 const validationErrors: Ref<{ [id: string]: string }> = ref({
@@ -311,6 +345,7 @@ function editUser(user: UserModel) {
   userFormData.value = { ...user };
   userFormData.value.password = "";
   userFormData.value.passwordConfirmation = "";
+  userFormData.value.isLocked = user.isLocked;
 }
 
 function handleFileUpload(event: Event) {
@@ -392,6 +427,7 @@ function resetForm() {
     photoBucket: "",
     photoName: "",
     passwordConfirmation: "",
+    isLocked: false,
   };
   selectedFile.value = null;
 }
